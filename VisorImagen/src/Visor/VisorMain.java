@@ -125,6 +125,8 @@ public class VisorMain extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         boolean seguro = false;
+        ImageReader i = new ImageReader();
+        MegaImagen imagen;
         if(hayArchivoActual){
             JOptionPane optionPane = new JOptionPane(
                 "Dialogo\n",
@@ -147,7 +149,10 @@ public class VisorMain extends javax.swing.JFrame {
                     System.out.println("Archivo seleccionado: " + archivoActual.getAbsolutePath());
                     VisorMain.getFrames()[0].setTitle("MegaVisor - Procesamiento de Imágenes - Unal : \\"+archivoActual.getName());
                     hayArchivoActual = true;
-
+                    imagen=i.getImageData(archivoActual);
+                    System.out.println(imagen.getBpp());
+                    System.out.println(imagen.getHeight());
+                    System.out.println(imagen.getWidth());
                     //FileInputStream   con esto se lee el archivo paso a paso
                     //Se necesita una clase lectora de archivos
                     //Se necesita una clase imagen, para almacenar la imagen en memoria local para trabajar

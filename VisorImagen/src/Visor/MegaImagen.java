@@ -20,14 +20,19 @@ public class MegaImagen {
  private int  depth; // tamaño del pixel
  private int  espacioColor;
  private int  interlineado;
- private int  origen;
+ private int  origen;//bytedonde empiezan los datos...
  private int  alineacion;
  private int  width;
  private int  height;
  private int  widthStep;
+ private int extencion;//0=bmp, 1=jpg
+ private boolean formatoendian;
+ private int compresionbmp;// 0=none, 1=RLE-8, 2=RLE-4
+ private int bpp;//bits por pixel
+
     //roi;
     @SuppressWarnings("PublicField")
- public byte datosImagen[][];
+ public byte[][] datosImagen;
 
 
 
@@ -61,6 +66,22 @@ public class MegaImagen {
 
      
  }
+
+ public MegaImagen(int extencion,int width, int height, int origen,boolean formatoendian, int compresionbmp,int bpp,byte[][] datosImagen){
+    if (this.setWidth(width))
+    if (this.setHeight(height))
+    if (this.setOrigen(origen)){
+    this.extencion=extencion;
+    this.formatoendian=formatoendian;
+    this.compresionbmp=compresionbmp;
+    this.bpp=bpp;
+    this.datosImagen=datosImagen;
+    }
+
+ }
+
+
+
 
     /**
      * @return the nSize
@@ -320,6 +341,70 @@ public class MegaImagen {
  public static final int ALINEADO_8 = 8;
  public static final int ALINEADO_4 = 4;
 
+    /**
+     * @return the extencion
+     */
+    public int getExtencion() {
+        return extencion;
+    }
 
+    /**
+     * @param extencion the extencion to set
+     */
+    public void setExtencion(int extencion) {
+        this.extencion = extencion;
+    }
+
+    /**
+     * @return the formatoendian
+     */
+    public boolean isFormatoendian() {
+        return formatoendian;
+    }
+
+    /**
+     * @param formatoendian the formatoendian to set
+     */
+    public void setFormatoendian(boolean formatoendian) {
+        this.formatoendian = formatoendian;
+    }
+
+    /**
+     * @return the cabezera
+     */
+
+
+    /**
+     * @return the compresionbmp
+     */
+    public int getCompresionbmp() {
+        return compresionbmp;
+    }
+
+    /**
+     * @param compresionbmp the compresionbmp to set
+     */
+    public void setCompresionbmp(int compresionbmp) {
+        this.compresionbmp = compresionbmp;
+    }
+
+    /**
+     * @return the bpp
+     */
+    public int getBpp() {
+        return bpp;
+    }
+
+    /**
+     * @param bpp the bpp to set
+     */
+    public void setBpp(int bpp) {
+        this.bpp = bpp;
+    }
+
+    /**
+     * @return the bytededatos
+     */
+  
 
 }

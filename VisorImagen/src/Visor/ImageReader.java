@@ -42,30 +42,42 @@ public class ImageReader{
         }
         //ACA EMPIEZA EL BMP
         if(extencion.equals("BMP") || extencion.equals("bmp")){
-            buffer = new byte[54 * 1024];
+            leido = 0;
+            buffer = new byte[64];
             try{
+                
                 theFIS = new FileInputStream(f);
                 theBIS = new BufferedInputStream(theFIS);
+                
                 while ((leido = theBIS.read(buffer)) >= 0){
                 theBOS.write(buffer, 0, leido);
                 }
+
                 contenidoDelFichero = theBOS.toByteArray();
                 int extencionx=0;
-                aux = this.recortarBytes(contenidoDelFichero, 17, 21);
+
+                aux = this.recortarBytes(contenidoDelFichero, 18, 22);
                 int width = this.convertirBytesInt(aux);
-                aux = this.recortarBytes(contenidoDelFichero, 21, 25);
+
+                aux = this.recortarBytes(contenidoDelFichero, 22, 26);
                 int height = this.convertirBytesInt(aux);
-                aux = this.recortarBytes(contenidoDelFichero, 9, 13);
+
+                aux = this.recortarBytes(contenidoDelFichero, 10, 14);
                 int origen = this.convertirBytesInt(aux);
+
                 boolean formatoendian=false;
-                aux = this.recortarBytes(contenidoDelFichero, 29, 33);
+
+                aux = this.recortarBytes(contenidoDelFichero, 30, 34);
                 int compresionbmp = this.convertirBytesInt(aux);
-                aux = this.recortarBytes(contenidoDelFichero, 27, 29);
+                /*******************/
+                aux = this.recortarBytes(contenidoDelFichero, 10, 14);
                 int bpp= this.convertirBytesInt(aux);
-                byte[][] datosImagen = new byte[54 * 1024][54 * 1024];
+
+                byte[][] datosImagen = new byte[4][4];
+
                 image = new MegaImagen(extencionx,width,height,origen,formatoendian,compresionbmp,bpp,datosImagen);
 
-
+               
 
 
                 theBOS.reset();
@@ -94,11 +106,6 @@ public class ImageReader{
                 theBOS.write(buffer, 0, leido);
                 }
                 contenidoDelFichero = theBOS.toByteArray();
-                
-
-
-
-
                 theBOS.reset();
                 theBOS.close();
             }
@@ -125,27 +132,42 @@ public class ImageReader{
     }
 
     public byte[] recortarBytes(byte[] b,int i,int j){
-        System.out.println(b.length+" "+i+" "+j);
-        byte[] a = new byte[(j-i) * 1024];
-        int k=0;
+        byte[] a = new byte[4];
+        int k;
+        if((j-i)==2)
+            k=2;
+        else
+            k=0;
         for(int ii = i;ii<j;ii++){
             a[k]=b[ii];
             k++;
         }
+        
         return a;
     }
 
-     public int convertirBytesInt(byte[] b){
-        String val = new String(b);
-        int num = -1;
-        try {
-        num = Integer.decode(val);
-        }   catch(NumberFormatException e) {
-        num = -1;}
-        return num;
-     }
+   
+     
 
-
+     public int convertirBytesInt(byte[] valor){
+         boolean bigEndian = false;
+	     if(valor. length < 4){
+	          throw new ArrayIndexOutOfBoundsException(valor. length);
+	     }
+	     int a, b, c, d;
+	     if(bigEndian){
+	          a = (valor[0] & 0xFF) << 24;
+	          b = (valor[1] & 0xFF) << 16;
+	          c = (valor[2] & 0xFF) << 8;
+	          d =  valor[3] & 0xFF;
+	     } else{
+	          a = (valor[3] & 0xFF) << 24;
+	          b = (valor[2] & 0xFF) << 16;
+	          c = (valor[1] & 0xFF) << 8;
+	          d =  valor[0] & 0xFF;
+	     }
+	     return  a | b | c | d;
+	}
 
 }
 

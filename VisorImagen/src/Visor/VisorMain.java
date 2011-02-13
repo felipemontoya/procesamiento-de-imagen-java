@@ -151,8 +151,6 @@ public class VisorMain extends javax.swing.JFrame {
                     hayArchivoActual = true;
                     imagen=i.getImageData(archivoActual);
                     System.out.println(imagen.getBpp());
-                    System.out.println(imagen.getHeight());
-                    System.out.println(imagen.getWidth());
                     //FileInputStream   con esto se lee el archivo paso a paso
                     //Se necesita una clase lectora de archivos
                     //Se necesita una clase imagen, para almacenar la imagen en memoria local para trabajar

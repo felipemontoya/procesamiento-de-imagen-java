@@ -20,7 +20,8 @@ public class MegaImagen {
  private int  depth; // tamaño del pixel
  private int  espacioColor;
  private int  interlineado;
- private int  origen;//bytedonde empiezan los datos...
+ private int  origen;
+ private int byteimformacion;//bytedonde empiezan los datos...
  private int  alineacion;
  private int  width;
  private int  height;
@@ -67,10 +68,10 @@ public class MegaImagen {
      
  }
 
- public MegaImagen(int extencion,int width, int height, int origen,boolean formatoendian, int compresionbmp,int bpp,byte[][] datosImagen){
+ public MegaImagen(int extencion,int width, int height, int byteimformacion,boolean formatoendian, int compresionbmp,int bpp,byte[][] datosImagen){
     if (this.setWidth(width))
-    if (this.setHeight(height))
-    if (this.setOrigen(origen)){
+    if (this.setHeight(height)){
+    this.byteimformacion=byteimformacion;
     this.extencion=extencion;
     this.formatoendian=formatoendian;
     this.compresionbmp=compresionbmp;
@@ -400,6 +401,20 @@ public class MegaImagen {
      */
     public void setBpp(int bpp) {
         this.bpp = bpp;
+    }
+
+    /**
+     * @return the byteimformacion
+     */
+    public int getByteimformacion() {
+        return byteimformacion;
+    }
+
+    /**
+     * @param byteimformacion the byteimformacion to set
+     */
+    public void setByteimformacion(int byteimformacion) {
+        this.byteimformacion = byteimformacion;
     }
 
     /**

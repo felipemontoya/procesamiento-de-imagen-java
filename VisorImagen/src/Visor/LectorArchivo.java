@@ -70,8 +70,8 @@ public class LectorArchivo {
     }
 
     private MegaImagen leerBMP(){
-        MegaImagen retorno = new MegaImagen(); //aqui es donde se llama a la clase como en leerJPEG
-        return retorno;
+        LectorBMP lectorBMP = new LectorBMP(this.fichero);
+        return lectorBMP.getMegaImagen();
     }
 
      private MegaImagen leerJPEG(){

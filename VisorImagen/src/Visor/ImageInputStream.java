@@ -12,7 +12,7 @@ import java.io.InputStream;
  *
  * @author Jhon
  */
-public class ImageInputStream extends InputStream {
+public class ImageInputStream extends InputStream { //lee el archivo
 
     @Override
     public int read() throws IOException {

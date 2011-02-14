@@ -17,6 +17,9 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PrintStream;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileFilter;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 
 /**
@@ -115,8 +118,8 @@ public class VisorMain extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(384, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -125,8 +128,7 @@ public class VisorMain extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         boolean seguro = false;
-        ImageReader i = new ImageReader();
-        MegaImagen imagen;
+
         if(hayArchivoActual){
             JOptionPane optionPane = new JOptionPane(
                 "Dialogo\n",
@@ -140,17 +142,34 @@ public class VisorMain extends javax.swing.JFrame {
         }
 
         if (!hayArchivoActual || seguro){
-            JFileChooser f = new JFileChooser();
-            int result = f.showOpenDialog(null);
+            JFileChooser dialogoAbrir = new JFileChooser(System.getProperty("user.dir"));
+
+            FileFilter filterImagen = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "bmp");
+
+            dialogoAbrir.addChoosableFileFilter(filterImagen);
+
+            int result = dialogoAbrir.showOpenDialog(null);
             if(result == JFileChooser.APPROVE_OPTION){
-                archivoActual = f.getSelectedFile();
+                archivoActual = dialogoAbrir.getSelectedFile();
 
                 if (archivoActual.canRead() && archivoActual.canWrite() && archivoActual.exists()){
                     System.out.println("Archivo seleccionado: " + archivoActual.getAbsolutePath());
                     VisorMain.getFrames()[0].setTitle("MegaVisor - Procesamiento de Imágenes - Unal : \\"+archivoActual.getName());
                     hayArchivoActual = true;
-                    imagen=i.getImageData(archivoActual);
-                    System.out.println(imagen.getBpp());
+
+
+                    LectorArchivo lector = new LectorArchivo(archivoActual);
+                    MegaImagen imagen = lector.leerImagen();
+
+                    imagen.informacion();
+
+
+
+                   // ImageReader iReader = new ImageReader();
+                   // iReader.getImageData(archivoActual);
+                    //System.out.println(imagen.getBpp());
+                   // System.out.println(imagen.getHeight());
+                    //System.out.println(imagen.getWidth());
                     //FileInputStream   con esto se lee el archivo paso a paso
                     //Se necesita una clase lectora de archivos
                     //Se necesita una clase imagen, para almacenar la imagen en memoria local para trabajar

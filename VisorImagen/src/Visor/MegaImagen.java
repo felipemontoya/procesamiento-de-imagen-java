@@ -21,23 +21,33 @@ public class MegaImagen {
  private int  espacioColor;
  private int  interlineado;
  private int  origen;
- private int byteimformacion;//bytedonde empiezan los datos...
  private int  alineacion;
  private int  width;
  private int  height;
  private int  widthStep;
+ 
+ //roi;
+
+ /* para ser borrados luego */
  private int extencion;//0=bmp, 1=jpg
  private boolean formatoendian;
  private int compresionbmp;// 0=none, 1=RLE-8, 2=RLE-4
  private int bpp;//bits por pixel
+ private int byteimformacion;//bytedonde empiezan los datos...
+// hasta aquí //
 
-    //roi;
+
+
+    
     @SuppressWarnings("PublicField")
  public byte[][] datosImagen;
 
 
 
  //Metodos
+    public MegaImagen(){
+        
+    }
  public MegaImagen(int width, int height, int origen, int nCanales, int depth, int alineacion, int espacioColor){
      boolean completado = false;
     if (this.setWidth(width))
@@ -46,6 +56,7 @@ public class MegaImagen {
     if (this.setnCanales(nCanales))
     if (this.setDepth(depth))
     if (this.setAlineacion(alineacion))
+    if (this.setInterlineado(MegaImagen.INTERLINEADO_SI))
     if (this.setEspacioColor(espacioColor)){
 
         int bloques = this.getWidth() / this.getAlineacion();
@@ -69,7 +80,7 @@ public class MegaImagen {
  }
 
  public MegaImagen(int extencion,int width, int height, int byteimformacion,boolean formatoendian, int compresionbmp,int bpp,byte[][] datosImagen){
-    if (this.setWidth(width))
+    /*if (this.setWidth(width))
     if (this.setHeight(height)){
     this.byteimformacion=byteimformacion;
     this.extencion=extencion;
@@ -77,7 +88,7 @@ public class MegaImagen {
     this.compresionbmp=compresionbmp;
     this.bpp=bpp;
     this.datosImagen=datosImagen;
-    }
+    }*/
 
  }
 
@@ -181,7 +192,8 @@ public class MegaImagen {
             espacioColor == MegaImagen.RGBA ||
             espacioColor == MegaImagen.CMYK ||
             espacioColor == MegaImagen.HSL ||
-            espacioColor == MegaImagen.HSV ){
+            espacioColor == MegaImagen.HSV ||
+            espacioColor == MegaImagen.YCBCR ){
             this.espacioColor = espacioColor;
             return true;
         }
@@ -201,7 +213,7 @@ public class MegaImagen {
     /**
      * @param interlineado the interlineado to set
      */
-    public boolean setInterlineado(int interlineado) {
+    private boolean setInterlineado(int interlineado) {
         if( interlineado == MegaImagen.INTERLINEADO_NO || interlineado == MegaImagen.INTERLINEADO_SI){
             this.interlineado = interlineado;
             return true;
@@ -311,6 +323,27 @@ public class MegaImagen {
             return false;
     }
 
+    public void informacion(){
+        System.out.println("MegaImagen v1.0");
+        System.out.println("\tAltura: \t\t" + this.getHeight());
+        System.out.println("\tAnchura: \t\t" + this.getWidth());
+        System.out.println("\tAncho de memoria: \t" + this.getWidthStep());
+        System.out.println("\tNúmero de canales: \t" + this.getnCanales());
+        System.out.println("\tProfundidad de color(bytes): \t" + this.getDepth());
+        String temp;
+        switch(this.getEspacioColor()){
+            case RGB: temp = "RGB"; break;
+            case RGBA: temp = "RGBA"; break;
+            case CMYK: temp = "CMYK"; break;
+            case HSV: temp = "HSV"; break;
+            case HSL: temp = "HSL"; break;
+            case YCBCR: temp = "YCbCr"; break;
+            default: temp = "Desconocido";
+        }
+        System.out.println("\tEspacio de color: \t" + temp);
+
+    }
+
 
  //Constantes
 
@@ -329,6 +362,7 @@ public class MegaImagen {
  public static final int CMYK = 3;
  public static final int HSV = 4;
  public static final int HSL = 5;
+ public static final int YCBCR  = 6;
 
  //Interlineado
  public static final int INTERLINEADO_SI = 0;
@@ -342,84 +376,82 @@ public class MegaImagen {
  public static final int ALINEADO_8 = 8;
  public static final int ALINEADO_4 = 4;
 
-    /**
-     * @return the extencion
-     */
-    public int getExtencion() {
-        return extencion;
-    }
+//    /**
+//     * @return the extencion
+//     */
+//    public int getExtencion() {
+//        return extencion;
+//    }
+//
+//    /**
+//     * @param extencion the extencion to set
+//     */
+//    public void setExtencion(int extencion) {
+//        this.extencion = extencion;
+//    }
+//
+//    /**
+//     * @return the formatoendian
+//     */
+//    public boolean isFormatoendian() {
+//        return formatoendian;
+//    }
+//
+//    /**
+//     * @param formatoendian the formatoendian to set
+//     */
+//    public void setFormatoendian(boolean formatoendian) {
+//        this.formatoendian = formatoendian;
+//    }
+//
+//    /**
+//     * @return the cabezera
+//     */
+//
+//
+//    /**
+//     * @return the compresionbmp
+//     */
+//    public int getCompresionbmp() {
+//        return compresionbmp;
+//    }
+//
+//    /**
+//     * @param compresionbmp the compresionbmp to set
+//     */
+//    public void setCompresionbmp(int compresionbmp) {
+//        this.compresionbmp = compresionbmp;
+//    }
+//
+//    /**
+//     * @return the bpp
+//     */
+//    public int getBpp() {
+//        return bpp;
+//    }
+//
+//    /**
+//     * @param bpp the bpp to set
+//     */
+//    public void setBpp(int bpp) {
+//        this.bpp = bpp;
+//    }
+//
+//    /**
+//     * @return the byteimformacion
+//     */
+//    public int getByteimformacion() {
+//        return byteimformacion;
+//    }
+//
+//    /**
+//     * @param byteimformacion the byteimformacion to set
+//     */
+//    public void setByteimformacion(int byteimformacion) {
+//        this.byteimformacion = byteimformacion;
+//    }
 
-    /**
-     * @param extencion the extencion to set
-     */
-    public void setExtencion(int extencion) {
-        this.extencion = extencion;
-    }
 
-    /**
-     * @return the formatoendian
-     */
-    public boolean isFormatoendian() {
-        return formatoendian;
-    }
-
-    /**
-     * @param formatoendian the formatoendian to set
-     */
-    public void setFormatoendian(boolean formatoendian) {
-        this.formatoendian = formatoendian;
-    }
-
-    /**
-     * @return the cabezera
-     */
-
-
-    /**
-     * @return the compresionbmp
-     */
-    public int getCompresionbmp() {
-        return compresionbmp;
-    }
-
-    /**
-     * @param compresionbmp the compresionbmp to set
-     */
-    public void setCompresionbmp(int compresionbmp) {
-        this.compresionbmp = compresionbmp;
-    }
-
-    /**
-     * @return the bpp
-     */
-    public int getBpp() {
-        return bpp;
-    }
-
-    /**
-     * @param bpp the bpp to set
-     */
-    public void setBpp(int bpp) {
-        this.bpp = bpp;
-    }
-
-    /**
-     * @return the byteimformacion
-     */
-    public int getByteimformacion() {
-        return byteimformacion;
-    }
-
-    /**
-     * @param byteimformacion the byteimformacion to set
-     */
-    public void setByteimformacion(int byteimformacion) {
-        this.byteimformacion = byteimformacion;
-    }
-
-    /**
-     * @return the bytededatos
-     */
   
 
 }

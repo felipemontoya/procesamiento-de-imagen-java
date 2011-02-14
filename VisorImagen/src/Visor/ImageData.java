@@ -9,7 +9,7 @@ package Visor;
  *
  * @author Jhon
  */
-public class ImageData {
+public class ImageData {   // información como tal,para extraer bits
 private byte[] bits;//formato bigEndian y littleEndian
     private boolean formato;
 double mayor, menor;

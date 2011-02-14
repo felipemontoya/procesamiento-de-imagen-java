@@ -9,6 +9,6 @@ package Visor;
  *
  * @author Jhon
  */
-public class ImageSystem {
+public class ImageSystem {  // area de trabajo
 
 }

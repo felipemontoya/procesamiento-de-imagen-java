@@ -43,7 +43,7 @@ public class ImageReader{
         //ACA EMPIEZA EL BMP
         if(extencion.equals("BMP") || extencion.equals("bmp")){
             leido = 0;
-            buffer = new byte[64];
+            buffer = new byte[2];
             try{
                 
                 theFIS = new FileInputStream(f);
@@ -54,6 +54,7 @@ public class ImageReader{
                 }
 
                 contenidoDelFichero = theBOS.toByteArray();
+                
                 int extencionx=0;
 
                 aux = this.recortarBytes(contenidoDelFichero, 18, 22);
@@ -70,13 +71,13 @@ public class ImageReader{
                 aux = this.recortarBytes(contenidoDelFichero, 30, 34);
                 int compresionbmp = this.convertirBytesInt(aux);
                 /*******************/
-                aux = this.recortarBytes(contenidoDelFichero, 10, 14);
+                aux = this.recortarBytes(contenidoDelFichero, 26, 28);
                 int bpp= this.convertirBytesInt(aux);
 
                 byte[][] datosImagen = new byte[4][4];
 
                 image = new MegaImagen(extencionx,width,height,origen,formatoendian,compresionbmp,bpp,datosImagen);
-
+                
                
 
 
@@ -133,11 +134,11 @@ public class ImageReader{
 
     public byte[] recortarBytes(byte[] b,int i,int j){
         byte[] a = new byte[4];
-        int k;
-        if((j-i)==2)
-            k=2;
-        else
-            k=0;
+        for(byte bb : a){
+            bb=0;
+        }
+        int k=0;
+        
         for(int ii = i;ii<j;ii++){
             a[k]=b[ii];
             k++;

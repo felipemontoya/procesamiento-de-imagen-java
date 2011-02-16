@@ -19,8 +19,6 @@ public class LectorBMP {
 
     private MegaImagen imagenLeida;
     private byte[] contenidoDelFichero;
-
-
     private int width;
     private int height;
     private int origen;
@@ -70,9 +68,13 @@ public class LectorBMP {
 
             //System.out.println("Largo del ByteArray: " + contenidoDelFichero.length);
 
-            if (revisarCabecera())
-                this.imagenLeida = new MegaImagen(width, height, origen, nCanales, depth, alineacion, espacioColor);
-            llenarMegaImagen();
+            if (revisarCabecera()){
+                this.imagenLeida = new MegaImagen(width, height, origen, nCanales, 1, alineacion, espacioColor);
+                llenarMegaImagen();
+            }
+            else{
+                System.out.println("Fallo al cargar la imagen");
+            }
 
     }
 
@@ -99,17 +101,14 @@ public class LectorBMP {
 
         nCanales = 4;
         /*******************/
-        aux = this.recortarBytes(contenidoDelFichero, 26, 28);
+        aux = this.recortarBytes(contenidoDelFichero, 28, 30);
         depth = this.convertirBytesInt(aux);
-
+        depth/=8;
+        if(depth>=3)
         return true;
-    }
+        else
+        return false;
 
-    private boolean llenarMegaImagen(){
-
-        //Aquí se llena la matriz de bytes en el espacio de color especificado, para este caso RGBA (4 canales)
-
-        return true;
     }
 
     public MegaImagen getMegaImagen(){
@@ -130,8 +129,24 @@ public class LectorBMP {
 
         return a;
     }
-
-
+    
+    private boolean llenarMegaImagen(){
+        System.out.println("entro aca");
+        int byteleido = offset;
+        for(int i = 0;i<imagenLeida.getHeight();i++){
+            for(int j = 0;j<imagenLeida.getWidth();j++){
+                for(int k = 0 ;k<nCanales;k++){
+                   if(k==3 && depth == 3){
+                   imagenLeida.datosImagen[i][j][k]=0;
+                   }else{
+                   imagenLeida.datosImagen[i][j][k]=contenidoDelFichero[byteleido];
+                   byteleido++;
+                   }
+                }
+            }
+        }
+        return true;
+    }
 
 
      public int convertirBytesInt(byte[] valor){
@@ -156,3 +171,62 @@ public class LectorBMP {
 
 
 }
+
+/*
+    private boolean llenarMegaImagen(){
+        System.out.println();
+        int pixel=0;
+        int byteleido = offset;
+        for(int i = 0;i<imagenLeida.getHeight();i++){
+            for(int j = 0;j<imagenLeida.getWidth();j++){
+              if(depth == 24){
+              for(int k = 0 ;k<depth;k++){
+                   imagenLeida.datosImagen[i][j][k]=contenidoDelFichero[byteleido];
+                for   byteleido++;
+              }
+              }else if(depth == 8){
+                   imagenLeida.datosImagen[i][j][0]=contenidoDelFichero[byteleido];
+                   byteleido++;
+               }else if(depth ==4){
+                   if(pixel==0){
+                       pixel = 1;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0xF & contenidoDelFichero[byteleido]);
+                   }else{
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0xF0 & contenidoDelFichero[byteleido]);
+                       pixel = 0;
+                       byteleido++;
+                   }
+               }else{
+                   if(pixel==0){
+                       pixel = 1;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x1 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==1){
+                       pixel = 2;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x2 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==2){
+                       pixel = 3;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x4 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==3){
+                       pixel = 4;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x8 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==4){
+                       pixel = 5;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x10 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==5){
+                       pixel = 6;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x20 & contenidoDelFichero[byteleido]);
+                   }else if(pixel==6){
+                       pixel = 7;
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x40 & contenidoDelFichero[byteleido]);
+                   }else{
+                       imagenLeida.datosImagen[i][j][0] =(byte)( 0x80 & contenidoDelFichero[byteleido]);
+                       pixel = 0;
+                       byteleido++;
+                    }
+                }
+              }
+
+    }
+        return true;
+    }
+*/

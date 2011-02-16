@@ -40,7 +40,7 @@ public class MegaImagen {
 
     
     @SuppressWarnings("PublicField")
- public byte[][] datosImagen;
+ public byte[][][] datosImagen;
 
 
 
@@ -68,7 +68,7 @@ public class MegaImagen {
         if (this.setdSize(this.getWidthStep()*this.getHeight()*this.getDepth())){
 
 
-            datosImagen = new byte[this.getWidthStep()][this.getHeight()];
+            datosImagen = new byte[this.getWidthStep()][this.getHeight()][this.depth*this.nCanales];
             completado = true;
         }
      }

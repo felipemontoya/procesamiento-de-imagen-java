@@ -131,7 +131,23 @@ public class LectorBMP {
     }
     
     private boolean llenarMegaImagen(){
-        System.out.println("entro aca");
+//TODO: encontrar el mejor formato para visualizar en JOGL, seguramente será RGB o RGBA
+// Se encarga de cada tipo de imagen en un bloque diferente  (@Jhon: hay que poder dibujar la imagen, para probar que esto funcione, mientras tanto lo dejo comentado)
+//        if (nCanales == 4 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
+//        {
+//             System.arraycopy(contenidoDelFichero, offset, imagenLeida.datosImagen, 0, contenidoDelFichero.length-offset);
+//        }
+//        if (nCanales == 3 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
+//        {
+//            java.util.Arrays.fill(imagenLeida.datosImagen,0);
+//            int offsetDestino = 0;
+//            for (int i = offset; i < contenidoDelFichero.length-offset ; i+=3){
+//             System.arraycopy(contenidoDelFichero, offset, imagenLeida.datosImagen, offsetDestino, 3);
+//             offsetDestino+=4;
+//            }
+//        }
+
+
         int byteleido = offset;
         for(int i = 0;i<imagenLeida.getHeight();i++){
             for(int j = 0;j<imagenLeida.getWidth();j++){
@@ -145,6 +161,8 @@ public class LectorBMP {
                 }
             }
         }
+
+
         return true;
     }
 

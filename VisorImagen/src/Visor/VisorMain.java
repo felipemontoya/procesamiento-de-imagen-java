@@ -68,6 +68,10 @@ public class VisorMain extends javax.swing.JFrame {
         this.setTitle("MegaVisor - Procesamiento de Imagenes - Unal");
                 //Se encarga de ambientar la aplicación en el estilo del sistema operativo
 
+
+       PintorGL pintor = new PintorGL();
+       pintor.run();
+
     }
 
     /** This method is called from within the constructor to
@@ -118,8 +122,8 @@ public class VisorMain extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                .addContainerGap(271, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -158,10 +162,10 @@ public class VisorMain extends javax.swing.JFrame {
                     hayArchivoActual = true;
 
 
-                    LectorArchivo lector = new LectorArchivo(archivoActual);
-                    MegaImagen imagen = lector.leerImagen();
-
-                    imagen.informacion();
+//                    LectorArchivo lector = new LectorArchivo(archivoActual);
+//                    MegaImagen imagen = lector.leerImagen();
+//
+//                    imagen.informacion();
 
 
 

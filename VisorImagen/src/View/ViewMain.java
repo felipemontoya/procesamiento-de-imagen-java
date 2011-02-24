@@ -11,45 +11,46 @@
 
 
 /***************************************************************************************************************/
-/*    Especificaciones de la Programacion
- *    Patron
- *    version 1.0
+/*    Especificaciones de la Programación
+ *    Patrón
+ *    Versión 1.1
  *
  *    General:
- *          - Toda clase debe tener la informacion de esta especificacion.
- *          - Todo procedimiento/variable programado sera debidamente comentado dependiento de su naturaleza.
- *          - Todas las variables, clases y metodos deberan ser nombradas en ingles y dependiendo de su funcion.
+ *          - Toda clase debe tener la información de esta especificación.
+ *          - Todo procedimiento/variable programado será debidamente comentado dependiendo de su naturaleza.
+ *          - Todas las variables, clases y métodos deberán ser nombradas en ingles y dependiendo de su función.
  *    Paquetes:
- *          - Toda clase estara incluida en un paquete.
- *          - El nombre del paquete debera ser acorde a las clases contenidas en el.
+ *          - Toda clase estará incluida en un paquete.
+ *          - El nombre del paquete deberá ser acorde a las clases contenidas en el.
  *          - Si son paquetes de prueba deben estar identificados iniciando con "test_nombredelpaquete".
- *          - Si son paquetes que seran utilizados temporalmente para ser mas tarde eliminador iran identificados
+ *          - Si son paquetes que serán utilizados temporalmente para ser mas tarde eliminador irán identificados
  *            iniciando con "temp_nombredelpaquete".
  *
  *    Clases:
- *          - Toda clase iniciara con la primera letra mayuscula, si el nombre esta compuesto por mas palabras,
- *            las siguientes palabras deberan iniciar tambien con la primera letra en mayucula ej: ClaseEjemplo
+ *          - Toda clase iniciara con la primera letra mayúscula, si el nombre está compuesto por mas palabras,
+ *            Las siguientes palabras deberán iniciar también con la primera letra en mayúscula ej.: ClaseEjemplo
  *          - El nombre de la clase debe identificar su funcionalidad.
- *          - Antes iniciar la clase debe ser comentado para que sirve dicha clase y como es su constructura.
- *          - Si son clases de prueba iran identificados como "cTest_NombreClase"
+ *          - Antes iniciar la clase debe ser comentado para que sirve dicha clase y como es su constructor.
+ *          - Si son clases de prueba irán identificados como "cTest_NombreClase"
  *
- *    Metodos
- *          - Toda metodo iniciara con la primera letra mayuscula, si el nombre esta compuesto por mas palabras,
- *            las siguientes palabras deberan iniciar tambien con la primera letra en mayucula ej: MetodoEjemplo
- *          - El nombre de el metodo debe identificar su funcionalidad. si el metodo es un get o un set ira en minuscula
- *          - Antes iniciar el metodo debe ser comentado para que sirve dicha clase, sus entradas y salidas si tiene
+ *    Métodos
+ *          - Toda método iniciara con la primera letra mayúscula, si el nombre está compuesto por mas palabras,
+ *            Las siguientes palabras deberán iniciar también con la primera letra en mayúscula ej.: MetodoEjemplo
+ *          - El nombre de el método debe identificar su funcionalidad. Si el método es un get o un set ira en minúscula
+ *          - Antes iniciar el método debe ser comentado para que sirve dicha clase, sus entradas y salidas si tiene
  *
  *    Variables
- *          - Todo nombre de varible inicia en minusculas, si el nombre de la varible esta compuesta por mas palabras
- *            las siguientes palabras deberan iniciar con la primera letra en mayucula ej: variableEjemplo.
+ *          - Todo nombre de variable inicia en minúsculas, si el nombre de la variable está compuesta por mas palabras
+ *            Las siguientes palabras deberán iniciar con la primera letra en mayúscula ej.: variableEjemplo.
  *          - El nombre de la variable debe tener sentido acorde a su valor y su utilidad.
  *          - si son variables auxiliares o temporal deben ir identificados como a_nombreVariable o t_nombreVariable.
- *          - las variables globales ya estan plenamente identificadas con color verde.
+ *          - las variables globales ya están plenamente identificadas con color verde.
  *          - Cuando se declara una variable debe comentarse una breve funcionalidad de dicha variable.
  *
- *   lease y cumplase
+ *   léase y cúmplase
  */
 /***************************************************************************************************************/
+
 
 
 package View;

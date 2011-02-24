@@ -3,57 +3,8 @@
  * and open the template in the editor.
  */
 
+package View;
 
-/***************************************************************************************************************/
-/*    Especificaciones de la Programacion
- *    Patron
- *    version 1.0
- *
- *    General:
- *          - Toda clase debe tener la informacion de esta especificacion.
- *          - Todo procedimiento/variable programado sera debidamente comentado dependiento de su naturaleza.
- *          - Todas las variables, clases y metodos deberan ser nombradas en ingles y dependiendo de su funcion.
- *    Paquetes:
- *          - Toda clase estara incluida en un paquete.
- *          - El nombre del paquete debera ser acorde a las clases contenidas en el.
- *          - Si son paquetes de prueba deben estar identificados iniciando con "test_nombredelpaquete".
- *          - Si son paquetes que seran utilizados temporalmente para ser mas tarde eliminador iran identificados
- *            iniciando con "temp_nombredelpaquete".
- *
- *    Clases:
- *          - Toda clase iniciara con la primera letra mayuscula, si el nombre esta compuesto por mas palabras,
- *            las siguientes palabras deberan iniciar tambien con la primera letra en mayucula ej: ClaseEjemplo
- *          - El nombre de la clase debe identificar su funcionalidad.
- *          - Antes iniciar la clase debe ser comentado para que sirve dicha clase y como es su constructura.
- *          - Si son clases de prueba iran identificados como "cTest_NombreClase"
- *
- *    Metodos
- *          - Toda metodo iniciara con la primera letra mayuscula, si el nombre esta compuesto por mas palabras,
- *            las siguientes palabras deberan iniciar tambien con la primera letra en mayucula ej: MetodoEjemplo
- *          - El nombre de el metodo debe identificar su funcionalidad. si el metodo es un get o un set ira en minuscula
- *          - Antes iniciar el metodo debe ser comentado para que sirve dicha clase, sus entradas y salidas si tiene
- *
- *    Variables
- *          - Todo nombre de varible inicia en minusculas, si el nombre de la varible esta compuesta por mas palabras
- *            las siguientes palabras deberan iniciar con la primera letra en mayucula ej: variableEjemplo.
- *          - El nombre de la variable debe tener sentido acorde a su valor y su utilidad.
- *          - si son variables auxiliares o temporal deben ir identificados como a_nombreVariable o t_nombreVariable.
- *          - las variables globales ya estan plenamente identificadas con color verde.
- *          - Cuando se declara una variable debe comentarse una breve funcionalidad de dicha variable.
- *
- *   lease y cumplase
- */
-/***************************************************************************************************************/
-
-
-package test_Draw;
-
-/**
- *
- * @author Jhon
- */
-/* Importamos las clases JFrame y JPanel
- * contenidas dentro del paquete SWING */
 import Data.ImageData;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -69,9 +20,12 @@ import java.awt.Dimension;
 import javax.media.opengl.*;
 import javax.swing.JInternalFrame;
 
-public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
-{
-	/* Necesitaremos un JPanel para introducir
+/**
+ *
+ * @author Jhon
+ */
+public class DrawGL extends JInternalFrame implements GLEventListener{
+    /* Necesitaremos un JPanel para introducir
 	 * los elementos que se mostrarán en el JFrame. */
 	JPanel panelDibujo;
 
@@ -104,12 +58,16 @@ public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
     static GLCanvas canvas;
     ImageData im;
    // Constructor
-    public cTest_puntoJOGL(ImageData i)
+    public DrawGL(){
+        super();
+    }
+
+    public void DrawGLInit(ImageData i,String nombre)
     {
     	/* Llamamos a la superclase de JFrame
     	 * la cual colocará un título al mismo. */
-    	super("Punto dibujado con JOGL");
 
+        this.setTitle(nombre);
     	/* Instanciamos un objeto de Toolkit para obtener
     	 * los datos generales de nuestra computadora. */
     	kit = Toolkit.getDefaultToolkit();
@@ -222,7 +180,7 @@ public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
         /* Ahora llamamos al método glColor3f(float, float, float)
          * el cual definirá el color de los gráficos que se
          * dibujarán. En este caso dibujaremos un punto de color Azul. */
-        
+
 
 		/* Definimos el tamaño del punto que dibujaremos utilizando
 		 * el método glPointSize() de OpenGL, en este caso será de 10 pixeles. */
@@ -236,9 +194,11 @@ public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
 		for(int i = 0;i<im.getHeight();i++){
                     for(int j=0;j<im.getWidth();j++){
 
-                       gl.glColor3f(color(im.bytesImage[i][j][0]), color(im.bytesImage[i][j][1]), color(im.bytesImage[i][j][2]));
+                       gl.glColor3f(color(im.bytesImage[i][j][2]), color(im.bytesImage[i][j][1]), color(im.bytesImage[i][j][0]));
+                       //gl.glColor3b((im.bytesImage[i][j][2]), (im.bytesImage[i][j][1]), (im.bytesImage[i][j][0]));
+
                        gl.glVertex2i(j, i);
-                       
+
                     }
                 }
 
@@ -287,8 +247,10 @@ public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
     /*public static void main(String[] args)
     {
     	 * jFrameCentrado, entonces el programa ejecutará
-    	 * el código del constructor. 
+    	 * el código del constructor.
     	new puntoJOGL();
     } */
+
+
 
 }

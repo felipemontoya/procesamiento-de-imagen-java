@@ -65,33 +65,31 @@ import java.io.PipedInputStream;
 import java.io.PrintStream;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
-
 
 /**
  *
  * @author Jhon & Felipe
  */
 
-
+import javax.media.opengl.*;
 /*   Clase:ViewMain
  *   clase que inicia el programa, tiene main propio.
  *   configura y pinta la interfaz grafica del usuario.
  */
 
-public class ViewMain extends javax.swing.JFrame {
+public class ViewMain extends javax.swing.JFrame{
 
     private final PipedInputStream pin=new PipedInputStream();
     private final PipedInputStream pin2=new PipedInputStream();
-
+    ImageData image;
     // Variables del manejo de archivo
 
      private boolean isFileOpen = false;
      private File currentFile;
+     
 
-
-    // Variables del manejo de imagen
-
+     //pintor
+     DrawGL draw;
     // Se encarga de escribir los out.println en el programa
     OutputStream out = new OutputStream(){
             public void write(int b) throws IOException
@@ -124,14 +122,17 @@ public class ViewMain extends javax.swing.JFrame {
 
     /** Creates new form VisorMain */
     public ViewMain() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception e) {}
         initComponents();
         this.ConfigTextArea();
         this.ConfigNativeStyle();
         this.setExtendedState(this.getExtendedState()|ViewMain.MAXIMIZED_BOTH);
         this.setTitle("MegaVisor - Procesamiento de Imagenes - Unal");
-                
-
-       //PintorGL pintor = new PintorGL();
+        draw = new DrawGL();
+        this.add(draw);
+        //PintorGL pintor = new PintorGL();
        //pintor.run();
 
     }
@@ -184,8 +185,8 @@ public class ViewMain extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(271, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(426, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -223,21 +224,27 @@ public class ViewMain extends javax.swing.JFrame {
                     System.out.println("Archivo seleccionado: " + currentFile.getAbsolutePath());
                     ViewMain.getFrames()[0].setTitle("MegaVisor - Procesamiento de Imágenes - Unal : \\"+currentFile.getName());
                     isFileOpen = true;
+
                    //crea el lector de imagenes y le pasa el archivo actual.
                    FileReader read = new FileReader(currentFile);
                    //crea la clase con los datos de la imgen.
-                   ImageData imagen = read.readImage();
+                    image = read.readImage();
 
+
+
+                    draw.DrawGLInit(image,currentFile.getName());
                     //imagen.informacion();
                     //imagen.data();
-
+                    
                    //imprime algunos datos de la imagen
-                   System.out.println(imagen.getHeight());
-                   System.out.println(imagen.getWidth());
                    //en desarrollo
-                    cTest_puntoJOGL p = new cTest_puntoJOGL(imagen);
+                    // Creamos el objeto de la clase GLCanvas
+                    
 
-                   // ImageReader iReader = new ImageReader();
+    	/* Finalmente, le indicamos a Java que queremos que nuestro
+    	 * JFrame se cierre cuando demos click en el botón cerrar
+    	 * que aparecerá en la parte superior derecha del mismo. */
+                  // ImageReader iReader = new ImageReader();
                    // iReader.getImageData(archivoActual);
                     //System.out.println(imagen.getBpp());
                    // System.out.println(imagen.getHeight());
@@ -265,6 +272,7 @@ public class ViewMain extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ViewMain().setVisible(true);
+
              }
         });
     }
@@ -282,5 +290,7 @@ public class ViewMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+   
 
 }

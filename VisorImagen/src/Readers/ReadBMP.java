@@ -205,7 +205,7 @@ public class ReadBMP {
 //            }
 //        }
 
-
+        //System.arraycopy(bytesFile, offset, readImage.bytesImage, 0, bytesFile.length-offset);
         int byteleido = offset;
         for(int i = 0;i<readImage.getHeight();i++){
             for(int j = 0;j<readImage.getWidth();j++){

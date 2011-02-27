@@ -56,7 +56,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
      * de los gráficos de OpenGL, por el momento solamente la utilizaremos
      * para mostrar los cuatro métodos principales de GLEventListener */
     static GLCanvas canvas;
-    ImageData im;
+    ImageData image;
    // Constructor
     public DrawGL(){
         super();
@@ -73,7 +73,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     	kit = Toolkit.getDefaultToolkit();
         /* Obtenemos la dimensión de la pantalla en pixeles */
     	dimensionPantalla = kit.getScreenSize();
-        this.im = i;
+        this.image = i;
     	/* Almacenamos la altura y anchura, en pixeles, de la pantalla.
     	 * Debido a que los métodos "getHeight" y "getWidth" regresan una
     	 * variable de tipo double, necesitaremos obligar
@@ -191,11 +191,12 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		 * con el método glEnd(). Dentro de ambos métodos irán TODOS
 		 * los gráficos que dibujaremos. */
 		gl.glBegin(GL.GL_POINTS);
-		for(int i = 0;i<im.getHeight();i++){
-                    for(int j=0;j<im.getWidth();j++){
+		for(int i = 0;i<image.getHeight();i++){
+                    for(int j=0;j<image.getWidth();j++){
 
-                       gl.glColor3f(color(im.bytesImage[i][j][2]), color(im.bytesImage[i][j][1]), color(im.bytesImage[i][j][0]));
-                       //gl.glColor3b((im.bytesImage[i][j][2]), (im.bytesImage[i][j][1]), (im.bytesImage[i][j][0]));
+ 
+                       gl.glColor3ub(image.bytesImage[i][j][2], image.bytesImage[i][j][1], image.bytesImage[i][j][0]);
+
 
                        gl.glVertex2i(j, i);
 
@@ -209,30 +210,6 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		gl.glFlush();
     }
 
-     public int color(byte v){
-         byte[] valor = new byte[4];
-         for(byte bb : valor){
-            bb=0;
-        }
-         valor[0]=v;
-         boolean bigEndian = false;
-	     if(valor.length < 4){
-	          throw new ArrayIndexOutOfBoundsException(valor. length);
-	     }
-	     int a, b, c, d;
-	     if(bigEndian){
-	          a = (valor[0] & 0xFF) << 24;
-	          b = (valor[1] & 0xFF) << 16;
-	          c = (valor[2] & 0xFF) << 8;
-	          d =  valor[3] & 0xFF;
-	     } else{
-	          a = (valor[3] & 0xFF) << 24;
-	          b = (valor[2] & 0xFF) << 16;
-	          c = (valor[1] & 0xFF) << 8;
-	          d =  valor[0] & 0xFF;
-	     }
-	     return  a | b | c | d;
-	}
 
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged)

@@ -169,7 +169,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
         canvas.repaint();
     }
 
-    public void display(GLAutoDrawable drawable)
+     public void display(GLAutoDrawable drawable)
     {
         /* Este método es utilizado para crear todos los gráficos que
          * se dibujarán dentro del objeto GLCanvas. Primero llamamos al
@@ -190,22 +190,20 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		 * a dibujar con el método glBegin(GLEnum Mode) y que finalizaremos
 		 * con el método glEnd(). Dentro de ambos métodos irán TODOS
 		 * los gráficos que dibujaremos. */
-		gl.glBegin(GL.GL_POINTS);
-                int j = -1;
-                int k = 0;
-                int des=(image.bytesImage.length)-3;
-		for(int i = 0;i<des;i=i+3){
-                    if(j<image.getWidthStep()){
-                        j++;
-                    }else{
-                        j=0;
-                        k++;
+
+                int widthStep = image.getWidthStep();
+                int nChannels = image.getnCanales();
+                gl.glBegin(GL.GL_POINTS);
+
+                for(int i = 0;i<image.getHeight();i++){
+                    for(int j = 0;j<image.getWidth();j++){
+                        gl.glColor3ub(image.bytesImage[(i * widthStep + j ) * 3 + 2],
+                                image.bytesImage[(i * widthStep + j ) * 3 + 1],
+                                image.bytesImage[(i * widthStep + j ) * 3 + 0]);
+                        gl.glVertex2i(j,i);
                     }
-                        gl.glColor3ub(image.bytesImage[i+2], image.bytesImage[i+1], image.bytesImage[i]);
-                        gl.glVertex2i(j, k);
-
                 }
-
+//(i * widthStep + j ) * nCanales + k
 		gl.glEnd();
 
 		/* Indicamos que dibuje inmediatamente después utilizando el método

@@ -236,7 +236,7 @@ public class cTest_puntoJOGL extends JInternalFrame implements GLEventListener
 		for(int i = 0;i<im.getHeight();i++){
                     for(int j=0;j<im.getWidth();j++){
 
-                       gl.glColor3f(color(im.bytesImage[i][j][0]), color(im.bytesImage[i][j][1]), color(im.bytesImage[i][j][2]));
+                       //gl.glColor3f(color(im.bytesImage[i][j][0]), color(im.bytesImage[i][j][1]), color(im.bytesImage[i][j][2]));
                        gl.glVertex2i(j, i);
                        
                     }

@@ -178,7 +178,7 @@ public class cTest_Texture  extends JFrame
   {
       // Se busca obtener un ImageData y a partir de el alimentar a la textura
       cTest_ImageData image;
-      cTest_reader reader = new cTest_reader(new File("F:\\Development\\Java\\VisorImagen\\bite.bmp"));
+      cTest_reader reader = new cTest_reader(new File("E:\\ejemplo.bmp"));
       // ahora es importante que anchoMemoria=ancho. Luego habrá que hacerlo robusto
       image = reader.getImagenData();
 

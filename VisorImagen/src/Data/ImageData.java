@@ -80,7 +80,7 @@ public class ImageData {
 
     
     @SuppressWarnings("PublicField")
- public byte[][][] bytesImage;
+ public byte[] bytesImage;
 
 
 
@@ -108,7 +108,7 @@ public class ImageData {
         if (this.setdSize(this.getWidthStep()*this.getHeight()*this.getDepth())){
 
 
-            bytesImage = new byte[this.getHeight()][this.getWidth()][this.getDepth()*this.nCanales];
+            bytesImage = new byte[this.getHeight()*this.getWidthStep()*this.nCanales];
             completado = true;
         }
      }
@@ -384,7 +384,7 @@ public class ImageData {
 
     }
 
-     public void data(){
+     /*public void data(){
      for(int i = 0;i<getHeight();i++){
             for(int j = 0;j<getWidth();j++){
                 for(int k = 0 ;k<nCanales;k++){
@@ -393,7 +393,7 @@ public class ImageData {
             }
             System.out.println();
         }
-     }
+     }*/
 
 
  //Constantes

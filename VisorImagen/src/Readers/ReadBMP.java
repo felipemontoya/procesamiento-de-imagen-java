@@ -156,11 +156,11 @@ public class ReadBMP {
 
         alineacion = ImageData.ALINEADO_4;
 
-        nChanels = 4;
         /*******************/
         a_dataFile = this.CutBytes(bytesFile, 28, 30);
-        depth = this.BytesToInt(a_dataFile);
-        depth/=8;
+        nChanels = this.BytesToInt(a_dataFile)/8;
+
+        depth = nChanels;
         if(depth>=3)
         return true;
         else
@@ -191,19 +191,19 @@ public class ReadBMP {
 
 //TODO: encontrar el mejor formato para visualizar en JOGL, seguramente será RGB o RGBA
 // Se encarga de cada tipo de imagen en un bloque diferente  (@Jhon: hay que poder dibujar la imagen, para probar que esto funcione, mientras tanto lo dejo comentado)
-       if (nChanels == 4 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
-        {
+//       if (nChanels == 4 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
+//        {
              System.arraycopy(bytesFile, offset, readImage.bytesImage, 0, bytesFile.length-offset);
-        }
-        if (nChanels == 3 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
-        {
-            java.util.Arrays.fill(readImage.bytesImage,(byte)0);
-            int offsetDestino = 0;
-            for (int i = offset; i < bytesFile.length-offset ; i+=3){
-             System.arraycopy(bytesFile, offset, readImage.bytesImage, offsetDestino, 3);
-             offsetDestino+=4;
-            }
-        }
+//        }
+//        if (nChanels == 3 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
+//        {
+//            java.util.Arrays.fill(readImage.bytesImage,(byte)0);
+//            int offsetDestino = 0;
+//            for (int i = offset; i < bytesFile.length-offset ; i+=3){
+//             System.arraycopy(bytesFile, offset, readImage.bytesImage, offsetDestino, 3);
+//             offsetDestino+=4;
+//            }
+//        }
 
        
         /* int byteleido = offset;

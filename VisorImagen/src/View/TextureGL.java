@@ -63,7 +63,7 @@ import java.io.File;
 /* Esta clase es una clase de desarrollo para obtener los métodos correctos que
  cargan una clase ImageData en una textura válida de JOGL*/
 
-public class TextureGL  extends JFrame
+public class TextureGL  extends JInternalFrame
     implements GLEventListener, KeyListener
 {
   private GLU glu;
@@ -81,9 +81,9 @@ public class TextureGL  extends JFrame
         super();
     }
 
-  public void TextureGLInit(ImageData i)
+  public void TextureGLInit(ImageData i,String name)
   {
-
+    this.setTitle(name);
     image = i;
     caps = new GLCapabilities();
     // caps.setSampleBuffers(true );

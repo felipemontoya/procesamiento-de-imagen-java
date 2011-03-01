@@ -91,6 +91,7 @@ public class ViewMain extends javax.swing.JFrame{
 
      //pintor
      DrawGL draw;
+     TextureGL texture;
     // Se encarga de escribir los out.println en el programa
     OutputStream out = new OutputStream(){
             public void write(int b) throws IOException
@@ -133,6 +134,8 @@ public class ViewMain extends javax.swing.JFrame{
         this.setTitle("MegaVisor - Procesamiento de Imagenes - Unal");
         draw = new DrawGL();
         this.add(draw);
+        texture = new TextureGL();
+        this.add(texture);
         //PintorGL pintor = new PintorGL();
        //pintor.run();
 
@@ -234,7 +237,8 @@ public class ViewMain extends javax.swing.JFrame{
 
 
                     draw.DrawGLInit(image,currentFile.getName());
-                    //imagen.informacion();
+                    texture.TextureGLInit(image,currentFile.getName());
+                    image.informacion();
                     //imagen.data();
                     
                    //imprime algunos datos de la imagen

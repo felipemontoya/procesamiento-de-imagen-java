@@ -191,16 +191,19 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		 * con el método glEnd(). Dentro de ambos métodos irán TODOS
 		 * los gráficos que dibujaremos. */
 		gl.glBegin(GL.GL_POINTS);
-		for(int i = 0;i<image.getHeight();i++){
-                    for(int j=0;j<image.getWidth();j++){
-
- 
-                       gl.glColor3ub(image.bytesImage[i][j][2], image.bytesImage[i][j][1], image.bytesImage[i][j][0]);
-
-
-                       gl.glVertex2i(j, i);
-
+                int j = -1;
+                int k = 0;
+                int des=(image.bytesImage.length)-3;
+		for(int i = 0;i<des;i=i+3){
+                    if(j<image.getWidthStep()){
+                        j++;
+                    }else{
+                        j=0;
+                        k++;
                     }
+                        gl.glColor3ub(image.bytesImage[i+2], image.bytesImage[i+1], image.bytesImage[i]);
+                        gl.glVertex2i(j, k);
+
                 }
 
 		gl.glEnd();

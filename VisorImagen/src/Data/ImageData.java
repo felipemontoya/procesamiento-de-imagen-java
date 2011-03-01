@@ -384,16 +384,17 @@ public class ImageData {
 
     }
 
-     /*public void data(){
+     public void data(){
      for(int i = 0;i<getHeight();i++){
             for(int j = 0;j<getWidth();j++){
                 for(int k = 0 ;k<nCanales;k++){
-                   System.out.print(bytesImage[i][j][k]+" ");
+                    //[i][j][k]= i * widthStep + j * nChannels + colorBuscado
+                   System.out.print(bytesImage[(i * widthStep + j ) * nCanales + k]+" ");
                 }
             }
             System.out.println();
         }
-     }*/
+     }
 
 
  //Constantes

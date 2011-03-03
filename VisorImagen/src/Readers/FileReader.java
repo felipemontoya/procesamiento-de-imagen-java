@@ -51,6 +51,7 @@ package Readers;
 
 import Data.ImageData;
 import java.io.File;
+import PipeLine.*;
 
 
 
@@ -58,7 +59,7 @@ import java.io.File;
  *
  * @author Felipe & Jhon
  */
-public class FileReader {
+public class FileReader extends SourcePipeObject {
 
     private enum Tipo {BMP, JPEG, error};
 
@@ -67,6 +68,9 @@ public class FileReader {
     private Tipo tipo;
 
     public FileReader(File currentFile){
+
+        super("FileReader");
+
         if ( currentFile.canWrite() && currentFile.exists() )
             this.currentFile = currentFile;
         else
@@ -122,5 +126,11 @@ public class FileReader {
         return lectorJPEG.getImagenData();
     }
 
+
+     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
+    @Override
+     public void InternalUpdate(){
+        System.out.println("Internal update FileReader");
+    }
 
 }

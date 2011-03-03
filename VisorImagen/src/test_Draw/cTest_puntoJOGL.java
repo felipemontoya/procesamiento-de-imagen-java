@@ -48,6 +48,7 @@
 
 package test_Draw;
 
+
 /**
  *
  * @author Jhon
@@ -57,6 +58,8 @@ package test_Draw;
 import Data.ImageData;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+
 
 /* Importamos las clases Container, BorderLayout,
  * Toolkit y Dimension del paquete AWT. */

@@ -67,6 +67,8 @@ import java.io.PrintStream;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
 
+import Filters.*;
+
 /**
  *
  * @author Jhon & Felipe
@@ -189,8 +191,8 @@ public class ViewMain extends javax.swing.JFrame{
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(426, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -234,30 +236,25 @@ public class ViewMain extends javax.swing.JFrame{
                    //crea la clase con los datos de la imgen.
                     image = read.readImage();
 
-
+                    
 
                     draw.DrawGLInit(image,currentFile.getName());
                     texture.TextureGLInit(image,currentFile.getName());
-                    image.informacion();
+                    //image.informacion();
                     //imagen.data();
                     
-                   //imprime algunos datos de la imagen
-                   //en desarrollo
-                    // Creamos el objeto de la clase GLCanvas
-                    
+                   //Creación del pipeline
 
-    	/* Finalmente, le indicamos a Java que queremos que nuestro
-    	 * JFrame se cierre cuando demos click en el botón cerrar
-    	 * que aparecerá en la parte superior derecha del mismo. */
-                  // ImageReader iReader = new ImageReader();
-                   // iReader.getImageData(archivoActual);
-                    //System.out.println(imagen.getBpp());
-                   // System.out.println(imagen.getHeight());
-                    //System.out.println(imagen.getWidth());
-                    //FileInputStream   con esto se lee el archivo paso a paso
-                    //Se necesita una clase lectora de archivos
-                    //Se necesita una clase imagen, para almacenar la imagen en memoria local para trabajar
-                    //La clase lectora tambien puede ser escritora
+                    BlankFilter filter1 = new BlankFilter("filtro1");
+                    BlankFilter filter2 = new BlankFilter("filtro2");
+                    BlankFilter filter3 = new BlankFilter("filtro3");
+
+                    filter1.lastElement = read;
+                    filter2.lastElement = filter1;
+                    filter3.lastElement = filter2;
+
+                    filter3.Update();
+
 
                 }
                  else{

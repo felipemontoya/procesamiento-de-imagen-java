@@ -53,6 +53,7 @@ import com.sun.opengl.util.*;
 import Readers.*;
 import Data.ImageData;
 import java.io.File;
+import PipeLine.*;
 
 
 /**

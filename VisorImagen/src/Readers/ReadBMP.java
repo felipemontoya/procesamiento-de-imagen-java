@@ -172,6 +172,11 @@ public class ReadBMP {
         return this.readImage;
     }
 
+    public ImageData UpdateImage(){
+        this.FillImagenData();
+        return this.getImagenData();
+    }
+
     public byte[] CutBytes(byte[] b,int i,int j){
         byte[] a = new byte[4];
         for(byte bb : a){

@@ -47,18 +47,25 @@ import PipeLine.*;
  *
  * @author Arzobispo
  */
-public class BlankFilter extends FilterObject {
+public class BlankFilter extends FilterPipeObject {
 
     private String name;
     public BlankFilter(String name) {
         super("BlankFilter " + name);
         this.name = name;
+        this.dataIn = new DataPackage(DataPackage.Type.ImageData);
+        this.dataOut = new DataPackage(DataPackage.Type.ImageData);
     }
 
     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
     @Override
-     public void InternalUpdate(){
+     public boolean InternalUpdate(){
+        this.setDataIn(this.getLastElement().getDataOut());
+
+        this.dataOut.setImageData(this.dataIn.getImageData());
+
         System.out.println("Internal update BlankFilter : " + name);
+        return  true;
     }
 
 

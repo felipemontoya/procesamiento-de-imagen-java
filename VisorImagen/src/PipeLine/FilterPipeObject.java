@@ -38,81 +38,34 @@
  *   léase y cúmplase
  */
 /***************************************************************************************************************/
+
 package PipeLine;
 
 /**
  *
  * @author Felipe
  */
-public abstract class PipeObject {
+public class FilterPipeObject extends PipeObject {
 
+    //Contenedores para los datos de entrada y salida
+    protected DataPackage dataIn;
+    protected  DataPackage dataOut;
 
-public enum Type {sink, filter, source};
-
-private String name;
-private Type type;
-private PipeObject lastElement;
-//public PipeObject nextElement;
-
-public PipeObject(String name, Type type) {
-    this.name = name;
-    this.type = type;
-    lastElement = null;
-//    nextElement = null;
-
-}
-
-protected abstract void setDataIn(DataPackage DataIn);
-public abstract DataPackage getDataOut();
-
-public boolean Update(){
-
-    System.out.println("Update PipeObject -> nombre: " + name);
-    boolean isPipelineReady = false;
-
-    if (!type.equals(Type.source)){
-        if (lastElement != null)
-            isPipelineReady = this.getLastElement().Update();
-        else{
-            System.out.println("El pipeline se encuentra roto en :" + name);
-            return false;
-        }
-            
-    }
-    else
-        isPipelineReady = true;
-
-
-    if (isPipelineReady){
-        
-        return this.InternalUpdate();
-    }
-    else
-        return false;
-}
-
-
-    /**
-     * @return the lastElement
-     */
-    public PipeObject getLastElement() {
-        return lastElement;
+    public FilterPipeObject(String name) {
+        super(name,PipeObject.Type.filter);
     }
 
-    /**
-     * @param lastElement the lastElement to set
-     */
-    public void setLastElement(PipeObject lastElement) {
-        if (!type.equals(Type.source)){
-            this.lastElement = lastElement;
-
-        }
-        else
-            System.out.println("No se puede definir un objeto anterior a un source");
+    public boolean InternalUpdate(){
+        System.out.println("Internal update FilterObject ->name: Generic");
+        return true;
     }
 
+    public void setDataIn(DataPackage dataIn){
+        this.dataIn = dataIn;
+    }
 
-
-public abstract boolean InternalUpdate();
+    public DataPackage getDataOut(){
+        return dataOut;
+    }
 
 }

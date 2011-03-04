@@ -67,9 +67,13 @@ public class FileReader extends SourcePipeObject {
     private String extension;
     private Tipo tipo;
 
+    private ReadBMP lectorBMP = null;
+    private ReadJPEG lectorJPEG = null;
+
     public FileReader(File currentFile){
 
         super("FileReader");
+        this.dataOut = new DataPackage(DataPackage.Type.ImageData);
 
         if ( currentFile.canWrite() && currentFile.exists() )
             this.currentFile = currentFile;
@@ -117,20 +121,40 @@ public class FileReader extends SourcePipeObject {
     }
 
     private ImageData ReadFileBMP(){
-        ReadBMP lectorBMP = new ReadBMP(this.currentFile);
+        lectorBMP = new ReadBMP(this.currentFile);
         return lectorBMP.getImagenData();
     }
 
      private ImageData ReadFileJPEG(){
-        ReadJPEG lectorJPEG = new ReadJPEG(this.currentFile);
+        lectorJPEG = new ReadJPEG(this.currentFile);
         return lectorJPEG.getImagenData();
     }
 
+   
 
      //Metodo propio del pipeline, no se debe llamar por fuera de esta!
     @Override
-     public void InternalUpdate(){
-        System.out.println("Internal update FileReader");
+     public boolean InternalUpdate(){
+        if(lectorBMP==null && lectorJPEG==null){
+            this.dataOut.setImageData(this.readImage());
+            return true;
+        }
+
+
+
+        switch(this.tipo){
+            case BMP:
+                this.dataOut.setImageData(lectorBMP.UpdateImage());
+                System.out.println("Internal update FileReader llamado en BMP");
+                break;
+            case JPEG:
+                System.out.println("Aún no se puede actualizar un JPEG");
+                break;
+            default:
+                System.out.println("El archivo del que trató de actualizar contiene errores o no se ha programado su actualización");
+
+        }
+        return true;
     }
 
 }

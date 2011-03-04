@@ -1,3 +1,10 @@
+/*
+ * VisorMain.java
+ *
+ * Created on 10-feb-2011, 18:41:14
+ */
+
+
 /***************************************************************************************************************/
 /*    Especificaciones de la Programación
  *    Patrón
@@ -39,24 +46,91 @@
  */
 /***************************************************************************************************************/
 
-package PipeLine;
+
+
+package View;
+
+import PipeLine.SinkPipeObject;
+import javax.swing.JInternalFrame;
+
 
 /**
  *
  * @author Felipe
  */
-public class FilterObject extends PipeObject {
+public class Painter extends SinkPipeObject {
 
-    //Contenedores para los datos de entrada y salida
-    public DataPackage dataIn;
-    public DataPackage dataOut;
 
-    public FilterObject(String name) {
-        super(name,PipeObject.Type.filter);
+    public enum Type {PointToPoint, Texture};
+
+    private String name;
+    private Type type;
+    private TextureGL texturePainter = null;
+    private DrawGL pointPainter = null;
+
+    public Painter(String name, Type type) {
+        super(name);
+        this.type = type;
+        this.name = name;
+        switch(this.type){
+            case PointToPoint:
+                pointPainter = new DrawGL();
+                break;
+            case Texture:
+                texturePainter = new TextureGL();
+                break;
+        }
+   }
+
+    public JInternalFrame getInternalFrame(){
+        if(pointPainter!= null)
+            return pointPainter;
+        else
+        if(texturePainter!=null)
+            return texturePainter;
+        else
+            return null;
+
     }
 
-    public void InternalUpdate(){
-        System.out.println("Internal update FilterObject ->name: Generic");
+    @Override
+    public boolean InternalUpdate(){
+        this.setDataIn(this.getLastElement().getDataOut());
+
+
+        switch(this.type){
+            case PointToPoint:
+                pointPainter.DrawGLInit(this.dataIn.getImageData(), name);
+                break;
+            case Texture:
+                texturePainter.TextureGLInit(this.dataIn.getImageData(), name);
+                break;
+        }
+
+        System.out.println("Internal update Painter ->Name: " + name);
+        return true;
+    }
+
+
+
+    /**
+     * @param texturePainter the texturePainter to set
+     */
+    public void setTexturePainter(TextureGL texturePainter) {
+        if (this.type.equals(Type.Texture))
+            this.texturePainter = texturePainter;
+        else
+            System.out.println("Error: Un pintor de texturas solo puede recibir un TextureGL como argumento");
+    }
+
+    /**
+     * @param pointPainter the pointPainter to set
+     */
+    public void setPointPainter(DrawGL pointPainter) {
+        if (this.type.equals(Type.PointToPoint))
+            this.pointPainter = pointPainter;
+          else
+        System.out.println("Error: Un pintor de puntos solo puede recibir un DrawGL como argumento");
     }
 
 }

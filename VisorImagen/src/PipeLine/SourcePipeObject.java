@@ -51,15 +51,26 @@ public class SourcePipeObject extends PipeObject {
 
 
     //Contenedor para los datos de salida
-    public DataPackage dataOut;
+    protected DataPackage dataOut;
 
     public SourcePipeObject(String name) {
         super(name,PipeObject.Type.source);
     }
 
+    public void setDataIn(DataPackage dataIn){
+        System.out.println("No hay datos de entrada en un SourcePipeObject");
+    }
 
+    public DataPackage getDataOut(){
+        return dataOut;
+    }
 
-    public void InternalUpdate(){
+    public boolean InternalUpdate(){
         System.out.println("Internal update SourcePipeObject ->Name: Generic");
+        return true;
+    }
+
+    protected void setDataOutPackage(){
+
     }
 }

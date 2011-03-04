@@ -41,20 +41,33 @@
 
 package PipeLine;
 
+import View.*;
+
 /**
  *
  * @author Felipe
  */
 public class SinkPipeObject extends PipeObject {
     //Contenedor para los datos de entrada
-    public DataPackage dataIn;
+    protected DataPackage dataIn;
+
 
     public SinkPipeObject(String name) {
         super(name,PipeObject.Type.sink);
     }
 
-    public void InternalUpdate(){
+    public boolean InternalUpdate(){
         System.out.println("Internal update SinkPipeObject ->Name: Generic");
+        return true;
+    }
+
+     public void setDataIn(DataPackage dataIn){
+        this.dataIn = dataIn;
+    }
+
+    public DataPackage getDataOut(){
+        System.out.println("No hay datos de salida en un SinkPipeObject");
+        return null;
     }
 
 }

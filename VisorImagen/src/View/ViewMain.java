@@ -135,9 +135,9 @@ public class ViewMain extends javax.swing.JFrame{
         this.setExtendedState(this.getExtendedState()|ViewMain.MAXIMIZED_BOTH);
         this.setTitle("MegaVisor - Procesamiento de Imagenes - Unal");
         draw = new DrawGL();
-        this.add(draw);
+//        this.add(draw);
         texture = new TextureGL();
-        this.add(texture);
+//        this.add(texture);
         //PintorGL pintor = new PintorGL();
        //pintor.run();
 
@@ -234,12 +234,12 @@ public class ViewMain extends javax.swing.JFrame{
                    //crea el lector de imagenes y le pasa el archivo actual.
                    FileReader read = new FileReader(currentFile);
                    //crea la clase con los datos de la imgen.
-                    image = read.readImage();
+                    //image = read.readImage();
 
                     
 
-                    draw.DrawGLInit(image,currentFile.getName());
-                    texture.TextureGLInit(image,currentFile.getName());
+                   // draw.DrawGLInit(image,currentFile.getName());
+                    //texture.TextureGLInit(image,currentFile.getName());
                     //image.informacion();
                     //imagen.data();
                     
@@ -248,12 +248,19 @@ public class ViewMain extends javax.swing.JFrame{
                     BlankFilter filter1 = new BlankFilter("filtro1");
                     BlankFilter filter2 = new BlankFilter("filtro2");
                     BlankFilter filter3 = new BlankFilter("filtro3");
+                    Painter painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+                    Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
 
-                    filter1.lastElement = read;
-                    filter2.lastElement = filter1;
-                    filter3.lastElement = filter2;
+                    filter1.setLastElement(read);
+                    filter2.setLastElement(filter1);
+                    filter3.setLastElement(filter2);
+                    painterPoint.setLastElement(filter3);
+                    painterTexture.setLastElement(filter3);
 
-                    filter3.Update();
+                    this.add(painterTexture.getInternalFrame());
+                    this.add(painterPoint.getInternalFrame());
+                    painterPoint.Update();
+                    painterTexture.Update();
 
 
                 }

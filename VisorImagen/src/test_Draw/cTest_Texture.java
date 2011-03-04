@@ -70,8 +70,8 @@ public class cTest_Texture  extends JFrame
   private GLCapabilities caps;
   private GLCanvas canvas;
   /* Create checkerboard texture */
-  private static final int checkImageWidth = 224;
-  private static final int checkImageHeight = 224;
+  private static final int checkImageWidth = 512;
+  private static final int checkImageHeight = 512;
   private static final int color = 4;
   //private byte checkImage[][][] = new byte[checkImageWidth][checkImageHeight][color];
   private ByteBuffer checkImageBuf = //
@@ -185,7 +185,7 @@ public class cTest_Texture  extends JFrame
       image.informacion();
       //image.data();
 
-      checkImageBuf.put(image.bytesImage,0,224*224*4);
+      checkImageBuf.put(image.bytesImage,0,checkImageHeight*checkImageWidth*color);
 
    /* byte c = (byte) 0xFF;
 

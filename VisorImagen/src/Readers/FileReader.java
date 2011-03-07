@@ -61,7 +61,7 @@ import PipeLine.*;
  */
 public class FileReader extends SourcePipeObject {
 
-    private enum Tipo {BMP, JPEG, error};
+    private enum Tipo {BMP, JPEG,TIFF, error};
 
     private File currentFile;
     private String extension;
@@ -104,20 +104,24 @@ public class FileReader extends SourcePipeObject {
             System.out.println("Archivo JPEG");
             this.tipo = Tipo.JPEG;
         }
-        else{
+        else if (this.extension.equalsIgnoreCase("tif")){
+            System.out.println("Archivo de TIFF");
+            this.tipo = Tipo.TIFF;
+        }else{
             System.out.println("Archivo no reconocido");
         }
     }
 
     public ImageData readImage(){
-        if (this.tipo.equals(Tipo.BMP))
+        if (this.tipo.equals(Tipo.BMP)){
             return this.ReadFileBMP();
-        else
-            if (this.tipo.equals(Tipo.JPEG))
+        }else if(this.tipo.equals(Tipo.JPEG)){
                 return this.ReadFileJPEG();
-            else
+        }else if(this.tipo.equals(Tipo.TIFF)){
+                return this.ReadFileTIFF();
+        } else{
                 return new ImageData();  //todo: debería botar una excepcion
-
+        }
     }
 
     private ImageData ReadFileBMP(){
@@ -130,31 +134,10 @@ public class FileReader extends SourcePipeObject {
         return lectorJPEG.getImagenData();
     }
 
-   
-
-     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
-    @Override
-     public boolean InternalUpdate(){
-        if(lectorBMP==null && lectorJPEG==null){
-            this.dataOut.setImageData(this.readImage());
-            return true;
-        }
-
-
-
-        switch(this.tipo){
-            case BMP:
-                this.dataOut.setImageData(lectorBMP.UpdateImage());
-                System.out.println("Internal update FileReader llamado en BMP");
-                break;
-            case JPEG:
-                System.out.println("Aún no se puede actualizar un JPEG");
-                break;
-            default:
-                System.out.println("El archivo del que trató de actualizar contiene errores o no se ha programado su actualización");
-
-        }
-        return true;
+      private ImageData ReadFileTIFF(){
+        ReadTIFF lectorTIFF = new ReadTIFF(this.currentFile);
+        return lectorTIFF.getImagenData();
     }
+
 
 }

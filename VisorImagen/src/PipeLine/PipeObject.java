@@ -67,7 +67,7 @@ public abstract DataPackage getDataOut();
 
 public boolean Update(){
 
-    System.out.println("Update PipeObject -> nombre: " + name);
+//    System.out.println("Update PipeObject -> nombre: " + name);
     boolean isPipelineReady = false;
 
     if (!type.equals(Type.source)){

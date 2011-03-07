@@ -61,14 +61,15 @@ public class ReadTIFF {
     private ImageData readImage;
     //los bytes del archivo leido
     private byte[] bytesFile;
+
+    //EStas aún no se han usado
     //ancho de la imagen
     private int width;
     //alto de la imagen
     private int height;
     //orientacion del imagen
     private int origen;
-    //byte donde empieza la informacion de la imagen
-    private int offset;
+    
     //tipo de compresion BMP
     private int compresionBMP;
     //espacio de color
@@ -80,12 +81,16 @@ public class ReadTIFF {
     //bits por pixel
     private int depth;
 
+    // Variables propias del TIFF -> ya se han usado
+    private int endian;
+    private boolean bigEndian;
+    private int isTiff;
+    private int offset;
 
     public ReadTIFF(File fichero){
 
         System.out.println("Leyendo archivo TIFF");
-        // hacer aquí y en otros métodos de la clase todo el procesamiento que se necesite para convertir un archivo en el formato estandar de MegaImagen
-
+      
         //FileInputStream flujoEntrada;
         BufferedInputStream flujoEntrada = null;
         ByteArrayOutputStream flujoSalida = new ByteArrayOutputStream();
@@ -122,58 +127,49 @@ public class ReadTIFF {
 
             System.out.println("Length del byte array: " + bytesFile.length);
 
+            if (HeaderFormatRight()){
 
-            //Por motivos de manejo de printSelf
+
+            // una imagen generica
             this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 4, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.YCBCR);
-
+        }
 
     }
 
 
     private boolean HeaderFormatRight(){
         byte[] a_dataFile;
-        //para cada atributo de la imagen se obtiene los bytes de la imagen
-        //y se transforman en enteros
 
 
+
+
+        // Revisa si el formato es big o little Endian y de acuerdo a eso funcionará bytesToInt
+        a_dataFile = this.CutBytes(bytesFile, 0, 2);
+        endian = this.BytesToInt(a_dataFile);
+        if (endian == 0x4949)
+                bigEndian = false;
+        else
+                bigEndian = true;
+
+        // Siempre tiene que ser 42
+        a_dataFile = this.CutBytes(bytesFile, 2, 4);
+        isTiff = this.BytesToInt(a_dataFile);
+        if (isTiff != 42){
+            System.out.println("No es un archivo TIFF válido");
+            return false;
+        }
+
+        //El offset del primer IFD
         a_dataFile = this.CutBytes(bytesFile, 4, 8);
         offset = this.BytesToInt(a_dataFile);
-
-        int i;
-        for (i = offset;i<bytesFile.length;i++){
-            if (bytesFile[i] == (byte)0x0 && bytesFile[i+1] == (byte)0x1 && bytesFile[i+3] == (byte)0x3){
-            i+=7;
-            break;
-            }
-        }
-
-        a_dataFile = this.CutBytes(bytesFile, i, i+2);
-        width = this.BytesToInt(a_dataFile);
-
-        for (i = offset;i<bytesFile.length;i++){
-            if (bytesFile[i] == (byte)0x1 && bytesFile[i+1] == (byte)0x1 && bytesFile[i+3] == (byte)0x3){
-            i+=7;
-            break;
-            }
-        }
-
-        a_dataFile = this.CutBytes(bytesFile, i, i+2);
-        height = this.BytesToInt(a_dataFile);
-
-        origen = ImageData.ARRIBA_IZQ;
-        spaceColor = ImageData.RGBA;
-        alineacion = ImageData.ALINEADO_4;
+        System.out.println("offset " + offset);
         
 
-        /*******************/
-        //a_dataFile = this.CutBytes(bytesFile, 28, 30);
-        nChanels = 3;//this.BytesToInt(a_dataFile)/8;
 
-        depth = nChanels;
-        if(depth>=3)
+        System.out.println("todo bien");
+
         return true;
-        else
-        return false;
+
 
     }
 
@@ -194,7 +190,7 @@ public class ReadTIFF {
     }
 
     public int BytesToInt(byte[] valor){
-         boolean bigEndian = false;
+         bigEndian = false;
 	     if(valor.length < 4){
 	          throw new ArrayIndexOutOfBoundsException(valor. length);
 	     }

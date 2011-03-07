@@ -219,7 +219,7 @@ public class ViewMain extends javax.swing.JFrame{
             //chooserFile:para escojer el archivo que se quiere abrir
             JFileChooser chooserFile = new JFileChooser(System.getProperty("user.dir"));
             //filtro para solo leer imagenes
-            FileFilter filterImage = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "bmp");
+            FileFilter filterImage = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "bmp", "tif", "tiff");
             chooserFile.addChoosableFileFilter(filterImage);
             //variable que nos indica que se puede abrir el archivo elegido
             int a_result = chooserFile.showOpenDialog(null);
@@ -254,12 +254,12 @@ public class ViewMain extends javax.swing.JFrame{
                     filter1.setLastElement(read);
                     filter2.setLastElement(filter1);
                     filter3.setLastElement(filter2);
-                    painterPoint.setLastElement(filter3);
-                    painterTexture.setLastElement(filter3);
+                    painterPoint.setLastElement(read);
+                    painterTexture.setLastElement(read);
 
                     this.add(painterTexture.getInternalFrame());
                     this.add(painterPoint.getInternalFrame());
-                    painterPoint.Update();
+//                    painterPoint.Update();
                     painterTexture.Update();
 
 

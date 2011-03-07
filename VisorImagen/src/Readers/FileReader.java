@@ -61,7 +61,7 @@ import PipeLine.*;
  */
 public class FileReader extends SourcePipeObject {
 
-    private enum Tipo {BMP, JPEG,TIFF, error};
+    private enum Tipo {BMP, JPEG, TIFF, error};
 
     private File currentFile;
     private String extension;
@@ -69,6 +69,7 @@ public class FileReader extends SourcePipeObject {
 
     private ReadBMP lectorBMP = null;
     private ReadJPEG lectorJPEG = null;
+    private ReadTIFF lectorTIFF = null;
 
     public FileReader(File currentFile){
 
@@ -104,24 +105,27 @@ public class FileReader extends SourcePipeObject {
             System.out.println("Archivo JPEG");
             this.tipo = Tipo.JPEG;
         }
-        else if (this.extension.equalsIgnoreCase("tif")){
-            System.out.println("Archivo de TIFF");
+        if (this.extension.equalsIgnoreCase("tif") || this.extension.equalsIgnoreCase("tiff")){
+            System.out.println("Archivo TIFF");
             this.tipo = Tipo.TIFF;
-        }else{
+        }
+        else{
             System.out.println("Archivo no reconocido");
         }
     }
 
     public ImageData readImage(){
-        if (this.tipo.equals(Tipo.BMP)){
+        if (this.tipo.equals(Tipo.BMP))
             return this.ReadFileBMP();
-        }else if(this.tipo.equals(Tipo.JPEG)){
+        else
+            if (this.tipo.equals(Tipo.JPEG))
                 return this.ReadFileJPEG();
-        }else if(this.tipo.equals(Tipo.TIFF)){
-                return this.ReadFileTIFF();
-        } else{
-                return new ImageData();  //todo: debería botar una excepcion
-        }
+            else
+                if (this.tipo.equals(Tipo.TIFF))
+                    return this.ReadFileTIFF();
+                else
+                    return new ImageData();  //todo: debería botar una excepcion
+
     }
 
     private ImageData ReadFileBMP(){
@@ -129,15 +133,43 @@ public class FileReader extends SourcePipeObject {
         return lectorBMP.getImagenData();
     }
 
-     private ImageData ReadFileJPEG(){
+    private ImageData ReadFileJPEG(){
         lectorJPEG = new ReadJPEG(this.currentFile);
         return lectorJPEG.getImagenData();
     }
-
-      private ImageData ReadFileTIFF(){
-        ReadTIFF lectorTIFF = new ReadTIFF(this.currentFile);
+    private ImageData ReadFileTIFF(){
+        lectorTIFF = new ReadTIFF(this.currentFile);
         return lectorTIFF.getImagenData();
     }
 
+   
+
+     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
+    @Override
+     public boolean InternalUpdate(){
+        if(lectorBMP==null && lectorJPEG==null){
+            this.dataOut.setImageData(this.readImage());
+            return true;
+        }
+
+
+
+        switch(this.tipo){
+            case BMP:
+                this.dataOut.setImageData(lectorBMP.UpdateImage());
+                System.out.println("Internal update FileReader llamado en BMP");
+                break;
+            case JPEG:
+                System.out.println("Aún no se puede actualizar un JPEG");
+                break;
+            case TIFF:
+                System.out.println("Internal update FileReader llamado en TIFF");
+                break;
+            default:
+                System.out.println("El archivo del que trató de actualizar contiene errores o no se ha programado su actualización");
+
+        }
+        return true;
+    }
 
 }

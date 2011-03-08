@@ -186,7 +186,7 @@ public class TextureGL  extends JInternalFrame
 
 
       checkImageBuf.put(image.bytesImage,0,image.getHeight()*image.getWidth()*3);
-
+      
    /* byte c = (byte) 0xFF;
 
     for (int i = 0; i < checkImageWidth; i++)
@@ -202,6 +202,7 @@ public class TextureGL  extends JInternalFrame
         checkImageBuf.put((byte) 255);
       }
     }//*/
+
     checkImageBuf.rewind();
   }//
 

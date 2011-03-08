@@ -86,6 +86,7 @@ public class ReadTIFF {
     private boolean bigEndian;
     private int isTiff;
     private int offset;
+    private int numTags;
 
     public ReadTIFF(File fichero){
 
@@ -128,19 +129,21 @@ public class ReadTIFF {
             System.out.println("Length del byte array: " + bytesFile.length);
 
             if (HeaderFormatRight()){
-
-
+            
             // una imagen generica
-            this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 4, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.YCBCR);
-        }
+            this.readImage = new ImageData(width, height, ImageData.ABAJO_IZQ, 3, 1, ImageData.ALINEADO_4, ImageData.YCBCR);
+            System.out.println(readImage.bytesImage.length);
+            FillImageData();
+
+            }
 
     }
 
 
     private boolean HeaderFormatRight(){
         byte[] a_dataFile;
-
-
+        int aux_index;
+        int aux_tag;
 
 
         // Revisa si el formato es big o little Endian y de acuerdo a eso funcionará bytesToInt
@@ -162,16 +165,50 @@ public class ReadTIFF {
         //El offset del primer IFD
         a_dataFile = this.CutBytes(bytesFile, 4, 8);
         offset = this.BytesToInt(a_dataFile);
-        System.out.println("offset " + offset);
+        System.out.println("offset :" + offset);
         
+        a_dataFile = this.CutBytes(bytesFile, offset, offset+2);
+        numTags = this.BytesToInt(a_dataFile);
+        System.out.println("number of Tags: " + numTags);
+
+        aux_index=offset+2;
+
+        for(int i=0;i<numTags;i++){
+        a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
+        aux_tag = this.BytesToInt(a_dataFile);
+        if(aux_tag==257){
+
+        a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+        height = this.BytesToInt(a_dataFile);
+        System.out.println(height);
+        }else if(aux_tag==256){
+            a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+            width = this.BytesToInt(a_dataFile);
+            System.out.println(width);
+         }    
+        aux_index+=12;
+        }
 
 
-        System.out.println("todo bien");
+        
 
         return true;
 
 
     }
+
+
+
+    private void FillImageData(){
+        int j=0;
+        for(int i =offset-11;i>=8;i=i-3){
+            readImage.bytesImage[j]=bytesFile[i];
+            readImage.bytesImage[j+1]=bytesFile[i+1];
+            readImage.bytesImage[j+2]=bytesFile[i+2];
+            j+=3;
+        }
+        //System.arraycopy(bytesFile, 8, readImage.bytesImage, 0, offset-8);
+     }
 
 
     public byte[] CutBytes(byte[] b,int i,int j){

@@ -422,7 +422,7 @@ public class ImageData {
 
  //Origen
  public static final int ARRIBA_IZQ = 0;
- public static final int ABAJO_IZQ = 0;
+ public static final int ABAJO_IZQ = 1;
 
  //Alineación
  public static final int ALINEADO_8 = 8;

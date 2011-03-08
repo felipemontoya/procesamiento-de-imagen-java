@@ -201,12 +201,11 @@ public class ReadTIFF {
 
     private void FillImageData(){
         int j=0;
-        for(int i =offset-11;i>=8;i=i-3){
-            readImage.bytesImage[j]=bytesFile[i];
-            readImage.bytesImage[j+1]=bytesFile[i+1];
-            readImage.bytesImage[j+2]=bytesFile[i+2];
-            j+=3;
+        for(int i = offset - 3*width -1 ; i >= 8; i = i - 3 * width){
+            System.arraycopy(bytesFile, i, readImage.bytesImage,j, 3*width);
+            j+=3*width;
         }
+
         //System.arraycopy(bytesFile, 8, readImage.bytesImage, 0, offset-8);
      }
 

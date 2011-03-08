@@ -428,6 +428,8 @@ public class ImageData {
  public static final int ALINEADO_8 = 8;
  public static final int ALINEADO_4 = 4;
 
+
+
 //    /**
 //     * @return the extencion
 //     */

@@ -415,6 +415,7 @@ public class ImageData {
  public static final int HSV = 4;
  public static final int HSL = 5;
  public static final int YCBCR  = 6;
+ public static final int BGR  = 6;
 
  //Interlineado
  public static final int INTERLINEADO_SI = 0;

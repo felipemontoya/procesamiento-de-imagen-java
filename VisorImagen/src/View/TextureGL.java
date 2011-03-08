@@ -125,15 +125,22 @@ public class TextureGL  extends JInternalFrame
     gl.glDepthFunc(GL.GL_LESS);
 
     MakeTexureImage();
+    
+    int colorSpace = 0;
+    switch(image.getEspacioColor()){
+        case ImageData.RGB:
+            colorSpace = GL.GL_RGB;
+            break;
+        case ImageData.BGR:
+            colorSpace = GL.GL_BGR;
+            break;
+      }
 
     gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
-    if(image.getOrigen()==image.ARRIBA_IZQ){
+
     gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, color, checkImageWidth, checkImageHeight, 0,
-        GL.GL_BGR, GL.GL_UNSIGNED_BYTE, checkImageBuf);// checkImage[0][0][0]);
-      }else{
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, color, checkImageWidth, checkImageHeight, 0,
-        GL.GL_RGB, GL.GL_UNSIGNED_BYTE, checkImageBuf);
-      }
+        colorSpace, GL.GL_UNSIGNED_BYTE, checkImageBuf);// checkImage[0][0][0]);
+
     gl.glTexParameterf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
     gl.glTexParameterf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
     gl.glTexParameterf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);

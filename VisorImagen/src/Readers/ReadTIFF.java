@@ -131,7 +131,7 @@ public class ReadTIFF {
             if (HeaderFormatRight()){
             
             // una imagen generica
-            this.readImage = new ImageData(width, height, ImageData.ABAJO_IZQ, 3, 1, ImageData.ALINEADO_4, ImageData.YCBCR);
+            this.readImage = new ImageData(width, height, ImageData.ABAJO_IZQ, 3, 1, ImageData.ALINEADO_4, ImageData.RGB);
             System.out.println(readImage.bytesImage.length);
             FillImageData();
 

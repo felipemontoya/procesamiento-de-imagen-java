@@ -124,7 +124,7 @@ public class TextureGL  extends JInternalFrame
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
 
-    MakeTexureImage();
+    MakeTextureImage();
     
     int colorSpace = 0;
     switch(image.getEspacioColor()){
@@ -192,7 +192,7 @@ public class TextureGL  extends JInternalFrame
   /*
    * 3D array won't be used. I left it here for you to see.
    */
-  private void MakeTexureImage()
+  private void MakeTextureImage()
   {
       // Se busca obtener un ImageData y a partir de el alimentar a la textura
 

@@ -41,6 +41,7 @@
 
 package Filters;
 
+import Data.ImageData;
 import PipeLine.*;
 
 /**
@@ -62,7 +63,19 @@ public class BlankFilter extends FilterPipeObject {
      public boolean InternalUpdate(){
         this.setDataIn(this.getLastElement().getDataOut());
 
-        this.dataOut.setImageData(this.dataIn.getImageData());
+
+      ImageData data = this.dataIn.getImageData();
+      for(int i = 0;i<data.getHeight();i++){
+            for(int j = 0;j<data.getWidth();j++){
+                for(int k = 0 ;k<data.getnCanales();k++){
+                    data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + k] = (byte)255;
+                }
+          }
+        }
+
+        
+
+        this.dataOut.setImageData(data);
 
         System.out.println("Internal update BlankFilter : " + name);
         return  true;

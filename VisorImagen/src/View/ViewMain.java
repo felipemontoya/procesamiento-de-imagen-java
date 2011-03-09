@@ -233,32 +233,23 @@ public class ViewMain extends javax.swing.JFrame{
 
                    //crea el lector de imagenes y le pasa el archivo actual.
                    FileReader read = new FileReader(currentFile);
-                   //crea la clase con los datos de la imgen.
-                    //image = read.readImage();
-
-                    
-
-                   // draw.DrawGLInit(image,currentFile.getName());
-                    //texture.TextureGLInit(image,currentFile.getName());
-                    //image.informacion();
-                    //imagen.data();
-                    
+         
                    //Creación del pipeline
 
-                    BlankFilter filter1 = new BlankFilter("filtro1");
-                    BlankFilter filter2 = new BlankFilter("filtro2");
-                    BlankFilter filter3 = new BlankFilter("filtro3");
+//                    BlankFilter filter1 = new BlankFilter("filtro1");
+                    ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
+//                    BlankFilter filter3 = new BlankFilter("filtro3");
                     Painter painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-                    Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
+//                    Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
 
-                    filter1.setLastElement(read);
-                    filter2.setLastElement(filter1);
-                    filter3.setLastElement(filter2);
-                    painterPoint.setLastElement(read);
-                    painterTexture.setLastElement(read);
+//                    filter1.setLastElement(read);
+                    filter2.setLastElement(read);
+//                    filter3.setLastElement(filter2);
+//                    painterPoint.setLastElement(filter3);
+                    painterTexture.setLastElement(filter2);
 
                     this.add(painterTexture.getInternalFrame());
-                    this.add(painterPoint.getInternalFrame());
+//                    this.add(painterPoint.getInternalFrame());
 //                    painterPoint.Update();
                     painterTexture.Update();
 

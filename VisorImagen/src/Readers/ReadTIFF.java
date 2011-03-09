@@ -82,6 +82,7 @@ public class ReadTIFF {
     private int depth;
 
     // Variables propias del TIFF -> ya se han usado
+
     private int endian;
     private boolean bigEndian;
     private int isTiff;
@@ -166,26 +167,33 @@ public class ReadTIFF {
         a_dataFile = this.CutBytes(bytesFile, 4, 8);
         offset = this.BytesToInt(a_dataFile);
         System.out.println("offset :" + offset);
-        
+
+        //contamos el numero de tag del tiff con el offset
         a_dataFile = this.CutBytes(bytesFile, offset, offset+2);
         numTags = this.BytesToInt(a_dataFile);
         System.out.println("number of Tags: " + numTags);
 
+        //inicio del primer tag!!
         aux_index=offset+2;
 
+        //empezamos a buscar los 2 primeros bytes de cada tag (cada tag es de 12 bytes)
         for(int i=0;i<numTags;i++){
         a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
         aux_tag = this.BytesToInt(a_dataFile);
+        //numero del tag de la altura 257
         if(aux_tag==257){
-
+        //copiamos la altura
         a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
         height = this.BytesToInt(a_dataFile);
         System.out.println(height);
+        //tag del ancho 256
         }else if(aux_tag==256){
+            //copiamos la altura
             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
             width = this.BytesToInt(a_dataFile);
             System.out.println(width);
-         }    
+         }
+        //avanzamos de tag en tag
         aux_index+=12;
         }
 
@@ -200,13 +208,15 @@ public class ReadTIFF {
 
 
     private void FillImageData(){
+    // Para copiar los datos se empiezan a copiar filas completas en orden inverso. Es decir, la pimera fila esta definida
+    // entre [offset - width*3,offset), estas se copian en orden descendente en readImage.bytesImage (El indice para esta operacion
+    // es j.
         int j=0;
         for(int i = offset - 3 * width  ; i >= 8; i = i - 3 * width){
             System.arraycopy(bytesFile, i, readImage.bytesImage,j, 3 * width);
             j += 3 * width;
         }
 
-        //System.arraycopy(bytesFile, 8, readImage.bytesImage, 0, offset-8);
      }
 
 

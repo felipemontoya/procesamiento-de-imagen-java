@@ -105,6 +105,7 @@ public class FileReader extends SourcePipeObject {
             System.out.println("Archivo JPEG");
             this.tipo = Tipo.JPEG;
         }
+        else
         if (this.extension.equalsIgnoreCase("tif") || this.extension.equalsIgnoreCase("tiff")){
             System.out.println("Archivo TIFF");
             this.tipo = Tipo.TIFF;

@@ -98,6 +98,7 @@ public class TextureGL  extends JInternalFrame
     this.setSize(checkImageWidth,checkImageHeight);
     getContentPane().add(canvas);
     this.setResizable(true);
+    this.setClosable(true);
     	this.setVisible(true);
   }
 

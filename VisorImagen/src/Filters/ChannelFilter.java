@@ -52,6 +52,7 @@ public class ChannelFilter extends FilterPipeObject {
 
     private String name;
     private int channel;
+
     public ChannelFilter(String name, int channel) {
         super("ChannelFilter " + name);
         this.name = name;
@@ -72,6 +73,18 @@ public class ChannelFilter extends FilterPipeObject {
         for(int k = 0 ;k<data.getnCanales();k++){                
            a_channel[k]=0;
         }
+
+        switch(data.getEspacioColor()){
+
+        case ImageData.BGR:
+                    if(this.channel==0)
+                    this.channel=2;
+                    else if(this.channel==2)
+                    this.channel=0;
+                    break;
+        }
+
+
         a_channel[this.channel]=1;
 
 

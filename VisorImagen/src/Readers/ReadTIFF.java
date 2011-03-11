@@ -180,6 +180,8 @@ public class ReadTIFF {
         for(int i=0;i<numTags;i++){
         a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
         aux_tag = this.BytesToInt(a_dataFile);
+        System.out.print("Aux: " +aux_index);
+            System.out.println("  AA: " +aux_tag);
         //numero del tag de la altura 257
         if(aux_tag==257){
         //copiamos la altura

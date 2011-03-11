@@ -30,7 +30,7 @@ public class GrayScaleFilter extends FilterPipeObject{
 
         float[] a_channel = new float[data.getnCanales()];
         for(int k = 0 ;k<data.getnCanales();k++){
-           a_channel[k]=1;
+           a_channel[k]=0;
         }
         //identifica el espacio de canal y asi las operacion R=0.3 G= 0.59 B=0.11
         switch(data.getEspacioColor()){
@@ -50,11 +50,23 @@ public class GrayScaleFilter extends FilterPipeObject{
         byte a_byte;
        for(int i = 0;i<data.getHeight();i++){
             for(int j = 0;j<data.getWidth();j++){
-                colorg= (BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()]) * a_channel[0] + BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+1])*a_channel[1] +BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+2])*a_channel[2]);
+                colorg=0;
+                for(int k = 0 ;k<3;k++){
+                    colorg+=(float)BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + k]) * a_channel[k];
+
+                }
+                if(colorg>255){
+                    colorg=255;
+                }
+                //colorg= (BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()]) * a_channel[0] + BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+1])*a_channel[1] +BytesToInt(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+2])*a_channel[2]);
+                
                 a_byte=generateByte(Math.round(colorg));
-                data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()] =a_byte ;
-                data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+1] = a_byte;
-                data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+2] = a_byte;
+                //data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()] =a_byte ;
+                //data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+1] = a_byte;
+                //data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales()+2] = a_byte;
+                for(int k = 0 ;k<3;k++){
+                    data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + k] = a_byte;
+                }
                 
           }
         }
@@ -67,10 +79,10 @@ public class GrayScaleFilter extends FilterPipeObject{
         return  true;
     }
 
-    public float BytesToInt(byte valor){
-             float d =  valor & 0xFF;
-	     return d;
-	}
+    public int BytesToInt(byte valor){
+             return (int)valor & 0xFF;
+
+    }
 
 
     private byte generateByte(int integer) {

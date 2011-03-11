@@ -197,7 +197,7 @@ public class TextureGL  extends JInternalFrame
   {
       // Se busca obtener un ImageData y a partir de el alimentar a la textura
 
-
+checkImageBuf.clear();
       checkImageBuf.put(image.bytesImage,0,image.getHeight()*image.getWidth()*3);
       
    /* byte c = (byte) 0xFF;

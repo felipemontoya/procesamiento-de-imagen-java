@@ -66,7 +66,11 @@ public class cTest_LZW {
     public static void readBitStream() throws IOException{
         
         byte[] array = new byte[200];
-        java.util.Arrays.fill(array, (byte)0xFFFF);
+        java.util.Arrays.fill(array, (byte)0xF0F0);
+
+        array[0]=(byte)0xF0;
+        array[1]=(byte)0x1F;
+
 
         ByteArrayInputStream bais = new ByteArrayInputStream(array);
 
@@ -75,7 +79,9 @@ public class cTest_LZW {
         int returnedCode2 = is2.readBits(12);
 
         System.out.println("Leido byteArray: " + returnedCode2);
+         returnedCode2 = is2.readBits(4);
 
+        System.out.println("Leido byteArray: " + returnedCode2);
     }
 
 

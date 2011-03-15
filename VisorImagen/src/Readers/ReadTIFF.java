@@ -71,7 +71,7 @@ public class ReadTIFF {
     private int origen;
     
     //tipo de compresion BMP
-    private int compresionBMP;
+    private int compresion;
     //espacio de color
     private int spaceColor;
     //alineacion
@@ -178,22 +178,34 @@ public class ReadTIFF {
 
         //empezamos a buscar los 2 primeros bytes de cada tag (cada tag es de 12 bytes)
         for(int i=0;i<numTags;i++){
+            
         a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
         aux_tag = this.BytesToInt(a_dataFile);
-        System.out.print("Aux: " +aux_index);
-            System.out.println("  AA: " +aux_tag);
         //numero del tag de la altura 257
         if(aux_tag==257){
         //copiamos la altura
         a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
         height = this.BytesToInt(a_dataFile);
-        System.out.println(height);
         //tag del ancho 256
         }else if(aux_tag==256){
             //copiamos la altura
             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
             width = this.BytesToInt(a_dataFile);
-            System.out.println(width);
+        } else if(aux_tag==259){
+             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+            compresion = this.BytesToInt(a_dataFile);
+            if(compresion==1){
+            System.out.println("TIFF sin compresion.");    
+            }else if(compresion==5){
+            System.out.println("TIFF con compresion LZW.");     
+            }else{
+            System.out.println("TIFF con compresion no soportada.");
+            return false;
+            }
+         } else if(aux_tag== 258){
+            a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+            depth = this.BytesToInt(a_dataFile); 
+            System.out.println("Bit por muestra: "+depth);
          }
         //avanzamos de tag en tag
         aux_index+=12;
@@ -214,9 +226,13 @@ public class ReadTIFF {
     // entre [offset - width*3,offset), estas se copian en orden descendente en readImage.bytesImage (El indice para esta operacion
     // es j.
         int j=0;
+        if(compresion==1){
         for(int i = offset - 3 * width  ; i >= 8; i = i - 3 * width){
             System.arraycopy(bytesFile, i, readImage.bytesImage,j, 3 * width);
             j += 3 * width;
+        }
+        }else if(compresion==5){
+            
         }
 
      }

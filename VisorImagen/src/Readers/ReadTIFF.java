@@ -250,20 +250,33 @@ public class ReadTIFF {
         
         // Se crea una variable de salida y otras variables temporales del algoritmo
         // Los nombres son consistentes con la explicación de http://www.dspguide.com/ch27/5.htm
-        
+        //code es el codigo que lee... el k
         int code;
+        //read dice cuando bits va a leer
         int read = 9;
+        // aca dice cuando bit a leido... para hacer que el while finalice
         int bitsread=9;
+        //oldcode es el codigo viejo... el w
         String oldcode = "";
+        //ese outstring lo vi para concatenar...
         String outString;
+        /*como siempre el byte 8 (donde inicia los datos de la imagen de un tiff) es el 80 en hexa es decir en decimal 10000000
+         * si empiezo desde ese byte a contar los 9 bits... me botaria 100000000 q es 256 y ese no existe
+         * todabia en el diccionario... entonces lo q hago es leer los primeros 9bits... lo dejo asi... y sigo 
+         */
+        
         inputStream.readBits(read);
+        //sigo con los siguientes 9 bits
         code = inputStream.readBits(read);
+        //imprimo el codigo
         System.out.println("code: "+code);
+        //imprimo lo q hay en el diccionario
         System.out.println("leido " + dict[code]);  // salida
+        
         oldcode=dict[code];
         
         while(bitsread<(offset-8)*8){
-            
+            //este es el mismo codigo q hay en Test LZW
             code = inputStream.readBits(read);
             System.out.println("code: "+code);
             System.out.println("leido " + dict[code]); // salida
@@ -272,7 +285,7 @@ public class ReadTIFF {
             oldcode=dict[code];
             
             
-            /*
+            /* esto era un experimiento
             code = inputStream.readBits(read);
             boolean isOnDict = false;
             for(String d:dict){

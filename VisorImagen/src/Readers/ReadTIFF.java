@@ -47,11 +47,15 @@
 package Readers;
 
 import Data.ImageData;
+import Utilities.BitInputStream;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -89,7 +93,7 @@ public class ReadTIFF {
     private int offset;
     private int numTags;
 
-    public ReadTIFF(File fichero){
+    public ReadTIFF(File fichero) throws IOException{
 
         System.out.println("Leyendo archivo TIFF");
       
@@ -186,11 +190,13 @@ public class ReadTIFF {
         //copiamos la altura
         a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
         height = this.BytesToInt(a_dataFile);
+        System.out.println("Alto: "+height);
         //tag del ancho 256
         }else if(aux_tag==256){
             //copiamos la altura
             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
             width = this.BytesToInt(a_dataFile);
+            System.out.println("Ancho: "+width);
         } else if(aux_tag==259){
              a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
             compresion = this.BytesToInt(a_dataFile);
@@ -202,11 +208,7 @@ public class ReadTIFF {
             System.out.println("TIFF con compresion no soportada.");
             return false;
             }
-         } else if(aux_tag== 258){
-            a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
-            depth = this.BytesToInt(a_dataFile); 
-            System.out.println("Bit por muestra: "+depth);
-         }
+         } 
         //avanzamos de tag en tag
         aux_index+=12;
         }
@@ -221,10 +223,11 @@ public class ReadTIFF {
 
 
 
-    private void FillImageData(){
+    private void FillImageData() throws IOException{
     // Para copiar los datos se empiezan a copiar filas completas en orden inverso. Es decir, la pimera fila esta definida
     // entre [offset - width*3,offset), estas se copian en orden descendente en readImage.bytesImage (El indice para esta operacion
     // es j.
+        int size;
         int j=0;
         if(compresion==1){
         for(int i = offset - 3 * width  ; i >= 8; i = i - 3 * width){
@@ -233,9 +236,87 @@ public class ReadTIFF {
         }
         }else if(compresion==5){
             
+            
+            
+            
+        ByteArrayInputStream bais = new ByteArrayInputStream(this.CutBytesM(bytesFile, 8, offset));    
+        BitInputStream inputStream = new BitInputStream(bais);   
+        // Primero se crea un diccionario y se llenan los primeros 256 valores    
+         String[] dict = new String[65536];
+        int iTable;
+        for (iTable = 0; iTable<256;iTable++)
+            dict[iTable]=Character.toString((char)iTable);
+        
+        
+        // Se crea una variable de salida y otras variables temporales del algoritmo
+        // Los nombres son consistentes con la explicación de http://www.dspguide.com/ch27/5.htm
+        
+        int code;
+        int read = 9;
+        int bitsread=9;
+        String oldcode = "";
+        String outString;
+        inputStream.readBits(read);
+        code = inputStream.readBits(read);
+        System.out.println("code: "+code);
+        System.out.println("leido " + dict[code]);  // salida
+        oldcode=dict[code];
+        
+        while(bitsread<(offset-8)*8){
+            
+            code = inputStream.readBits(read);
+            System.out.println("code: "+code);
+            System.out.println("leido " + dict[code]); // salida
+            oldcode = oldcode.concat(dict[code]);
+            dict[iTable++] =oldcode;
+            oldcode=dict[code];
+            
+            
+            /*
+            code = inputStream.readBits(read);
+            boolean isOnDict = false;
+            for(String d:dict){
+                if(d.equals(String.valueOf(code))){
+                    isOnDict=true;
+                    break;
+                }
+            }
+            if(isOnDict){
+                System.out.println("leido " + dict.get(StringFromTable(dict,String.valueOf(code))));  // salida
+                dict.add(dict.get(StringFromTable(dict,oldcode+String.valueOf((char)code))));
+                oldcode=String.valueOf(code);
+            }else{
+                outString = dict.get(StringFromTable(dict,oldcode))+String.valueOf((char)code);
+                System.out.println("leido " + outString);
+                dict.add(outString);
+                oldcode=String.valueOf(code);
+            }*/
+            bitsread+=read;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+            
+            
         }
 
      }
+    
+    public int StringFromTable(List<String> dict,String search){
+        int i = 0;
+        for(i=0;i<dict.size();i++){
+            if(search.equals(dict.get(i))){
+                break;
+            }
+        }
+        
+        return i;
+    }
 
 
     public byte[] CutBytes(byte[] b,int i,int j){
@@ -252,6 +333,23 @@ public class ReadTIFF {
 
         return a;
     }
+    
+    public byte[] CutBytesM(byte[] b,int i,int j){
+        byte[] a = new byte[j-i];
+        for(byte bb : a){
+            bb=0;
+        }
+        int k=0;
+
+        for(int ii = i;ii<j;ii++){
+            a[k]=b[ii];
+            k++;
+        }
+
+        return a;
+    }
+    
+    
 
     public int BytesToInt(byte[] valor){
          bigEndian = false;

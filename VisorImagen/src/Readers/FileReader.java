@@ -52,6 +52,7 @@ package Readers;
 import Data.ImageData;
 import java.io.File;
 import PipeLine.*;
+import java.io.IOException;
 
 
 
@@ -139,7 +140,11 @@ public class FileReader extends SourcePipeObject {
         return lectorJPEG.getImagenData();
     }
     private ImageData ReadFileTIFF(){
-        lectorTIFF = new ReadTIFF(this.currentFile);
+        try {
+            lectorTIFF = new ReadTIFF(this.currentFile);
+        } catch (IOException ex) {
+            System.out.println("algo paso mal...");
+        }
         return lectorTIFF.getImagenData();
     }
 

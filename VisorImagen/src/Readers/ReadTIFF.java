@@ -266,18 +266,24 @@ public class ReadTIFF {
         String[] dict = new String[65536];
         int iTable;
         for (iTable = 0; iTable<256;iTable++)
-             dict[iTable]=(Character.toString((char)iTable));
-        dict[iTable++]=(Character.toString((char)-1));
-        dict[iTable++]=(Character.toString((char)-1));
-
+             dict[iTable]=Character.toString((char)iTable);
+        dict[iTable++]="";
+        dict[iTable++]="";
+        /*
+        for (iTable = 0; iTable<256;iTable++)
+             dict[iTable]=Integer.toBinaryString(iTable);
+        dict[iTable++]=Integer.toBinaryString(0);
+        dict[iTable++]=Integer.toBinaryString(0);
+        */
 
         //METODO 2
         /*List<String> dict = new ArrayList<String>();
         for (iTable = 0; iTable<256;iTable++)
-            dict.add(Character.toString((char)iTable));
-        dict.add(Character.toString((char)-1));
-        dict.add(Character.toString((char)-1));*/
-
+            dict.add(Integer.toBinaryString(iTable));
+        dict.add(Integer.toBinaryString(iTable++));
+        dict.add(Integer.toBinaryString(iTable++));
+        */
+        
 
         // Se crea una variable de salida y otras variables temporales del algoritmo
         // Los nombres son consistentes con la explicación de http://www.dspguide.com/ch27/5.htm
@@ -292,9 +298,6 @@ public class ReadTIFF {
 
 
 
-        //METODO 1
-        String oldcode;
-        //ese outstring lo vi para concatenar...
 
 
         code = inputStream.readBits(read);
@@ -305,25 +308,30 @@ public class ReadTIFF {
 
         //imprimo el codigo
         System.out.println("code: "+Integer.toBinaryString(code)+ " " + code);
-        //METODO 2
+
+        //METODO 2/
+        //String oldcode;
+        //ese outstring lo vi para concatenar...
         //String outString;
         //oldcode=dict.get(code);
-
+        //System.out.println("oldcode: "+dict.get(code));
 
 
 
         //METODO 1
-        oldcode=dict[code];
-
+        String outString;
+        int oldcode;
+        oldcode=code;
+        boolean isOnDict ;
         //METODO 3
         //int oldcode;
-        //oldcode=code;
-        //char caracter=dict[code].charAt(0);
+        //oldcode=0;
+        //String caracter=dict[code];
         //String string;
         while(bitsread<(offset-9)*8){
 
             //METODO 3
-            /*
+          /*
             code = inputStream.readBits(read);
             boolean isOnDict = false;
             if(code<=iTable){
@@ -339,43 +347,61 @@ public class ReadTIFF {
             }
 
             System.out.println("out: "+string);
-            caracter = string.charAt(0);
-            dict[iTable++]= String.valueOf(oldcode)+caracter;
+            caracter = string;
+            dict[iTable++]= Integer.toBinaryString(oldcode)+caracter;
             oldcode = code;
-             *
-             *
              */
+             
 
 
              //METODO 1
             //este es el mismo codigo q hay en Test LZW
             code = inputStream.readBits(read);
-            System.out.println("leido " + dict[code]); // salida
-            oldcode = oldcode.concat(dict[code]);
-            dict[iTable++] =oldcode;
-            oldcode=dict[code];
+           // System.out.println("codigo: "+code);
+            if(code==257)
+                break;
+            isOnDict = false;
+            
+            if(code<=iTable){
+              isOnDict=true;
+            }
+
+
+            if(isOnDict){
+              System.out.println("leido " + dict[code]);
+              dict[iTable++] = dict[oldcode] +dict[code].charAt(dict[code].length()-1);
+              oldcode=code;
+            }else{
+              outString=  dict[oldcode] +dict[oldcode].charAt(dict[oldcode].length()-1);
+              System.out.println("leido " + outString);
+              dict[iTable++]=outString;
+              oldcode=code;
+            }
+            
+            // salida
+            
 
             //METODO 2
             /*
             System.out.println("dimencion: "+dict.size());
 
             code = inputStream.readBits(read);
-            System.out.println("code: "+Integer.toBinaryString(code)+ " " + code);
+            //System.out.println("code: "+Integer.toBinaryString(code)+ " " + code);
 
             boolean isOnDict = false;
-            for(String d:dict){
-                if(d.equals((Character.toString((char)code)))){
+            
+                if(code<=iTable){
                     isOnDict=true;
-                    break;
+                    
                 }
-            }
+            
             if(isOnDict){
-                System.out.println("leido " + dict.get(code));  // salida
-                dict.add(dict.get(Integer.parseInt(oldcode)) + dict.get(code).charAt(0));
+                System.out.println("leido1 " + dict.get(code));  // salida
+                dict.add(dict.get(StringFromTable(dict,oldcode)) + dict.get(code).charAt(0));
                 oldcode=String.valueOf(code);
             }else{
                 outString = dict.get(StringFromTable(dict,oldcode))+dict.get(StringFromTable(dict,oldcode)).charAt(0);
-                System.out.println("leido " + outString);
+                System.out.println("leido2 " + outString);
                 dict.add(outString);
                 oldcode=String.valueOf(code);
             }*/

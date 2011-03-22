@@ -28,29 +28,63 @@ public class LZW {
     public String CompressionLZW(){
         String compress="";
         String omega="";
-        int i = 0,k;
-
+        int i = 0;
+        int k;
+        System.out.println("COMPRESION: ");
         compress=String.valueOf(256);
         ImageUP(img);
         while(i<img.bytesImage.length){
-            k=img.bytesImage[i];
-            
+
+            k=byteToInt(img.bytesImage[i]);
+            if(isOnTable(omega+String.valueOf(k))){
+                omega+=String.valueOf(k);
+                
+            }else{
+                System.out.println(codeFromString(omega));
+                dict[iTable++]=omega+String.valueOf(k);
+                omega=String.valueOf(k);
+            }
             i++;
         }
+        System.out.println("Diccionario");
+
+        for(i=258;i<iTable;i++)
+            System.out.println(i+ " - "+dict[i]);
+
         return compress;
+    }
+
+
+    private int byteToInt(byte by){
+            int a=0;
+              a |= by & 0xFF;
+
+	     return  a ;
+
     }
 
 
     private boolean isOnTable(String op){
         boolean t = false;
-        for(String b:dict){
-            if(op.equals(op)){
+        for(int i = 0;i<iTable;i++){
+            if(dict[i].equals(op)){
                 t=true;
                 break;
             }
         }
 
         return t;
+    }
+
+    private int codeFromString(String op){
+        int code = -4;
+        for(int i = 0;i<iTable;i++){
+            if(dict[i].equals(op)){
+                code=i;
+                break;
+            }
+        }
+        return code;
     }
 
     private void ImageUP (ImageData image){

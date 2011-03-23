@@ -57,6 +57,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import test_Draw.*;
+
 /**
  *
  * @author Jhon
@@ -71,19 +73,17 @@ public class ReadTIFF {
     private int width;
     //alto de la imagen
     private int height;
-    //orientacion del imagen
-    private int origen;
     
     //tipo de compresion BMP
     private int compresion;
-    //espacio de color
-    private int spaceColor;
-    //alineacion
-    private int alineacion;
-    //canales de la imagen RGB o RGBA
-    private int nChanels;
-    //bits por pixel
-    private int depth;
+
+    private int predictor;
+
+    private int interleaved;
+    private int samplesPerPixel;
+    private int tileWidth;
+    private int tileHeight;
+
 
     // Variables propias del TIFF -> ya se han usado
 
@@ -93,7 +93,7 @@ public class ReadTIFF {
     private int offset;
     private int numTags;
 
-    public ReadTIFF(File fichero) throws IOException{
+    public ReadTIFF(File fichero) {
 
         System.out.println("Leyendo archivo TIFF");
       
@@ -135,9 +135,11 @@ public class ReadTIFF {
 
             if (HeaderFormatRight()){
             
-            // una imagen generica
-            this.readImage = new ImageData(width, height, ImageData.ABAJO_IZQ, 3, 1, ImageData.ALINEADO_4, ImageData.RGB);
-            System.out.println(readImage.bytesImage.length);
+
+
+
+            this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 3, 1, ImageData.ALINEADO_4, ImageData.RGB);
+//            System.out.println(readImage.bytesImage.length);
             FillImageData();
 
             }
@@ -182,35 +184,71 @@ public class ReadTIFF {
 
         //empezamos a buscar los 2 primeros bytes de cada tag (cada tag es de 12 bytes)
         for(int i=0;i<numTags;i++){
-            
-        a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
-        aux_tag = this.BytesToInt(a_dataFile);
-        //numero del tag de la altura 257
-        if(aux_tag==257){
-        //copiamos la altura
-        a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
-        height = this.BytesToInt(a_dataFile);
-        System.out.println("Alto: "+height);
-        //tag del ancho 256
-        }else if(aux_tag==256){
+
+            a_dataFile = this.CutBytes(bytesFile, aux_index, aux_index+2);
+            aux_tag = this.BytesToInt(a_dataFile);
+            //numero del tag de la altura 257
+            if(aux_tag==257){
             //copiamos la altura
             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
-            width = this.BytesToInt(a_dataFile);
-            System.out.println("Ancho: "+width);
-        } else if(aux_tag==259){
-             a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
-            compresion = this.BytesToInt(a_dataFile);
-            if(compresion==1){
-            System.out.println("TIFF sin compresion.");    
-            }else if(compresion==5){
-            System.out.println("TIFF con compresion LZW.");     
-            }else{
-            System.out.println("TIFF con compresion no soportada.");
-            return false;
+            height = this.BytesToInt(a_dataFile);
+            System.out.println("Alto: "+height);
+            //tag del ancho 256
+            }else if(aux_tag==256){
+                //copiamos la altura
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                width = this.BytesToInt(a_dataFile);
+                System.out.println("Ancho: "+width);
+            } else if(aux_tag==259){
+                 a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                compresion = this.BytesToInt(a_dataFile);
+                if(compresion==1){
+                    System.out.println("TIFF sin compresion.");
+                }else if(compresion==5){
+                    System.out.println("TIFF con compresion LZW.");
+                }else{
+                    System.out.println("TIFF con compresion no soportada.");
+                    return false;
+                }
+             }
+            else if (aux_tag==317)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                predictor = this.BytesToInt(a_dataFile);
+                System.out.println("Predictor information: " + predictor);
             }
-         } 
-        //avanzamos de tag en tag
-        aux_index+=12;
+            else if (aux_tag==284)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                interleaved = this.BytesToInt(a_dataFile);
+                System.out.println("Planar configuration: " + interleaved);
+            }
+            else if (aux_tag==277)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                samplesPerPixel = this.BytesToInt(a_dataFile);
+                System.out.println("Samples per pixel: " + samplesPerPixel);
+            }
+            else if (aux_tag==322)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                tileWidth = this.BytesToInt(a_dataFile);
+                System.out.println("tileWidth: " + tileWidth);
+            }
+            else if (aux_tag==323)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                tileHeight = this.BytesToInt(a_dataFile);
+                System.out.println("tileWidth: " + tileHeight);
+            }
+            else if (aux_tag==324)
+            {
+                a_dataFile = this.CutBytes(bytesFile, aux_index+8, aux_index+12);
+                int a_tiled = this.BytesToInt(a_dataFile);
+                System.out.println("Tiled: " + a_tiled);
+            }
+            //avanzamos de tag en tag
+            aux_index+=12;
         }
 
 
@@ -223,7 +261,7 @@ public class ReadTIFF {
 
 
 
-    private void FillImageData() throws IOException{
+    private void FillImageData() {
     // Para copiar los datos se empiezan a copiar filas completas en orden inverso. Es decir, la pimera fila esta definida
     // entre [offset - width*3,offset), estas se copian en orden descendente en readImage.bytesImage (El indice para esta operacion
     // es j.
@@ -235,188 +273,55 @@ public class ReadTIFF {
             j += 3 * width;
         }
         }else if(compresion==5){
-
-
-         /*
-          * YA solucione el problema de que se toteara... ahora el problema es q esta leyendo mal...
-          * yo creo q el problema esta en como almacenamos en el diccionario...
-          * utilice 3 metodos q estan todos ahi metidos pero en este comento el METODO 1 es el q esta funcionando
-          * los otros Metodos estan comentados con eso si los quieren ver funcionando toca q comenten el metodo 1
-          * y descomenten todo lo q tenga q ver con el metodo q quieran ver...
-          *
-          *
-          * el metodo 1 es el q esta en Test__LZW
-          * el metodo 2 es con listas y es el implementado en adobe
-          * el metodo 3 esta en esta pagina... el ultimo http://marknelson.us/1989/10/01/lzw-data-compression/ el de modified
-          *
-          * no he dado con el tiro... el 1 y 3 botan bien cuando es blanco... pero el 1 empieza a botar
-          * cadenas muy largas cuando es negro
-          *
-          * en definitiva creo q estamos manejando mal la estructura del diccionario como almacenamos...
-          *
-          * voy a darle a lo de comparacion de imagenes
-          *
-          *
-          */
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(this.CutBytesM(bytesFile, 8, offset));
-        BitInputStream inputStream = new BitInputStream(bais);
-        // Primero se crea un diccionario y se llenan los primeros 256 valores
-        //METODO 1 y 3
-        String[] dict = new String[65536];
-        int iTable;
-        for (iTable = 0; iTable<256;iTable++)
-             dict[iTable]=Character.toString((char)iTable);
-        dict[iTable++]="";
-        dict[iTable++]="";
-        /*
-        for (iTable = 0; iTable<256;iTable++)
-             dict[iTable]=Integer.toBinaryString(iTable);
-        dict[iTable++]=Integer.toBinaryString(0);
-        dict[iTable++]=Integer.toBinaryString(0);
-        */
-
-        //METODO 2
-        /*List<String> dict = new ArrayList<String>();
-        for (iTable = 0; iTable<256;iTable++)
-            dict.add(Integer.toBinaryString(iTable));
-        dict.add(Integer.toBinaryString(iTable++));
-        dict.add(Integer.toBinaryString(iTable++));
-        */
-        
-
-        // Se crea una variable de salida y otras variables temporales del algoritmo
-        // Los nombres son consistentes con la explicación de http://www.dspguide.com/ch27/5.htm
-        //code es el codigo que lee... el k
-        int code;
-        //read dice cuando bits va a leer
-        int read = 9;
-        // aca dice cuando bit a leido... para hacer que el while finalice
-        int bitsread=9;
-        //oldcode es el codigo viejo... el w
-
-
-
-
-
-
-        code = inputStream.readBits(read);
-
-
-
-
-
-        //imprimo el codigo
-        System.out.println("code: "+Integer.toBinaryString(code)+ " " + code);
-
-        //METODO 2/
-        //String oldcode;
-        //ese outstring lo vi para concatenar...
-        //String outString;
-        //oldcode=dict.get(code);
-        //System.out.println("oldcode: "+dict.get(code));
-
-
-
-        //METODO 1
-        String outString;
-        int oldcode;
-        oldcode=code;
-        boolean isOnDict ;
-        //METODO 3
-        //int oldcode;
-        //oldcode=0;
-        //String caracter=dict[code];
-        //String string;
-        while(bitsread<(offset-9)*8){
-
-            //METODO 3
-          /*
-            code = inputStream.readBits(read);
-            boolean isOnDict = false;
-            if(code<=iTable){
-              isOnDict=true;
-            }
-
-
-            if(isOnDict){
-                string=dict[code];
-            }else{
-                string=dict[oldcode];
-                string+=caracter;
-            }
-
-            System.out.println("out: "+string);
-            caracter = string;
-            dict[iTable++]= Integer.toBinaryString(oldcode)+caracter;
-            oldcode = code;
-             */
-             
-
-
-             //METODO 1
-            //este es el mismo codigo q hay en Test LZW
-            code = inputStream.readBits(read);
-           // System.out.println("codigo: "+code);
-            if(code==257)
-                break;
-            isOnDict = false;
             
-            if(code<=iTable){
-              isOnDict=true;
-            }
-
-
-            if(isOnDict){
-              System.out.println("leido " + dict[code]);
-              dict[iTable++] = dict[oldcode] +dict[code].charAt(dict[code].length()-1);
-              oldcode=code;
-            }else{
-              outString=  dict[oldcode] +dict[oldcode].charAt(dict[oldcode].length()-1);
-              System.out.println("leido " + outString);
-              dict[iTable++]=outString;
-              oldcode=code;
-            }
             
-            // salida
             
-
-            //METODO 2
-            /*
-            System.out.println("dimencion: "+dict.size());
-
-            code = inputStream.readBits(read);
-            //System.out.println("code: "+Integer.toBinaryString(code)+ " " + code);
-
-            boolean isOnDict = false;
             
-                if(code<=iTable){
-                    isOnDict=true;
-                    
+            ByteArrayInputStream bais = new ByteArrayInputStream(this.CutBytesM(bytesFile, 8, offset));
+            BitInputStream inputStream = new BitInputStream(bais);
+
+            cTest_LZW decoder = new cTest_LZW();
+
+            try
+            {
+                char[] decoded = decoder.decodeTiff(inputStream,predictor,interleaved,samplesPerPixel,tileWidth,tileHeight, width, height);
+
+                if (samplesPerPixel ==3)
+                {
+                    for (int i = 0; i < decoded.length; i++)
+                    {
+                        readImage.bytesImage[i] = (byte)decoded[i];
+                    }
                 }
-            
-            if(isOnDict){
-                System.out.println("leido1 " + dict.get(code));  // salida
-                dict.add(dict.get(StringFromTable(dict,oldcode)) + dict.get(code).charAt(0));
-                oldcode=String.valueOf(code);
-            }else{
-                outString = dict.get(StringFromTable(dict,oldcode))+dict.get(StringFromTable(dict,oldcode)).charAt(0);
-                System.out.println("leido2 " + outString);
-                dict.add(outString);
-                oldcode=String.valueOf(code);
-            }*/
-            bitsread+=read;
-        }
+                else if(samplesPerPixel == 4)
+                {
+                    int a_i = 0;
+                    for (int i = 0; i < decoded.length; i+=4)
+                    {
+                        readImage.bytesImage[a_i++] = (byte)decoded[i];
+                        readImage.bytesImage[a_i++] = (byte)decoded[i+1];
+                        readImage.bytesImage[a_i++] = (byte)decoded[i+2];
+                    }
+                }
 
+                //flip vertically
 
+                for (int i = 0; i < readImage.getHeight()/2; i++)
+                {
+                    byte[] t_copy = new byte[readImage.getnCanales()*readImage.getWidth()];
 
+                    System.arraycopy(readImage.bytesImage, i * readImage.getWidth() * readImage.getnCanales(), t_copy,0, t_copy.length);
 
+                    System.arraycopy(readImage.bytesImage, (readImage.getHeight()- 1 - i) * readImage.getWidth() * readImage.getnCanales(), readImage.bytesImage,i * readImage.getWidth() * readImage.getnCanales(), t_copy.length);
 
+                    System.arraycopy(t_copy, 0, readImage.bytesImage,(readImage.getHeight()-1 - i) * readImage.getWidth() * readImage.getnCanales(), t_copy.length);
 
-
-
-
-
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Algo salio mal descomprimiendo LZW " + e.getMessage());
+            }
         }
      }
     

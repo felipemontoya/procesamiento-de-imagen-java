@@ -153,6 +153,7 @@ public class ReadBMP {
         compresionBMP = this.BytesToInt(a_dataFile);
 
         spaceColor = ImageData.BGR;
+        
 
         alineacion = ImageData.ALINEADO_4;
 

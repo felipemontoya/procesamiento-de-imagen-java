@@ -22,35 +22,35 @@ public class cTest_LZW {
     int[] table;
 
     public cTest_LZW() {
-        try {
-            
-            // generar un inputSteam
-            String array = "the/rain/in/Spain/falls/mainly/on/the/plain";
-            ByteArrayInputStream bais = new ByteArrayInputStream(array.getBytes());
-            BitInputStream inputStream = new BitInputStream(bais);
-
-//            Ejemplo para generar un bitInputStream desde un array
-//            byte[] array = new byte[100];
-//            ByteArrayInputStream bais = new ByteArrayInputStream(array);
-//            BitInputStream is = new BitInputStream(bais);
-
-            // codificarlo
-            BitOutputStream oStream = encode(inputStream, array.length());
-
-            // decodificarlo
-//            String array2 = "@hP/ aѮ";
-//            ByteArrayInputStream bais2 = new ByteArrayInputStream(array2.getBytes());
-//            BitInputStream iStream = new BitInputStream(bais2);
-            BitInputStream iStream = new BitInputStream("bitOutputStream.txt");
-            decode(iStream);
-
-
-
-//            readBitStream();
-
-        } catch (IOException ex) {
-            Logger.getLogger(cTest_LZW.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//
+//            // generar un inputSteam
+//            String array = "the/rain/in/Spain/falls/mainly/on/the/plain";
+//            ByteArrayInputStream bais = new ByteArrayInputStream(array.getBytes());
+//            BitInputStream inputStream = new BitInputStream(bais);
+//
+////            Ejemplo para generar un bitInputStream desde un array
+////            byte[] array = new byte[100];
+////            ByteArrayInputStream bais = new ByteArrayInputStream(array);
+////            BitInputStream is = new BitInputStream(bais);
+//
+//            // codificarlo
+//            BitOutputStream oStream = encode(inputStream, array.length());
+//
+//            // decodificarlo
+////            String array2 = "@hP/ aѮ";
+////            ByteArrayInputStream bais2 = new ByteArrayInputStream(array2.getBytes());
+////            BitInputStream iStream = new BitInputStream(bais2);
+//            BitInputStream iStream = new BitInputStream("bitOutputStream.txt");
+//            decode(iStream);
+//
+//
+//
+////            readBitStream();
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(cTest_LZW.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 
@@ -197,9 +197,129 @@ public class cTest_LZW {
 
     }
 
-   
+
+    private int GetNextCode(BitInputStream inputStream)throws IOException{
+        int bits = 9;
+        if (iTable > 510)
+            bits = 10;
+        if (iTable > 1022)
+            bits = 11;
+        if (iTable > 2046)
+            bits = 12;
+        if (iTable > 4094){
+            bits = 13;
+            System.out.println("Table got way to large");
+        }
+
+        return inputStream.readBits(bits);
+    }
+
+        String[] dict = new String[4096];
+        int iTable;
+        String outString;
+
+    private void InitializeTable(){
+        for (iTable = 0; iTable<256;iTable++)
+            dict[iTable]=Character.toString((char)iTable);
+        dict[iTable++]="ClearCode";
+        dict[iTable++]="EndOfInformation";
+    }
+    private void OutputString(String out){
+        this.outString = this.outString.concat(out);
+       
+//        System.out.print("leido ");
+//
+//        for (int i = 0; i < out.length(); i++){
+//            char t_char = out.charAt(i);
+//            {
+//                System.out.print("<");
+//                System.out.print((int)t_char);
+//                System.out.print(">");
+//            }
+//
+//        }
+//        System.out.println("");
 
 
+    }
+    private void AddStringToDictionary(String newString){
+        dict[iTable++]=newString;
+    }
+
+  public char[] decodeTiff(BitInputStream inputStream, int predictor, int interleaved, int samplesPerPixel, int w, int h, int width, int height)throws IOException{
+
+      int code = 0;
+      int oldCode = 0;
+      int eoICode = 257;
+      int clearCode = 256;
+      outString = "";
+
+
+      			   while ((code = GetNextCode(inputStream)) != eoICode) {
+					if (code == clearCode) {
+                                                 //System.out.println("New Table");
+						 InitializeTable();
+						 code = GetNextCode(inputStream);
+						 if (code == eoICode)
+							  break;
+						 OutputString(dict[code]);
+						 oldCode = code;
+					}  /* end of ClearCode case */
+					else {
+						 if (iTable > code) { // is code in table?
+							  OutputString(dict[code]);
+							  AddStringToDictionary(dict[oldCode]+  dict[code].substring(0, 1));
+							  oldCode = code;
+						 } else {
+							  String a_OutString = dict[oldCode] + dict[oldCode].substring(0, 1);
+							  OutputString(a_OutString);
+							  AddStringToDictionary(a_OutString);
+							  oldCode = code;
+						 }
+					} /* end of not-ClearCode case */
+			   } /* end of while loop */
+
+      int lenght = outString.length();
+      System.out.println("OutString.lenght " + lenght);
+      char uncompData[] = outString.toCharArray();
+
+
+      if (predictor == 2 && interleaved == 1){ //<R><G><B> image with horizontal predictor
+
+            int count;
+	    for (int j = 0; j < height; j++) {
+
+		count = samplesPerPixel * ( j * width + 1 );
+
+		for (int i = samplesPerPixel; i < width*samplesPerPixel; i++) {
+
+		    uncompData[count] = (char)( (uncompData[count - samplesPerPixel] + uncompData[count]) & 0x00FF);
+//                    if (uncompData[count] > 255)
+//                        uncompData[count] -= 255;
+
+
+//                System.out.print("<");
+//                System.out.print((int)uncompData[count]);
+//                System.out.print(">");
+		    count++;
+		}
+
+          }
+      }
+
+        for (int i = 0; i < uncompData.length; i++){
+            {
+                System.out.print("<");
+                System.out.print((int)uncompData[i]);
+                System.out.print(">");
+            }
+           
+        }
+        System.out.println("");
+
+       return uncompData;
+
+  }
 
 
 }

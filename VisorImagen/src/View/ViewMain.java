@@ -295,18 +295,19 @@ public class ViewMain extends javax.swing.JFrame{
                    //Creación del pipeline
 
 //                    BlankFilter filter1 = new BlankFilter("filtro1");
-                    //ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
-//                    BlankFilter filter3 = new BlankFilter("filtro3");
+//                    ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
+                    DCTFilter8x8 dct = new DCTFilter8x8("dct", 1);
+//                    YUV filter3 = new BlankFilter("filtro3");
                    // Painter painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
                        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
 
                     //Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
 
 //                    filter1.setLastElement(read);
-                    //filter2.setLastElement(read);
+                    dct.setLastElement(read);
 //                    filter3.setLastElement(filter2);
 //                    painterPoint.setLastElement(filter3);
-                    painterTexture.setLastElement(read);
+                    painterTexture.setLastElement(dct);
 
                     this.add(painterTexture.getInternalFrame());
 //                    this.add(painterPoint.getInternalFrame());

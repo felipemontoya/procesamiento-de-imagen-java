@@ -245,19 +245,20 @@ public ImageData(ImageData old){
      * @param espacioColor the espacioColor to set
      */
     private boolean setEspacioColor(int espacioColor) {
-        if (espacioColor == ImageData.RGB ||
-            espacioColor == ImageData.RGBA ||
-            espacioColor == ImageData.CMYK ||
-            espacioColor == ImageData.HSL ||
-            espacioColor == ImageData.HSV ||
-            espacioColor == ImageData.YCBCR ){
+//        if (espacioColor == ImageData.RGB ||
+//            espacioColor == ImageData.RGBA ||
+//            espacioColor == ImageData.CMYK ||
+//            espacioColor == ImageData.HSL ||
+//            espacioColor == ImageData.HSV ||
+//            espacioColor == ImageData.YCBCR )
+        {
             this.espacioColor = espacioColor;
             return true;
         }
-        else{
-            System.out.println("Error en la propiedad del espacio de color");
-            return false;
-        }
+//        else{
+//            System.out.println("Error en la propiedad del espacio de color");
+//            return false;
+//        }
     }
 
     /**
@@ -395,7 +396,7 @@ public ImageData(ImageData old){
             case HSV: temp = "HSV"; break;
             case HSL: temp = "HSL"; break;
             case YCBCR: temp = "YCbCr"; break;
-            default: temp = "Desconocido";
+            default: temp = "Desconocido o no implementado en este método";
         }
         System.out.println("\tEspacio de color: \t" + temp);
 
@@ -432,7 +433,7 @@ public ImageData(ImageData old){
  public static final int HSV = 4;
  public static final int HSL = 5;
  public static final int YCBCR  = 6;
- public static final int BGR  = 6;
+ public static final int BGR  = 7;
 
  //Interlineado
  public static final int INTERLINEADO_SI = 0;

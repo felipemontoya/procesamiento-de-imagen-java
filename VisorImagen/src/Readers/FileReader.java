@@ -132,7 +132,7 @@ public class FileReader extends SourcePipeObject {
 
     private ImageData ReadFileBMP(){
         lectorBMP = new ReadBMP(this.currentFile);
-        return lectorBMP.getImagenData();
+        return lectorBMP.UpdateImage();
     }
 
     private ImageData ReadFileJPEG(){
@@ -142,8 +142,8 @@ public class FileReader extends SourcePipeObject {
     private ImageData ReadFileTIFF(){
         try {
             lectorTIFF = new ReadTIFF(this.currentFile);
-        } catch (IOException ex) {
-            System.out.println("algo paso mal...");
+        } catch (Exception ex) {
+            System.out.println("algo salio mal leyendo el tiff y la excepción se capturó en FileReader...");
         }
         return lectorTIFF.getImagenData();
     }

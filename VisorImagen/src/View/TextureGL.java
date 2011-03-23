@@ -95,7 +95,7 @@ public class TextureGL  extends JInternalFrame
     this.checkImageWidth=image.getWidth();
     this.color=image.getnCanales();
     checkImageBuf =   BufferUtil.newByteBuffer(checkImageHeight * checkImageWidth * color);
-    this.setSize(checkImageWidth,checkImageHeight);
+    this.setSize(checkImageWidth,checkImageHeight + 20);
     getContentPane().add(canvas);
     this.setResizable(true);
     this.setClosable(true);
@@ -135,7 +135,7 @@ public class TextureGL  extends JInternalFrame
         case ImageData.BGR:
             colorSpace = GL.GL_BGR;
             break;
-      }
+    }
 
     gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
 

@@ -93,7 +93,7 @@ public class RGBtoXYZFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.3111242 * RR) - (0.6256560 * GG) + ( 0.0632197 * BB));
+        y = (float)((0.3111242 * RR) + (0.6256560 * GG) + ( 0.0632197 * BB));
         return generateByte(Math.round(y));
     }
 
@@ -102,7 +102,7 @@ public class RGBtoXYZFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.0194811 * RR) - (0.0608902 * GG) - (  0.7448387 * BB));
+        y = (float)((0.0194811 * RR) + (0.0608902 * GG) + (  0.7448387 * BB));
         return generateByte(Math.round(y));
     }
 

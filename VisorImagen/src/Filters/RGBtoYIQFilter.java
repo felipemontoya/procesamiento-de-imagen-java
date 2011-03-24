@@ -11,11 +11,11 @@ import PipeLine.*;
  *
  * @author Jhon
  */
-public class RGBtoYDbDrFilter extends FilterPipeObject{
+public class RGBtoYIQFilter extends FilterPipeObject{
 
     private String name;
 
-    public RGBtoYDbDrFilter(String name) {
+    public RGBtoYIQFilter(String name) {
         super("YUVFilter " + name);
         this.name = name;
         this.dataIn = new DataPackage(DataPackage.Type.ImageData);
@@ -47,12 +47,12 @@ public class RGBtoYDbDrFilter extends FilterPipeObject{
             for(int j = 0;j<data.getWidth();j++){
                 if(RGB){
                   data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]= spaceY(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]);
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]= spaceDb(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]);
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]= spaceDr(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]);
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]= spaceI(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]);
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]= spaceQ(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]);
                 }else{
                   data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]= spaceY(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]);
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]= spaceDb(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]);
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]= spaceDr(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]);
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]= spaceI(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]);
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]= spaceQ(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]);
                 }
 
 
@@ -74,32 +74,35 @@ public class RGBtoYDbDrFilter extends FilterPipeObject{
     }
 
 
+
+
+
+
+
     private byte spaceY(byte R,byte G, byte B){
         float y;
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.299 * RR) + (0.587 * GG) + (0.114 * BB));
+        y = (float)((0.209 * RR) + ( 0.587 * GG) + (0.114 * BB));
         return generateByte(Math.round(y));
     }
 
-    private byte spaceDb(byte R,byte G, byte B){
+    private byte spaceI(byte R,byte G, byte B){
         float y;
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-//        y = (float)((((-0.450 * RR) - (0.883 * GG) + (1.333 * BB))+1.333)*95.6273);
-        y = (float)((((-0.450 * RR) + (0.883 * GG) + (1.333 * BB))));
+        y = (float)((0.595716 * RR) + (-0.274453 * GG) + (-0.321263 * BB));
         return generateByte(Math.round(y));
     }
 
-    private byte spaceDr(byte R,byte G, byte B){
+    private byte spaceQ(byte R,byte G, byte B){
         float y;
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-//        y = (float)((((-1.333 * RR) - (1.116 * GG) - (0.217 * BB))+1.333)*95.6273);
-        y = (float)((((-1.333 * RR) + (1.116 * GG) + (0.217 * BB))));
+        y = (float)((0.211456 * RR) + (-0.522591 * GG) + (  0.311135 * BB));
         return generateByte(Math.round(y));
     }
 

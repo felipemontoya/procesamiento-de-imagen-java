@@ -42,9 +42,7 @@ public class RGBtoYUVFilter extends FilterPipeObject{
             RGB=false;
             break;
       }
-        a_channel[0]=1;
-        float colorg;
-        byte a_byte;
+       
        for(int i = 0;i<data.getHeight();i++){
             for(int j = 0;j<data.getWidth();j++){
                 if(RGB){

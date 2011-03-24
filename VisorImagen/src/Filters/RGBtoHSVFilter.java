@@ -42,19 +42,22 @@ public class RGBtoHSVFilter extends FilterPipeObject{
             RGB=false;
             break;
       }
-        a_channel[0]=1;
-        float colorg;
-        byte a_byte;
+        byte[] hsv=new byte[3];
        for(int i = 0;i<data.getHeight();i++){
             for(int j = 0;j<data.getWidth();j++){
+
                 if(RGB){
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]=;
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]=;
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]=;
+                  hsv= toHSV(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],hsv);
+
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]=hsv[0];
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]=hsv[1];
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]=hsv[2];
                 }else{
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]=;
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]=;
-                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]=;
+                  hsv= toHSV(data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1],data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0],hsv);
+
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]=hsv[0];
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]=hsv[1];
+                  data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]=hsv[2];
                 }
 
 
@@ -76,11 +79,12 @@ public class RGBtoHSVFilter extends FilterPipeObject{
     }
 
 
-    private byte[] toHSV(byte R,byte G, byte B){
-        byte[] hsv=new byte[3];
+    private byte[] toHSV(byte R,byte G, byte B,byte[] hsv){
         int[] rgb = new int[3];
         float aux;
         int max=Integer.MIN_VALUE,min=Integer.MAX_VALUE;
+
+//        fuente : http://en.literateprograms.org/RGB_to_HSV_color_space_conversion_(C)#chunk def:compute value
         rgb[0]=BytesToInt(R);
         rgb[1]=BytesToInt(G);
         rgb[2]=BytesToInt(B);
@@ -92,16 +96,26 @@ public class RGBtoHSVFilter extends FilterPipeObject{
                 min=i;
 
         }
+        hsv[2]=generateByte(max);
 
-        if(max==min)
-            hsv[0]=generateByte(0);
-        else if(max==rgb[0] && rgb[1]>=rgb[2])
-            hsv[0]=generateByte(60*((rgb[1]-rgb[2])/(max-min))+0);
-        else if(max==rgb[0] && rgb[1]<rgb[2])
-            hsv[0]=generateByte(60*((rgb[1]-rgb[2])/(max-min))+360);
-        else if(max==rgb[1])
-            hsv[0]=generateByte(60*((rgb[2]-rgb[0])/(max-min))+120);
-        else if(max==rgb[2])
+        if(max==0){
+            hsv[0]=hsv[1]=0x0;
+            return hsv;
+        }
+
+        hsv[1] =generateByte((int)(255*(max - min)/max));
+        if (hsv[1] == 0x0) {
+            hsv[0] = 0x0;
+            return hsv;
+        }
+
+        if (max == rgb[0]) {
+            hsv[0] =generateByte( (int)(0 + 43*(rgb[1] - rgb[2])/(max - min)));
+        } else if (max == rgb[1]) {
+            hsv[0] =generateByte( (int)(85 + 43*(rgb[2] - rgb[0])/(max - min)));
+        } else /* rgb_max == rgb.b */ {
+            hsv[0] =generateByte( (int)(171 + 43*(rgb[0] - rgb[1])/(max - min)));
+        }
             
 
 

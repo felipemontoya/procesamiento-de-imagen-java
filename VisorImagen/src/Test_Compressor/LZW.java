@@ -40,12 +40,16 @@ public class LZW {
                 omega+=String.valueOf(k);
                 
             }else{
-                System.out.println(codeFromString(omega));
+                
                 dict[iTable++]=omega+String.valueOf(k);
+                System.out.println(codeFromString(omega));
                 omega=String.valueOf(k);
             }
             i++;
         }
+        System.out.println(codeFromString(omega));
+        System.out.println(257);
+
         System.out.println("Diccionario");
 
         for(i=258;i<iTable;i++)
@@ -89,7 +93,7 @@ public class LZW {
 
     private void ImageUP (ImageData image){
         byte aux,aux1,aux2;
-        int widthStep = image.getWidthStep();
+        int widthStep = image.getWidth();
         int heigh = image.getHeight();
         for(int i = 0;i<heigh/2;i++){
                     for(int j = 0;j<image.getWidth();j++){
@@ -110,3 +114,5 @@ public class LZW {
 
 
 }
+//Transformaciones de color...
+//transformda discreta

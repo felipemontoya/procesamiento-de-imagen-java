@@ -55,6 +55,14 @@
 
 package View;
 
+import Filters.RGBtoXYZFilter;
+import Filters.RGBtoHSLFilter;
+import Filters.RGBtoYUVFilter;
+import Filters.RGBtoHSVFilter;
+import Filters.RGBtoYDbDrFilter;
+import Filters.RGBtoCMYFilter;
+import Filters.GrayScaleFilter;
+import Filters.SpaceColor.*;
 import Readers.FileReader;
 import Data.ImageData;
 import test_Draw.cTest_puntoJOGL;
@@ -68,6 +76,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
 
 import Filters.*;
+import Filters.RGBtoYIQFilter;
 
 /**
  *
@@ -140,6 +149,8 @@ public class ViewMain extends javax.swing.JFrame{
         texture = new TextureGL();
         Filtros.setEnabled(false);
         Compresor.setEnabled(false);
+        ModelosColor.setEnabled(false);
+        Tranformadas.setEnabled(false);
 //        this.add(texture);
         //PintorGL pintor = new PintorGL();
        //pintor.run();
@@ -168,11 +179,19 @@ public class ViewMain extends javax.swing.JFrame{
         RadioFilterR = new javax.swing.JRadioButtonMenuItem();
         RadioFilterB = new javax.swing.JRadioButtonMenuItem();
         RadioFilterGray = new javax.swing.JRadioButtonMenuItem();
+        ModelosColor = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         RadioFilterYUV = new javax.swing.JRadioButtonMenuItem();
         RadioFilterHSV = new javax.swing.JRadioButtonMenuItem();
+        RadioFilterYIQ = new javax.swing.JRadioButtonMenuItem();
+        RadioFilterHSL = new javax.swing.JRadioButtonMenuItem();
+        RadioFilterCMY = new javax.swing.JRadioButtonMenuItem();
+        RadioFilterXYZ = new javax.swing.JRadioButtonMenuItem();
+        RadioFlterYDbDr = new javax.swing.JRadioButtonMenuItem();
         Compresor = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        Tranformadas = new javax.swing.JMenu();
+        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -243,15 +262,17 @@ public class ViewMain extends javax.swing.JFrame{
 
         jMenuBar1.add(Filtros);
 
-        jMenu2.setText("Modelos Color");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        ModelosColor.setText("Modelos Color");
+        ModelosColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                ModelosColorActionPerformed(evt);
             }
         });
 
+        jMenu2.setText("RGB to");
+
         FiltorsModelos.add(RadioFilterYUV);
-        RadioFilterYUV.setText("RGB - YUV");
+        RadioFilterYUV.setText("YUV");
         RadioFilterYUV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RadioFilterYUVActionPerformed(evt);
@@ -260,7 +281,7 @@ public class ViewMain extends javax.swing.JFrame{
         jMenu2.add(RadioFilterYUV);
 
         FiltorsModelos.add(RadioFilterHSV);
-        RadioFilterHSV.setText("RGB - HSV");
+        RadioFilterHSV.setText("HSV");
         RadioFilterHSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RadioFilterHSVActionPerformed(evt);
@@ -268,7 +289,54 @@ public class ViewMain extends javax.swing.JFrame{
         });
         jMenu2.add(RadioFilterHSV);
 
-        jMenuBar1.add(jMenu2);
+        FiltorsModelos.add(RadioFilterYIQ);
+        RadioFilterYIQ.setText("YIQ");
+        RadioFilterYIQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFilterYIQActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFilterYIQ);
+
+        FiltorsModelos.add(RadioFilterHSL);
+        RadioFilterHSL.setText("HSL");
+        RadioFilterHSL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFilterHSLActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFilterHSL);
+
+        FiltorsModelos.add(RadioFilterCMY);
+        RadioFilterCMY.setText("CMY");
+        RadioFilterCMY.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFilterCMYActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFilterCMY);
+
+        FiltorsModelos.add(RadioFilterXYZ);
+        RadioFilterXYZ.setText("XYZ");
+        RadioFilterXYZ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFilterXYZActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFilterXYZ);
+
+        FiltorsModelos.add(RadioFlterYDbDr);
+        RadioFlterYDbDr.setText("YDbDr");
+        RadioFlterYDbDr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFlterYDbDrActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFlterYDbDr);
+
+        ModelosColor.add(jMenu2);
+
+        jMenuBar1.add(ModelosColor);
 
         Compresor.setText("Compresores");
 
@@ -281,6 +349,24 @@ public class ViewMain extends javax.swing.JFrame{
         Compresor.add(jMenuItem2);
 
         jMenuBar1.add(Compresor);
+
+        Tranformadas.setText("Transformadas");
+        Tranformadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TranformadasActionPerformed(evt);
+            }
+        });
+
+        FiltorsModelos.add(jRadioButtonMenuItem1);
+        jRadioButtonMenuItem1.setText("DCT");
+        jRadioButtonMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItem1ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jRadioButtonMenuItem1);
+
+        jMenuBar1.add(Tranformadas);
 
         setJMenuBar(jMenuBar1);
 
@@ -337,6 +423,8 @@ public class ViewMain extends javax.swing.JFrame{
                     isFileOpen = true;
                      Filtros.setEnabled(true);
                      Compresor.setEnabled(true);
+                     ModelosColor.setEnabled(true);
+                    Tranformadas.setEnabled(true);
                    //crea el lector de imagenes y le pasa el archivo actual.
                    //FileReader read = new FileReader(currentFile);
                      read = new FileReader(currentFile);
@@ -344,7 +432,7 @@ public class ViewMain extends javax.swing.JFrame{
 
 //                    BlankFilter filter1 = new BlankFilter("filtro1");
 //                    ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
-                    DCTFilter8x8 dct = new DCTFilter8x8("dct", 1);
+//                    DCTFilter8x8 dct = new DCTFilter8x8("dct", 1);
 //                    YUV filter3 = new BlankFilter("filtro3");
                    // Painter painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
                        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
@@ -352,10 +440,10 @@ public class ViewMain extends javax.swing.JFrame{
                     //Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
 
 //                    filter1.setLastElement(read);
-                    dct.setLastElement(read);
+//                    dct.setLastElement(read);
 //                    filter3.setLastElement(filter2);
 //                    painterPoint.setLastElement(filter3);
-                    painterTexture.setLastElement(dct);
+                    painterTexture.setLastElement(read);
 
                     this.add(painterTexture.getInternalFrame());
 //                    this.add(painterPoint.getInternalFrame());
@@ -440,15 +528,9 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterYUVActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        this.remove(painterTexture.getInternalFrame());
-        RGBtoHSVFilter filter2 = new RGBtoHSVFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-        filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
-        painterTexture.setLastElement(filter2);
-        painterTexture.Update();
-    }//GEN-LAST:event_jMenu2ActionPerformed
+    private void ModelosColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModelosColorActionPerformed
+      
+    }//GEN-LAST:event_ModelosColorActionPerformed
 
     private void RadioFilterHSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterHSVActionPerformed
        this.remove(painterTexture.getInternalFrame());
@@ -464,6 +546,95 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterHSVActionPerformed
+
+    private void TranformadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranformadasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TranformadasActionPerformed
+
+    private void jRadioButtonMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem1ActionPerformed
+      this.remove(painterTexture.getInternalFrame());
+        DCTFilter8x8 filter2 = new DCTFilter8x8("filtro canal",1);
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_jRadioButtonMenuItem1ActionPerformed
+
+    private void RadioFilterCMYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterCMYActionPerformed
+       this.remove(painterTexture.getInternalFrame());
+        RGBtoCMYFilter filter2 = new RGBtoCMYFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFilterCMYActionPerformed
+
+    private void RadioFilterHSLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterHSLActionPerformed
+        this.remove(painterTexture.getInternalFrame());
+        RGBtoHSLFilter filter2 = new RGBtoHSLFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFilterHSLActionPerformed
+
+    private void RadioFlterYDbDrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFlterYDbDrActionPerformed
+       this.remove(painterTexture.getInternalFrame());
+        RGBtoYDbDrFilter filter2 = new RGBtoYDbDrFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFlterYDbDrActionPerformed
+
+    private void RadioFilterXYZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterXYZActionPerformed
+       this.remove(painterTexture.getInternalFrame());
+        RGBtoXYZFilter filter2 = new RGBtoXYZFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFilterXYZActionPerformed
+
+    private void RadioFilterYIQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterYIQActionPerformed
+        this.remove(painterTexture.getInternalFrame());
+        RGBtoYIQFilter filter2 = new RGBtoYIQFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFilterYIQActionPerformed
 
     /**
     * @param args the command line arguments
@@ -488,18 +659,26 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.ButtonGroup FiltorsModelos;
     private javax.swing.JMenu Filtros;
     private javax.swing.ButtonGroup FiltrosBase;
+    private javax.swing.JMenu ModelosColor;
     private javax.swing.JRadioButtonMenuItem RadioFilterB;
+    private javax.swing.JRadioButtonMenuItem RadioFilterCMY;
     private javax.swing.JRadioButtonMenuItem RadioFilterG;
     private javax.swing.JRadioButtonMenuItem RadioFilterGray;
+    private javax.swing.JRadioButtonMenuItem RadioFilterHSL;
     private javax.swing.JRadioButtonMenuItem RadioFilterHSV;
     private javax.swing.JRadioButtonMenuItem RadioFilterNone;
     private javax.swing.JRadioButtonMenuItem RadioFilterR;
+    private javax.swing.JRadioButtonMenuItem RadioFilterXYZ;
+    private javax.swing.JRadioButtonMenuItem RadioFilterYIQ;
     private javax.swing.JRadioButtonMenuItem RadioFilterYUV;
+    private javax.swing.JRadioButtonMenuItem RadioFlterYDbDr;
+    private javax.swing.JMenu Tranformadas;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables

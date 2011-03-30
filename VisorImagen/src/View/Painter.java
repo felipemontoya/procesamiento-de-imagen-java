@@ -100,7 +100,7 @@ public class Painter extends SinkPipeObject {
 
         switch(this.type){
             case PointToPoint:
-                pointPainter.DrawGLInit(this.dataIn.getImageData(), name);
+//                pointPainter.DrawGLInit(this.dataIn.getImageData(), name,false);
                 break;
             case Texture:
                 texturePainter.TextureGLInit(this.dataIn.getImageData(), name);

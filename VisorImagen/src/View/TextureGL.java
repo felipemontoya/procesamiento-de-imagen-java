@@ -91,6 +91,7 @@ public class TextureGL  extends JInternalFrame
     canvas = new GLCanvas(caps);
     canvas.addGLEventListener(this);
     canvas.addKeyListener(this);
+
     this.checkImageHeight=image.getHeight();
     this.checkImageWidth=image.getWidth();
     this.color=image.getnCanales();
@@ -136,7 +137,6 @@ public class TextureGL  extends JInternalFrame
             colorSpace = GL.GL_BGR;
             break;
     }
-
     gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
 
     gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, color, checkImageWidth, checkImageHeight, 0,

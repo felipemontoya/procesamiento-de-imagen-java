@@ -18,6 +18,7 @@ import java.io.*;
  * @author Owen Astrachan
  * @version 1.0, July 2000
  * @version 2.0, October 2004
+ * 
  */
 
 public class BitInputStream extends InputStream

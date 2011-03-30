@@ -136,6 +136,27 @@ public ImageData(ImageData old){
  System.arraycopy(old.bytesImage, 0, this.bytesImage, 0, old.bytesImage.length);
 
 }
+
+public ImageData(ImageData old,int w,int h){
+
+ this.nSize = old.getnSize();
+ this.dSize = old.getdSize();  // sizeof(datosImagen)
+ this.nCanales = old.getnCanales();
+ this.depth = old.getDepth();
+ this.espacioColor = old.getEspacioColor();
+ this.interlineado = old.getInterlineado();
+ this.origen = old.getOrigen();
+ this.alineacion = old.getAlineacion();
+ this.width = w;
+ this.height = h;
+ this.widthStep = old.getWidthStep();
+
+ this.bytesImage = new byte[h*w*this.nCanales];
+ for(int i = 0;i<bytesImage.length;i++)
+     bytesImage[i]=0x0;
+
+}
+
  public ImageData(int extencion,int width, int height, int byteimformacion,boolean formatoendian, int compresionbmp,int bpp,byte[][] datosImagen){
     /*if (this.setWidth(width))
     if (this.setHeight(height)){

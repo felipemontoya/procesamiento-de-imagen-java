@@ -6,6 +6,8 @@
 package View;
 
 import Data.ImageData;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -33,6 +35,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 	 * nuestro panel principal, el contenedor
 	 * será el JFrame en general. */
 	Container contenedor;
+        boolean rotate;
 
 	/* El toolkit es útil para obtener
 	 * información básica de la computadora, cómo la resolución
@@ -60,13 +63,16 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
    // Constructor
     public DrawGL(){
         super();
+        rotate=false;
     }
-
-    public void DrawGLInit(ImageData i,String nombre)
+    int ancho;
+    private double grados;
+    public void DrawGLInit(ImageData i,String nombre,boolean t,double g)
     {
     	/* Llamamos a la superclase de JFrame
     	 * la cual colocará un título al mismo. */
-
+         rotate=t;
+         grados = g;
         this.setTitle(nombre);
     	/* Instanciamos un objeto de Toolkit para obtener
     	 * los datos generales de nuestra computadora. */
@@ -112,7 +118,10 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     	 * de la pantalla, definimos el tamaño del JFrame.
     	 * En este caso será del tamaño de la mitad de ancho
     	 * de la pantalla por la mitad de altura de la pantalla. */
-    	this.setSize(anchura, altura);
+
+        ancho =(int) Math.sqrt((anchura*anchura) + (altura*altura));
+
+    	this.setSize(ancho, ancho);
 
     	/* Ahora situamos al JFrame exactamente en el centro de la
     	 * pantalla donde se está ejecutando el programa */
@@ -122,6 +131,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     	this.setResizable(true);
     	this.setVisible(true);
 
+    this.setClosable(true);
     	/* Finalmente, le indicamos a Java que queremos que nuestro
     	 * JFrame se cierre cuando demos click en el botón cerrar
     	 * que aparecerá en la parte superior derecha del mismo. */
@@ -163,7 +173,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		 * JFrame. De esta manera, si existe un cambio en  el tamaño del
 		 * JFrame, el espacio de trabajo se ajustará al tamaño del mismo para
 		 * que el punto siga mostrándose en el centro. */
-		gl.glOrtho(0, anchura, 0, altura, -1.0, 1.0);
+		gl.glOrtho(0, ancho, 0, ancho, -1.0, 1.0);
 
 		/* Si el JFrame se dimensiona, se vuelven a dibujar los gráficos. */
         canvas.repaint();
@@ -190,25 +200,48 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
 		 * a dibujar con el método glBegin(GLEnum Mode) y que finalizaremos
 		 * con el método glEnd(). Dentro de ambos métodos irán TODOS
 		 * los gráficos que dibujaremos. */
-
+                
+                
+                 double g = grados;
+                g*= (Math.PI / 180);
+                int jj;
+                int ii;
+                double a;
+                double b;
                 int widthStep = image.getWidthStep();
                 int nChannels = image.getnCanales();
                 gl.glBegin(GL.GL_POINTS);
 
                 for(int i = 0;i<image.getHeight();i++){
                     for(int j = 0;j<image.getWidth();j++){
-                        gl.glColor3ub(image.bytesImage[(i * widthStep + j ) * 3 + 2],
+                        gl.glColor3ub(image.bytesImage[(i * widthStep + j ) * 3 + 0],
                                 image.bytesImage[(i * widthStep + j ) * 3 + 1],
-                                image.bytesImage[(i * widthStep + j ) * 3 + 0]);
+                                image.bytesImage[(i * widthStep + j ) * 3 + 2]);
+                        if(rotate){
+
+                        ii=i-(altura)/2;
+                        jj=j-(anchura)/2;
+                        a=((jj*Math.cos(g))-(ii*Math.sin(g)));
+                        b=((jj*Math.sin(g))+(ii*Math.cos(g)));
+                        a+=(ancho)/2;
+                        b+=(ancho)/2;
+                        gl.glVertex2i((int)a,(int)b);
+
+                        }else{
                         gl.glVertex2i(j,i);
+                        }
                     }
                 }
+
 //(i * widthStep + j ) * nCanales + k
 		gl.glEnd();
 
 		/* Indicamos que dibuje inmediatamente después utilizando el método
 		 * glFlush(); */
 		gl.glFlush();
+            
+                
+        
     }
 
 
@@ -217,6 +250,20 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     {
     	/* Método para el manejo de eventos del cambio de visualizador, este
     	 * tampoco lo utilizaremos ahora. */
+    }
+
+    /**
+     * @return the grados
+     */
+    public double getGrados() {
+        return grados;
+    }
+
+    /**
+     * @param grados the grados to set
+     */
+    public void setGrados(double grados) {
+        this.grados = grados;
     }
 
     // Finalizan los métodos utilizados por GLEventListener

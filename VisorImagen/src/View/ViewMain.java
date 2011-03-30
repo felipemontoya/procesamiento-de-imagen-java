@@ -55,14 +55,7 @@
 
 package View;
 
-import Filters.RGBtoXYZFilter;
-import Filters.RGBtoHSLFilter;
-import Filters.RGBtoYUVFilter;
-import Filters.RGBtoHSVFilter;
-import Filters.RGBtoYDbDrFilter;
-import Filters.RGBtoCMYFilter;
-import Filters.GrayScaleFilter;
-import Filters.SpaceColor.*;
+
 import Readers.FileReader;
 import Data.ImageData;
 import test_Draw.cTest_puntoJOGL;
@@ -77,6 +70,7 @@ import javax.swing.filechooser.FileFilter;
 
 import Filters.*;
 import Filters.RGBtoYIQFilter;
+import PSNR.PSNR;
 
 /**
  *
@@ -149,9 +143,10 @@ public class ViewMain extends javax.swing.JFrame{
         texture = new TextureGL();
         Filtros.setEnabled(false);
         Compresor.setEnabled(false);
+        Comparar.setEnabled(false);
         ModelosColor.setEnabled(false);
         Tranformadas.setEnabled(false);
-//        this.add(texture);
+        this.add(draw);
         //PintorGL pintor = new PintorGL();
        //pintor.run();
 
@@ -168,6 +163,11 @@ public class ViewMain extends javax.swing.JFrame{
 
         FiltrosBase = new javax.swing.ButtonGroup();
         FiltorsModelos = new javax.swing.ButtonGroup();
+        RotarFrame = new javax.swing.JFrame();
+        jSlider1 = new javax.swing.JSlider();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        Grados = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -187,11 +187,71 @@ public class ViewMain extends javax.swing.JFrame{
         RadioFilterHSL = new javax.swing.JRadioButtonMenuItem();
         RadioFilterCMY = new javax.swing.JRadioButtonMenuItem();
         RadioFilterXYZ = new javax.swing.JRadioButtonMenuItem();
+        RadioFilterLMS = new javax.swing.JRadioButtonMenuItem();
         RadioFlterYDbDr = new javax.swing.JRadioButtonMenuItem();
         Compresor = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         Tranformadas = new javax.swing.JMenu();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
+        Comparar = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+
+        RotarFrame.setMinimumSize(new java.awt.Dimension(311, 100));
+        RotarFrame.setResizable(false);
+
+        jSlider1.setMaximum(360);
+        jSlider1.setMinimum(-360);
+        jSlider1.setValue(0);
+        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider1StateChanged(evt);
+            }
+        });
+
+        jButton1.setText("Rotar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Grados: ");
+
+        Grados.setText("0");
+
+        javax.swing.GroupLayout RotarFrameLayout = new javax.swing.GroupLayout(RotarFrame.getContentPane());
+        RotarFrame.getContentPane().setLayout(RotarFrameLayout);
+        RotarFrameLayout.setHorizontalGroup(
+            RotarFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RotarFrameLayout.createSequentialGroup()
+                .addGroup(RotarFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RotarFrameLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(RotarFrameLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(Grados)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+        RotarFrameLayout.setVerticalGroup(
+            RotarFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RotarFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RotarFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addGroup(RotarFrameLayout.createSequentialGroup()
+                        .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(RotarFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(Grados))))
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -325,6 +385,15 @@ public class ViewMain extends javax.swing.JFrame{
         });
         jMenu2.add(RadioFilterXYZ);
 
+        FiltorsModelos.add(RadioFilterLMS);
+        RadioFilterLMS.setText("LMS");
+        RadioFilterLMS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioFilterLMSActionPerformed(evt);
+            }
+        });
+        jMenu2.add(RadioFilterLMS);
+
         FiltorsModelos.add(RadioFlterYDbDr);
         RadioFlterYDbDr.setText("YDbDr");
         RadioFlterYDbDr.addActionListener(new java.awt.event.ActionListener() {
@@ -366,7 +435,29 @@ public class ViewMain extends javax.swing.JFrame{
         });
         Tranformadas.add(jRadioButtonMenuItem1);
 
+        FiltorsModelos.add(jRadioButtonMenuItem2);
+        jRadioButtonMenuItem2.setSelected(true);
+        jRadioButtonMenuItem2.setText("Rotar");
+        jRadioButtonMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItem2ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jRadioButtonMenuItem2);
+
         jMenuBar1.add(Tranformadas);
+
+        Comparar.setText("Comparar");
+
+        jMenuItem3.setText("PSNR");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        Comparar.add(jMenuItem3);
+
+        jMenuBar1.add(Comparar);
 
         setJMenuBar(jMenuBar1);
 
@@ -423,6 +514,7 @@ public class ViewMain extends javax.swing.JFrame{
                     isFileOpen = true;
                      Filtros.setEnabled(true);
                      Compresor.setEnabled(true);
+                     Comparar.setEnabled(true);
                      ModelosColor.setEnabled(true);
                     Tranformadas.setEnabled(true);
                    //crea el lector de imagenes y le pasa el archivo actual.
@@ -438,13 +530,16 @@ public class ViewMain extends javax.swing.JFrame{
                        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
 
                     //Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
-
+//                    RotateFilter a = new RotateFilter("rotar",0);
 //                    filter1.setLastElement(read);
 //                    dct.setLastElement(read);
 //                    filter3.setLastElement(filter2);
 //                    painterPoint.setLastElement(filter3);
-                    painterTexture.setLastElement(read);
-
+//                    a.setLastElement(read);
+                   painterTexture.setLastElement(read);
+                       
+//                    draw.DrawGLInit(read.readImage(),"");
+//                    draw.setVisible(true);
                     this.add(painterTexture.getInternalFrame());
 //                    this.add(painterPoint.getInternalFrame());
 //                    painterPoint.Update();
@@ -553,9 +648,15 @@ public class ViewMain extends javax.swing.JFrame{
 
     private void jRadioButtonMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem1ActionPerformed
       this.remove(painterTexture.getInternalFrame());
-        DCTFilter8x8 filter2 = new DCTFilter8x8("filtro canal",1);
+        
+        RGBtoYUVFilter filter3 = new RGBtoYUVFilter("filtro canal");
         painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-        filter2.setLastElement(read);
+        filter3.setLastElement(read);
+
+
+       DCTFilter filter2 = new DCTFilter("filtro canal",1);
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(filter3);
         this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
@@ -636,6 +737,79 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterYIQActionPerformed
 
+    private void RadioFilterLMSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterLMSActionPerformed
+       this.remove(painterTexture.getInternalFrame());
+        RGBtoLMSFilter filter2 = new RGBtoLMSFilter("filtro canal");
+        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+        filter2.setLastElement(read);
+//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
+//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+//        filter3.setLastElement(filter2);
+
+
+        this.add(painterTexture.getInternalFrame());
+        painterTexture.setLastElement(filter2);
+        painterTexture.Update();
+    }//GEN-LAST:event_RadioFilterLMSActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        FileReader reader;
+        Painter p;
+        ImageData i,k;
+        PSNR psnr;
+        JFileChooser chooserFile = new JFileChooser(System.getProperty("user.dir"));
+            //filtro para solo leer imagenes
+            FileFilter filterImage = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "bmp", "tif", "tiff");
+            chooserFile.addChoosableFileFilter(filterImage);
+            //variable que nos indica que se puede abrir el archivo elegido
+            int a_result = chooserFile.showOpenDialog(null);
+            if(a_result == JFileChooser.APPROVE_OPTION){
+                File currentFile = chooserFile.getSelectedFile();
+                //impresion de los datos del archivo, modificacion del titulo
+                if (currentFile.canRead() && currentFile.canWrite() && currentFile.exists()){
+                reader = new FileReader(currentFile);
+                i=read.readImage();
+                k=reader.readImage();
+                psnr=new PSNR(i,k);
+                if(psnr.isDimentionEquals()){
+                    p= new Painter(currentFile.getName(), Painter.Type.Texture);
+                    p.setLastElement(reader);
+                    this.add(p.getInternalFrame());
+                    p.Update();
+                    System.out.println("****************************");
+                    System.out.println("PSNR: "+psnr.result());
+                    System.out.println("****************************");
+                    }
+                else{
+                   System.out.println("****************************");
+                   System.out.println("Dimenciones de Imagen Distintas");
+                   System.out.println("****************************");
+                }
+
+                }
+            }
+        
+        
+        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jRadioButtonMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem2ActionPerformed
+    RotarFrame.setVisible(true);
+    }//GEN-LAST:event_jRadioButtonMenuItem2ActionPerformed
+
+    private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
+      Grados.setText(String.valueOf(jSlider1.getValue()));
+    }//GEN-LAST:event_jSlider1StateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    this.remove(painterTexture.getInternalFrame());
+    this.remove(draw);
+    draw = new DrawGL();
+    draw.DrawGLInit(read.readImage(),"",true,jSlider1.getValue());
+    this.add(draw);
+    draw.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -655,10 +829,12 @@ public class ViewMain extends javax.swing.JFrame{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Comparar;
     private javax.swing.JMenu Compresor;
     private javax.swing.ButtonGroup FiltorsModelos;
     private javax.swing.JMenu Filtros;
     private javax.swing.ButtonGroup FiltrosBase;
+    private javax.swing.JLabel Grados;
     private javax.swing.JMenu ModelosColor;
     private javax.swing.JRadioButtonMenuItem RadioFilterB;
     private javax.swing.JRadioButtonMenuItem RadioFilterCMY;
@@ -666,20 +842,27 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JRadioButtonMenuItem RadioFilterGray;
     private javax.swing.JRadioButtonMenuItem RadioFilterHSL;
     private javax.swing.JRadioButtonMenuItem RadioFilterHSV;
+    private javax.swing.JRadioButtonMenuItem RadioFilterLMS;
     private javax.swing.JRadioButtonMenuItem RadioFilterNone;
     private javax.swing.JRadioButtonMenuItem RadioFilterR;
     private javax.swing.JRadioButtonMenuItem RadioFilterXYZ;
     private javax.swing.JRadioButtonMenuItem RadioFilterYIQ;
     private javax.swing.JRadioButtonMenuItem RadioFilterYUV;
     private javax.swing.JRadioButtonMenuItem RadioFlterYDbDr;
+    private javax.swing.JFrame RotarFrame;
     private javax.swing.JMenu Tranformadas;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 

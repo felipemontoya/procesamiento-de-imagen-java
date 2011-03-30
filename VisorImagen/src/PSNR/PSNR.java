@@ -30,7 +30,7 @@ public class PSNR {
             return false;
     }
 
-    public void calc(){
+    private void calc(){
         MSE=0;
         int im,km;
         for(int i=0;i<I.bytesImage.length;i++){
@@ -50,6 +50,7 @@ public class PSNR {
     }
 
     public double result(){
+        calc();
         return 20*Math.log10(MAX/MSE);
     }
 

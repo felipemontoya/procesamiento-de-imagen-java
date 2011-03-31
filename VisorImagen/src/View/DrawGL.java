@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.*;
 
 /* Importamos las clases Container, BorderLayout,
  * Toolkit y Dimension del paquete AWT. */
@@ -26,7 +27,7 @@ import javax.swing.JInternalFrame;
  *
  * @author Jhon
  */
-public class DrawGL extends JInternalFrame implements GLEventListener{
+public class DrawGL extends JInternalFrame implements GLEventListener, MouseListener{
     /* Necesitaremos un JPanel para introducir
 	 * los elementos que se mostrarán en el JFrame. */
 	JPanel panelDibujo;
@@ -88,31 +89,34 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     	anchura =  i.getWidth();
 
     	// Creamos el objeto de la clase GLCanvas
+        if (canvas!=null){
+        getContentPane().remove(canvas);
+        }
         canvas = new GLCanvas();
 
         /* Añadimos el oyente de eventos para el renderizado de OpenGL,
          * esto automáticamente llamará a init() y renderizará los
          * gráficos cuyo código haya sido escrito dentro del método display() */
         canvas.addGLEventListener(this);
-
+        canvas.addMouseListener(this);
         /* Inicializamos la interfaz de GL la cual utilizaremos
         * para llamar a las funciones de OpenGL */
         gl = canvas.getGL();
 
-    	panelDibujo = new JPanel(new BorderLayout());
+//    	panelDibujo = new JPanel(new BorderLayout());
 
     	/* Agregamos el objeto GLCanvas dentro del JPanel
     	 * para que los gráficos renderizados dentro del
     	 * objeto GLCanvas puedan ser visualizados. */
-    	panelDibujo.add(canvas, BorderLayout.CENTER);
+    	getContentPane().add(canvas, BorderLayout.CENTER);
 
     	/* Le decimos a Java que el contenedor será el mismo JFrame */
-    	contenedor = getContentPane();
+//    	contenedor = getContentPane();
 
     	/* Agregamos el JPanel dentro del JFrame utilizando el
     	 * contenedor creado previamente, situando al JPanel
     	 * en el centro del JFrame utilizando BorderLayout */
-    	contenedor.add(panelDibujo, BorderLayout.CENTER);
+//    	contenedor.add(panelDibujo, BorderLayout.CENTER);
 
     	/* Ya que tenemos obtenida la altura y anchura, en pixeles
     	 * de la pantalla, definimos el tamaño del JFrame.
@@ -137,6 +141,30 @@ public class DrawGL extends JInternalFrame implements GLEventListener{
     	 * que aparecerá en la parte superior derecha del mismo. */
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    public int initPointX , initPointY , endPointX, endPointY;
+    public void mouseClicked(MouseEvent mouse){ System.out.println("Rotation"); }
+    public void mouseEntered(MouseEvent mouse){ /*System.out.println("entered");*/ }
+    public void mouseExited(MouseEvent mouse){ /*System.out.println("exited");*/}
+    public void mousePressed(MouseEvent mouse){
+//        System.out.println("pressed");
+        initPointX = mouse.getX();
+        initPointY = mouse.getY();
+    }
+    public void mouseReleased(MouseEvent mouse){
+//        System.out.println("released");
+        endPointX = mouse.getX();
+        endPointY = mouse.getY();
+
+        double distance = endPointX-initPointX;
+        grados = -distance;
+        canvas.repaint();
+        canvas.display();
+        
+        System.out.println("Distancia: " + distance);
+        //this.DrawGLInit(image,"",true,grados);
+    }
+
 
     // A continuación se muestran los métodos utilizados por GLEventListener
 

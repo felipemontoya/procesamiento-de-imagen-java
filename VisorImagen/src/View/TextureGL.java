@@ -54,7 +54,7 @@ import Readers.*;
 import Data.ImageData;
 import java.io.File;
 import PipeLine.*;
-
+import Interaction.*;
 
 /**
  *
@@ -65,7 +65,7 @@ import PipeLine.*;
  cargan una clase ImageData en una textura válida de JOGL*/
 
 public class TextureGL  extends JInternalFrame
-    implements GLEventListener, KeyListener
+    implements GLEventListener, KeyListener, MouseListener
 {
   private GLU glu;
   private GLCapabilities caps;
@@ -78,8 +78,32 @@ public class TextureGL  extends JInternalFrame
   //private byte checkImage[][][] = new byte[checkImageWidth][checkImageHeight][color];
   private ByteBuffer checkImageBuf;
 
+ double[] clickDistance = new double[1];
+  
   public TextureGL(){
         super();
+    }
+
+     public int initPointX , initPointY , endPointX, endPointY;
+
+     double[] dist;
+
+    public void mouseClicked(MouseEvent mouse){ System.out.println("Rotation"); }
+    public void mouseEntered(MouseEvent mouse){ /*System.out.println("entered");*/ }
+    public void mouseExited(MouseEvent mouse){ /*System.out.println("exited");*/}
+    public void mousePressed(MouseEvent mouse){
+//        System.out.println("pressed");
+        initPointX = mouse.getX();
+        initPointY = mouse.getY();
+    }
+    public void mouseReleased(MouseEvent mouse){
+//        System.out.println("released");
+        endPointX = mouse.getX();
+        endPointY = mouse.getY();
+
+        double distance = endPointX-initPointX;
+
+        System.out.println("Distancia: " + distance);
     }
 
   public void TextureGLInit(ImageData i,String name)
@@ -88,19 +112,26 @@ public class TextureGL  extends JInternalFrame
     image = i;
     caps = new GLCapabilities();
     // caps.setSampleBuffers(true );
+    if (canvas!=null){
+        getContentPane().remove(canvas);
+    }
+
     canvas = new GLCanvas(caps);
     canvas.addGLEventListener(this);
     canvas.addKeyListener(this);
+    canvas.addMouseListener(this);
+    getContentPane().add(canvas);
 
     this.checkImageHeight=image.getHeight();
     this.checkImageWidth=image.getWidth();
     this.color=image.getnCanales();
     checkImageBuf =   BufferUtil.newByteBuffer(checkImageHeight * checkImageWidth * color);
     this.setSize(checkImageWidth,checkImageHeight + 20);
-    getContentPane().add(canvas);
+    
     this.setResizable(true);
     this.setClosable(true);
     	this.setVisible(true);
+        canvas.repaint();
   }
 
   public void run()

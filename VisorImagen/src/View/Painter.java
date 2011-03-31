@@ -51,7 +51,11 @@
 package View;
 
 import PipeLine.SinkPipeObject;
+import java.awt.event.MouseListener;
 import javax.swing.JInternalFrame;
+import java.awt.event.*;
+import java.awt.*;
+import javax.swing.*;
 
 
 /**
@@ -82,12 +86,16 @@ public class Painter extends SinkPipeObject {
         }
    }
 
+
+
     public JInternalFrame getInternalFrame(){
-        if(pointPainter!= null)
+        if(pointPainter!= null){
             return pointPainter;
+        }
         else
-        if(texturePainter!=null)
+        if(texturePainter!=null){
             return texturePainter;
+        }
         else
             return null;
 

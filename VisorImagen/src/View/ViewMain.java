@@ -55,7 +55,14 @@
 
 package View;
 
-
+import Filters.RGBtoXYZFilter;
+import Filters.RGBtoHSLFilter;
+import Filters.RGBtoYUVFilter;
+import Filters.RGBtoHSVFilter;
+import Filters.RGBtoYDbDrFilter;
+import Filters.RGBtoCMYFilter;
+import Filters.GrayScaleFilter;
+//import Filters.SpaceColor.*;
 import Readers.FileReader;
 import Data.ImageData;
 import test_Draw.cTest_puntoJOGL;
@@ -945,7 +952,21 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jRadioButtonMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem2ActionPerformed
-    RotarFrame.setVisible(true);
+
+        this.remove(painterTexture.getInternalFrame());
+        this.remove(draw);
+        draw = new DrawGL();
+        draw.DrawGLInit(read.readImage(),"",true,0);
+        this.add(draw);
+        draw.setVisible(true);
+//        System.out.println("Rotando");
+//        RotateFilter rotate = new RotateFilter("Rotation with texture", 5);
+//        rotate.setLastElement(read);
+////        RGBtoLMSFilter filter2 = new RGBtoLMSFilter("filtro canal");
+////        filter2.setLastElement(read);
+//        painterTexture.setLastElement(rotate);
+////        System.out.println("antesd del update");
+//        painterTexture.Update();
     }//GEN-LAST:event_jRadioButtonMenuItem2ActionPerformed
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged

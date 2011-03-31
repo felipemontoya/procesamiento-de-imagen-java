@@ -149,11 +149,10 @@ public ImageData(ImageData old,int w,int h){
  this.alineacion = old.getAlineacion();
  this.width = w;
  this.height = h;
- this.widthStep = old.getWidthStep();
+ this.widthStep = w;
 
  this.bytesImage = new byte[h*w*this.nCanales];
- for(int i = 0;i<bytesImage.length;i++)
-     bytesImage[i]=0x0;
+ java.util.Arrays.fill(bytesImage, (byte)0);
 
 }
 

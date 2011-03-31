@@ -18,7 +18,15 @@ public class Histograma {
     public Histograma(ImageData data,int color){
         hist =new int[256];
         int k;
-        boolean RGB=true;
+        switch(data.getEspacioColor()){
+        case ImageData.BGR:
+            if(color==0)
+                color=2;
+            else if(color==2)
+                color=0;
+            break;
+      }
+
         for(int i=0;i<256;i++){
             hist[i]=0;
         }
@@ -34,6 +42,15 @@ public class Histograma {
     public int BytesToInt(byte valor){
              return (int)valor & 0xFF;
 
+    }
+
+    public int mayor(){
+        int mayor = Integer.MIN_VALUE;
+        for(int i=0;i<hist.length;i++){
+            if(mayor<hist[i])
+                mayor=hist[i];
+        }
+        return mayor;
     }
 
     /**

@@ -30,7 +30,8 @@ public class Lienzo extends Canvas{
      */
     public Lienzo()
     {
-        this.setSize (256, 256);
+        this.setSize (257, 257);
+        mayor=255;
     }
 
     /**
@@ -38,7 +39,7 @@ public class Lienzo extends Canvas{
      */
     public void paint(Graphics g)
     {
-
+       
         if (datos == null) return;
         Color c;
         if(color==0)
@@ -48,8 +49,10 @@ public class Lienzo extends Canvas{
         else
         c = new Color(0,0, 255);
         g.setColor(c);
+        mayor/=255;
         for(int i = 1;i<256;i++)
-        g.drawLine (i-1, datos[i-1],i,datos[i]);
+            g.drawLine (i-1, 255-Math.round(datos[i-1]/mayor),i,255-Math.round(datos[i]/mayor));
+        
     }
 
     /**
@@ -63,8 +66,14 @@ public class Lienzo extends Canvas{
     public void getDatos(int[] data){
         datos=data;
     }
+
+    public void setMayor(int mayor){
+        this.mayor=mayor;
+
+    }
     /** La linea a dibujar */
     private int[] datos=null;
     private int color;
+    private float mayor;
 
 }

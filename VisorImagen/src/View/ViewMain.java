@@ -70,7 +70,8 @@ import javax.swing.filechooser.FileFilter;
 
 import Filters.*;
 import Filters.RGBtoYIQFilter;
-import PSNR.PSNR;
+import Operator.Histograma;
+import Operator.PSNR;
 
 /**
  *
@@ -168,6 +169,12 @@ public class ViewMain extends javax.swing.JFrame{
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         Grados = new javax.swing.JLabel();
+        HistogramaRojo = new javax.swing.JFrame();
+        Rojo = new javax.swing.JPanel();
+        HistogramaVerde = new javax.swing.JFrame();
+        Verde = new javax.swing.JPanel();
+        HistogramaAzul = new javax.swing.JFrame();
+        Azul = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -194,6 +201,7 @@ public class ViewMain extends javax.swing.JFrame{
         Tranformadas = new javax.swing.JMenu();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         Comparar = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -251,6 +259,111 @@ public class ViewMain extends javax.swing.JFrame{
                             .addComponent(jLabel1)
                             .addComponent(Grados))))
                 .addContainerGap())
+        );
+
+        HistogramaRojo.setTitle("Histograma Rojo");
+        HistogramaRojo.setMinimumSize(new java.awt.Dimension(276, 278));
+        HistogramaRojo.setResizable(false);
+
+        Rojo.setBackground(new java.awt.Color(255, 255, 255));
+        Rojo.setPreferredSize(new java.awt.Dimension(256, 256));
+
+        javax.swing.GroupLayout RojoLayout = new javax.swing.GroupLayout(Rojo);
+        Rojo.setLayout(RojoLayout);
+        RojoLayout.setHorizontalGroup(
+            RojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+        RojoLayout.setVerticalGroup(
+            RojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout HistogramaRojoLayout = new javax.swing.GroupLayout(HistogramaRojo.getContentPane());
+        HistogramaRojo.getContentPane().setLayout(HistogramaRojoLayout);
+        HistogramaRojoLayout.setHorizontalGroup(
+            HistogramaRojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaRojoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        HistogramaRojoLayout.setVerticalGroup(
+            HistogramaRojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaRojoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        HistogramaVerde.setTitle("Histograma Verde");
+        HistogramaVerde.setMinimumSize(new java.awt.Dimension(276, 278));
+        HistogramaVerde.setResizable(false);
+
+        Verde.setBackground(new java.awt.Color(255, 255, 255));
+        Verde.setPreferredSize(new java.awt.Dimension(256, 256));
+
+        javax.swing.GroupLayout VerdeLayout = new javax.swing.GroupLayout(Verde);
+        Verde.setLayout(VerdeLayout);
+        VerdeLayout.setHorizontalGroup(
+            VerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+        VerdeLayout.setVerticalGroup(
+            VerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout HistogramaVerdeLayout = new javax.swing.GroupLayout(HistogramaVerde.getContentPane());
+        HistogramaVerde.getContentPane().setLayout(HistogramaVerdeLayout);
+        HistogramaVerdeLayout.setHorizontalGroup(
+            HistogramaVerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaVerdeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        HistogramaVerdeLayout.setVerticalGroup(
+            HistogramaVerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaVerdeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        HistogramaAzul.setTitle("Histograma Azul");
+        HistogramaAzul.setMinimumSize(new java.awt.Dimension(276, 278));
+        HistogramaAzul.setResizable(false);
+
+        Azul.setBackground(new java.awt.Color(255, 255, 255));
+        Azul.setPreferredSize(new java.awt.Dimension(256, 256));
+
+        javax.swing.GroupLayout AzulLayout = new javax.swing.GroupLayout(Azul);
+        Azul.setLayout(AzulLayout);
+        AzulLayout.setHorizontalGroup(
+            AzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+        AzulLayout.setVerticalGroup(
+            AzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 256, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout HistogramaAzulLayout = new javax.swing.GroupLayout(HistogramaAzul.getContentPane());
+        HistogramaAzul.getContentPane().setLayout(HistogramaAzulLayout);
+        HistogramaAzulLayout.setHorizontalGroup(
+            HistogramaAzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaAzulLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        HistogramaAzulLayout.setVerticalGroup(
+            HistogramaAzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaAzulLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -444,6 +557,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Tranformadas.add(jRadioButtonMenuItem2);
+
+        jMenuItem4.setText("Histogramas");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jMenuItem4);
 
         jMenuBar1.add(Tranformadas);
 
@@ -810,6 +931,33 @@ public class ViewMain extends javax.swing.JFrame{
     draw.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    Lienzo rojo = new Lienzo();
+    Lienzo verde = new Lienzo();
+    Lienzo azul = new Lienzo();
+
+    Histograma h = new Histograma(read.readImage(),0);
+    rojo.getDatos(h.getHist());
+    rojo.color(0);
+    Rojo.add(rojo);
+    rojo.repaint();
+    HistogramaRojo.setVisible(true);
+
+    h = new Histograma(read.readImage(),1);
+    verde.getDatos(h.getHist());
+    verde.color(1);
+    Verde.add(verde);
+    verde.repaint();
+    HistogramaVerde.setVisible(true);
+
+    h = new Histograma(read.readImage(),2);
+    azul.getDatos(h.getHist());
+    azul.color(2);
+    Azul.add(azul);
+    azul.repaint();
+    HistogramaAzul.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -829,12 +977,16 @@ public class ViewMain extends javax.swing.JFrame{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Azul;
     private javax.swing.JMenu Comparar;
     private javax.swing.JMenu Compresor;
     private javax.swing.ButtonGroup FiltorsModelos;
     private javax.swing.JMenu Filtros;
     private javax.swing.ButtonGroup FiltrosBase;
     private javax.swing.JLabel Grados;
+    private javax.swing.JFrame HistogramaAzul;
+    private javax.swing.JFrame HistogramaRojo;
+    private javax.swing.JFrame HistogramaVerde;
     private javax.swing.JMenu ModelosColor;
     private javax.swing.JRadioButtonMenuItem RadioFilterB;
     private javax.swing.JRadioButtonMenuItem RadioFilterCMY;
@@ -849,8 +1001,10 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JRadioButtonMenuItem RadioFilterYIQ;
     private javax.swing.JRadioButtonMenuItem RadioFilterYUV;
     private javax.swing.JRadioButtonMenuItem RadioFlterYDbDr;
+    private javax.swing.JPanel Rojo;
     private javax.swing.JFrame RotarFrame;
     private javax.swing.JMenu Tranformadas;
+    private javax.swing.JPanel Verde;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
@@ -859,6 +1013,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;

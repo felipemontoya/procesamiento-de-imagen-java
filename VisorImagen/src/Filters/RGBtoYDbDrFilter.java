@@ -33,7 +33,7 @@ public class RGBtoYDbDrFilter extends FilterPipeObject{
            a_channel[k]=0;
         }
         //identifica el espacio de canal y asi las operacion R=0.3 G= 0.59 B=0.11
-        boolean RGB=true;;
+        boolean RGB=true;
         switch(data.getEspacioColor()){
         case ImageData.RGB:
             RGB=true;

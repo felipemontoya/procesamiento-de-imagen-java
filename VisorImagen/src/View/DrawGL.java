@@ -135,11 +135,11 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
     	this.setResizable(true);
     	this.setVisible(true);
 
-    this.setClosable(true);
+        this.setClosable(true);
     	/* Finalmente, le indicamos a Java que queremos que nuestro
     	 * JFrame se cierre cuando demos click en el botón cerrar
     	 * que aparecerá en la parte superior derecha del mismo. */
-    	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
     public int initPointX , initPointY , endPointX, endPointY;
@@ -157,7 +157,7 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
         endPointY = mouse.getY();
 
         double distance = endPointX-initPointX;
-        grados = -distance;
+        grados += -distance;
         canvas.repaint();
         canvas.display();
         
@@ -228,7 +228,12 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
 		 * a dibujar con el método glBegin(GLEnum Mode) y que finalizaremos
 		 * con el método glEnd(). Dentro de ambos métodos irán TODOS
 		 * los gráficos que dibujaremos. */
-                
+                int R = 0, B =2;
+                if (image.getEspacioColor()==ImageData.BGR)
+                {
+                    R = 2;
+                    B = 0;
+                }
                 
                  double g = grados;
                 g*= (Math.PI / 180);
@@ -242,9 +247,9 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
 
                 for(int i = 0;i<image.getHeight();i++){
                     for(int j = 0;j<image.getWidth();j++){
-                        gl.glColor3ub(image.bytesImage[(i * widthStep + j ) * 3 + 0],
+                        gl.glColor3ub(image.bytesImage[(i * widthStep + j ) * 3 + R],
                                 image.bytesImage[(i * widthStep + j ) * 3 + 1],
-                                image.bytesImage[(i * widthStep + j ) * 3 + 2]);
+                                image.bytesImage[(i * widthStep + j ) * 3 + B]);
                         if(rotate){
 
                         ii=i-(altura)/2;

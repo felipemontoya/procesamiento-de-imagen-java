@@ -49,7 +49,7 @@ public class Lienzo extends Canvas{
         else
         c = new Color(0,0, 255);
         g.setColor(c);
-        mayor/=255;
+        mayor=25;
         for(int i = 1;i<256;i++)
             g.drawLine (i-1, 255-Math.round(datos[i-1]/mayor),i,255-Math.round(datos[i]/mayor));
         

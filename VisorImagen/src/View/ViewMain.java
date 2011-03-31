@@ -805,7 +805,7 @@ public class ViewMain extends javax.swing.JFrame{
         filter3.setLastElement(read);
 
 
-       DCTFilter filter2 = new DCTFilter("filtro canal",1);
+       DCTFilter8x8 filter2 = new DCTFilter8x8("filtro canal",1);
         painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(filter3);
         this.add(painterTexture.getInternalFrame());

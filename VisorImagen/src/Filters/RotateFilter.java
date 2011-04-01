@@ -76,7 +76,7 @@ public class RotateFilter extends FilterPipeObject{
 
 
 //          data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 0]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]
-     try{   data.bytesImage[(int)(y2 * outWidth + x2 ) * channels  + 0] = dataIn.getImageData().bytesImage[(j * inWidth + i ) * channels  + 0];
+     try{   data.bytesImage[(int)(y2 * outWidth + x2 ) * channels  + 0] = (byte)255;//dataIn.getImageData().bytesImage[(j * inWidth + i ) * channels  + 0];
                 }
      catch(Exception e){
 //         System.out.println("ij: " + i + " " + j + " ab: " + a + " " + b);

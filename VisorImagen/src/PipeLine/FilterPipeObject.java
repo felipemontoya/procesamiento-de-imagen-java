@@ -59,6 +59,10 @@ public class FilterPipeObject extends PipeObject {
         System.out.println("Internal update FilterObject ->name: Generic");
         return true;
     }
+    public boolean ReadMessage(PipeMessage msg){
+        System.out.println("Generic Filter Message: " + msg.message);
+        return true;
+    }
 
     public void setDataIn(DataPackage dataIn){
         this.dataIn = dataIn;

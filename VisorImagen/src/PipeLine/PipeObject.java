@@ -91,6 +91,31 @@ public boolean Update(){
         return false;
 }
 
+public boolean PassMessage(PipeMessage msg){
+
+//    primero pasa el mensaje de lado a lado
+    boolean isPipelineReady = false;
+
+    if (!type.equals(Type.source)){
+        if (lastElement != null)
+            isPipelineReady = this.getLastElement().PassMessage(msg);
+        else{
+            System.out.println("Pasando un mensaje el pipeline se encuentra roto en :" + name);
+            return false;
+        }
+
+    }
+    else
+        isPipelineReady = true;
+
+//cuando el mensaje llegó al final cada filtro lee el mensaje
+    if (isPipelineReady){
+
+        return this.ReadMessage(msg);
+    }
+    else
+        return false;
+}
 
     /**
      * @return the lastElement
@@ -114,5 +139,6 @@ public boolean Update(){
 
 
 public abstract boolean InternalUpdate();
+public abstract boolean ReadMessage(PipeMessage msg);
 
 }

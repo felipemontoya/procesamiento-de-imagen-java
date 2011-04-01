@@ -60,7 +60,10 @@ public class SinkPipeObject extends PipeObject {
         System.out.println("Internal update SinkPipeObject ->Name: Generic");
         return true;
     }
-
+    public boolean ReadMessage(PipeMessage msg){
+        System.out.println("Generic Sink Message: " + msg.message);
+        return true;
+    }
      public void setDataIn(DataPackage dataIn){
         this.dataIn = dataIn;
     }

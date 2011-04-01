@@ -70,7 +70,7 @@ public class Painter extends SinkPipeObject {
     private String name;
     private Type type;
     private TextureGL texturePainter = null;
-    private DrawGL pointPainter = null;
+    public DrawGL pointPainter = null;
 
     public Painter(String name, Type type) {
         super(name);
@@ -78,10 +78,10 @@ public class Painter extends SinkPipeObject {
         this.name = name;
         switch(this.type){
             case PointToPoint:
-                pointPainter = new DrawGL();
+                pointPainter = new DrawGL(this);
                 break;
             case Texture:
-                texturePainter = new TextureGL();
+                texturePainter = new TextureGL(this);
                 break;
         }
    }

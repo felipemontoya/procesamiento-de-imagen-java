@@ -53,6 +53,17 @@
 
 
 
+// Mensajes; TODO; Lo que hablamos en clase
+        //equalizacion Jhon
+//interpolación(rotate y sola(zoom))
+        //crop - > listo el backbone: luego me ocupo de copiar los datos. Felipe
+//rotate como filtro
+        //Video. Epsilon
+//guardar una lista de los filtros usados
+
+
+
+
 package View;
 
 import Filters.RGBtoXYZFilter;
@@ -104,8 +115,8 @@ public class ViewMain extends javax.swing.JFrame{
      Painter painterTexture;
 
      //pintor
-     DrawGL draw;
-     TextureGL texture;
+     Painter draw;
+//     TextureGL texture;
     // Se encarga de escribir los out.println en el programa
     OutputStream out = new OutputStream(){
             public void write(int b) throws IOException
@@ -146,15 +157,15 @@ public class ViewMain extends javax.swing.JFrame{
         this.ConfigNativeStyle();
         this.setExtendedState(this.getExtendedState()|ViewMain.MAXIMIZED_BOTH);
         this.setTitle("MegaVisor - Procesamiento de Imagenes - Unal");
-        draw = new DrawGL();
+//        draw = new DrawGL();
 //        this.add(draw);
-        texture = new TextureGL();
+//        texture = new TextureGL();
         Filtros.setEnabled(false);
         Compresor.setEnabled(false);
         Comparar.setEnabled(false);
         ModelosColor.setEnabled(false);
         Tranformadas.setEnabled(false);
-        this.add(draw);
+//        this.add(draw);
         //PintorGL pintor = new PintorGL();
        //pintor.run();
 
@@ -212,6 +223,7 @@ public class ViewMain extends javax.swing.JFrame{
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         Comparar = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -603,6 +615,14 @@ public class ViewMain extends javax.swing.JFrame{
         });
         Tranformadas.add(jMenuItem4);
 
+        jMenuItem5.setText("Crop");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jMenuItem5);
+
         jMenuBar1.add(Tranformadas);
 
         Comparar.setText("Comparar");
@@ -670,42 +690,19 @@ public class ViewMain extends javax.swing.JFrame{
                     System.out.println("Archivo seleccionado: " + currentFile.getAbsolutePath());
                     ViewMain.getFrames()[0].setTitle("MegaVisor - Procesamiento de Imágenes - Unal : \\"+currentFile.getName());
                     isFileOpen = true;
-                     Filtros.setEnabled(true);
-                     Compresor.setEnabled(true);
-                     Comparar.setEnabled(true);
-                     ModelosColor.setEnabled(true);
+                    Filtros.setEnabled(true);
+                    Compresor.setEnabled(true);
+                    Comparar.setEnabled(true);
+                    ModelosColor.setEnabled(true);
                     Tranformadas.setEnabled(true);
                    //crea el lector de imagenes y le pasa el archivo actual.
-                   //FileReader read = new FileReader(currentFile);
-                     read = new FileReader(currentFile);
-                   //Creación del pipeline
-
-//                    BlankFilter filter1 = new BlankFilter("filtro1");
-//                    ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
-//                    DCTFilter8x8 dct = new DCTFilter8x8("dct", 1);
-//                    YUV filter3 = new BlankFilter("filtro3");
-                   // Painter painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-                       painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-
-                    //Painter painterPoint = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
-//                    RotateFilter a = new RotateFilter("rotar",0);
-//                    filter1.setLastElement(read);
-//                    dct.setLastElement(read);
-//                    filter3.setLastElement(filter2);
-//                    painterPoint.setLastElement(filter3);
-//                    a.setLastElement(read);
-                   painterTexture.setLastElement(read);
-                       
-//                    draw.DrawGLInit(read.readImage(),"");
-//                    draw.setVisible(true);
+                    read = new FileReader(currentFile);
+                    painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
+                    painterTexture.setLastElement(read);
+                    // Anade la ventana al frame principal
                     this.add(painterTexture.getInternalFrame());
-//                    this.add(painterPoint.getInternalFrame());
-//                    painterPoint.Update();
                     painterTexture.Update();
-
-                    
-
-                }
+                 }
                  else{
                     System.out.println("Error abriendo el archivo");
                  }
@@ -717,66 +714,47 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void RadioFilterGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterGActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         ChannelFilter filter2 = new ChannelFilter("filtro canal",1);
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
 
     }//GEN-LAST:event_RadioFilterGActionPerformed
 
     private void RadioFilterNoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterNoneActionPerformed
-       this.remove(painterTexture.getInternalFrame());
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         painterTexture.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
-//      
-       painterTexture.Update();
+        painterTexture.Update();
     }//GEN-LAST:event_RadioFilterNoneActionPerformed
 
     private void RadioFilterRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterRActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         ChannelFilter filter2 = new ChannelFilter("filtro canal",0);
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterRActionPerformed
 
     private void RadioFilterBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterBActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         ChannelFilter filter2 = new ChannelFilter("filtro canal",2);
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterBActionPerformed
 
     private void RadioFilterGrayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterGrayActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         GrayScaleFilter filter2 = new GrayScaleFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterGrayActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        LZW l = new LZW(read.readImage());
-        l.CompressionLZW();
+//        LZW l = new LZW(read.readImage());
+//        l.CompressionLZW();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void RadioFilterYUVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterYUVActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         RGBtoYUVFilter filter2 = new RGBtoYUVFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterYUVActionPerformed
@@ -786,16 +764,8 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_ModelosColorActionPerformed
 
     private void RadioFilterHSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterHSVActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         RGBtoHSVFilter filter2 = new RGBtoHSVFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterHSVActionPerformed
@@ -805,107 +775,52 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_TranformadasActionPerformed
 
     private void jRadioButtonMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem1ActionPerformed
-      this.remove(painterTexture.getInternalFrame());
-        
-        RGBtoYUVFilter filter3 = new RGBtoYUVFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-        filter3.setLastElement(read);
-
-
-       DCTFilter8x8 filter2 = new DCTFilter8x8("filtro canal",1);
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-        filter2.setLastElement(filter3);
-        this.add(painterTexture.getInternalFrame());
-        painterTexture.setLastElement(filter2);
+        RGBtoYUVFilter yuv = new RGBtoYUVFilter("filtro canal");
+        yuv.setLastElement(read);
+        DCTFilter8x8 dct = new DCTFilter8x8("filtro canal",1);
+        dct.setLastElement(yuv);
+        painterTexture.setLastElement(dct);
         painterTexture.Update();
     }//GEN-LAST:event_jRadioButtonMenuItem1ActionPerformed
 
     private void RadioFilterCMYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterCMYActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         RGBtoCMYFilter filter2 = new RGBtoCMYFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterCMYActionPerformed
 
     private void RadioFilterHSLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterHSLActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         RGBtoHSLFilter filter2 = new RGBtoHSLFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterHSLActionPerformed
 
     private void RadioFlterYDbDrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFlterYDbDrActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         RGBtoYDbDrFilter filter2 = new RGBtoYDbDrFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFlterYDbDrActionPerformed
 
     private void RadioFilterXYZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterXYZActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         RGBtoXYZFilter filter2 = new RGBtoXYZFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterXYZActionPerformed
 
     private void RadioFilterYIQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterYIQActionPerformed
-        this.remove(painterTexture.getInternalFrame());
         RGBtoYIQFilter filter2 = new RGBtoYIQFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterYIQActionPerformed
 
     private void RadioFilterLMSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterLMSActionPerformed
-       this.remove(painterTexture.getInternalFrame());
         RGBtoLMSFilter filter2 = new RGBtoLMSFilter("filtro canal");
-        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
         filter2.setLastElement(read);
-//        ChannelFilter filter3 = new ChannelFilter("filtro canal",2);
-//        painterTexture = new Painter(currentFile.getName(), Painter.Type.Texture);
-//        filter3.setLastElement(filter2);
-
-
-        this.add(painterTexture.getInternalFrame());
         painterTexture.setLastElement(filter2);
         painterTexture.Update();
     }//GEN-LAST:event_RadioFilterLMSActionPerformed
@@ -952,34 +867,35 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jRadioButtonMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem2ActionPerformed
-
+// rotation
         this.remove(painterTexture.getInternalFrame());
-        this.remove(draw);
-        draw = new DrawGL();
-        draw.DrawGLInit(read.readImage(),"",true,0);
-        this.add(draw);
-        draw.setVisible(true);
+        if(draw!=null)
+            this.remove(draw.pointPainter);
+        draw = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
+        draw.pointPainter.DrawGLInit(read.readImage(),"",true,0);
+        this.add(draw.pointPainter);
+        draw.pointPainter.setVisible(true);
 //        System.out.println("Rotando");
-//        RotateFilter rotate = new RotateFilter("Rotation with texture", 5);
+//        RotateFilter rotate = new RotateFilter("Rotation with texture",90);
 //        rotate.setLastElement(read);
 ////        RGBtoLMSFilter filter2 = new RGBtoLMSFilter("filtro canal");
 ////        filter2.setLastElement(read);
 //        painterTexture.setLastElement(rotate);
-////        System.out.println("antesd del update");
+//        System.out.println("antesd del update");
 //        painterTexture.Update();
     }//GEN-LAST:event_jRadioButtonMenuItem2ActionPerformed
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
-      Grados.setText(String.valueOf(jSlider1.getValue()));
+//      Grados.setText(String.valueOf(jSlider1.getValue()));
     }//GEN-LAST:event_jSlider1StateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    this.remove(painterTexture.getInternalFrame());
-    this.remove(draw);
-    draw = new DrawGL();
-    draw.DrawGLInit(read.readImage(),"",true,jSlider1.getValue());
-    this.add(draw);
-    draw.setVisible(true);
+//    this.remove(painterTexture.getInternalFrame());
+//    this.remove(draw);
+//    draw = new DrawGL();
+//    draw.DrawGLInit(read.readImage(),"",true,jSlider1.getValue());
+//    this.add(draw);
+//    draw.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -1021,6 +937,14 @@ public class ViewMain extends javax.swing.JFrame{
     HistogramaAzul.setVisible(true);
     System.out.println(mensaje);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        System.out.println("Para seleccionar una región utilize la tecla Ctrl y arraste el puntero");
+        CropFilter crop = new CropFilter("Filtro seleccionar región");
+        crop.setLastElement(read);
+        painterTexture.setLastElement(crop);
+        painterTexture.Update();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -1081,6 +1005,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;

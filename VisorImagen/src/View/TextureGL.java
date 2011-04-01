@@ -77,33 +77,54 @@ public class TextureGL  extends JInternalFrame
   private int color;
   //private byte checkImage[][][] = new byte[checkImageWidth][checkImageHeight][color];
   private ByteBuffer checkImageBuf;
+  private Painter painter;
 
  double[] clickDistance = new double[1];
   
-  public TextureGL(){
+  public TextureGL(Painter painter){
         super();
+        this.painter = painter;
     }
 
      public int initPointX , initPointY , endPointX, endPointY;
 
      double[] dist;
 
-    public void mouseClicked(MouseEvent mouse){ System.out.println("Rotation"); }
+    public void mouseClicked(MouseEvent mouse){ 
+        System.out.println("Rotation");
+        System.out.println("Modifiers " + mouse.getModifiers());
+        painter.Update();
+    }
     public void mouseEntered(MouseEvent mouse){ /*System.out.println("entered");*/ }
     public void mouseExited(MouseEvent mouse){ /*System.out.println("exited");*/}
     public void mousePressed(MouseEvent mouse){
-//        System.out.println("pressed");
+
         initPointX = mouse.getX();
         initPointY = mouse.getY();
+
     }
     public void mouseReleased(MouseEvent mouse){
 //        System.out.println("released");
         endPointX = mouse.getX();
         endPointY = mouse.getY();
 
-        double distance = endPointX-initPointX;
+        if(mouse.getModifiers()==17)
+        {
+            double distance = endPointX-initPointX;
 
-        System.out.println("Distancia: " + distance);
+            System.out.println("Distancia: " + distance);
+        }
+        if(mouse.getModifiers()==18)
+        {
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Cropping");
+            msg.iValue1 = Math.min(initPointX, endPointX);
+            msg.iValue2 = Math.min(initPointY, endPointY);
+            msg.iValue3 = Math.abs(initPointX - endPointX);
+            msg.iValue4 = Math.abs(initPointY - endPointY);
+
+            painter.PassMessage(msg);
+            painter.Update();
+        }
     }
 
   public void TextureGLInit(ImageData i,String name)

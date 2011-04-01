@@ -18,10 +18,15 @@ import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.Dimension;
+//import org.w3c.dom.events.MouseEvent;
+//import org.w3c.dom.events.;
 
 // Importamos la librería de OpenGL
 import javax.media.opengl.*;
 import javax.swing.JInternalFrame;
+
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -61,9 +66,11 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
      * para mostrar los cuatro métodos principales de GLEventListener */
     static GLCanvas canvas;
     ImageData image;
+    Painter painter;
    // Constructor
-    public DrawGL(){
+    public DrawGL(Painter painter){
         super();
+        this.painter = painter;
         rotate=false;
     }
     int ancho;
@@ -148,20 +155,30 @@ public class DrawGL extends JInternalFrame implements GLEventListener, MouseList
     public void mouseExited(MouseEvent mouse){ /*System.out.println("exited");*/}
     public void mousePressed(MouseEvent mouse){
 //        System.out.println("pressed");
-        initPointX = mouse.getX();
-        initPointY = mouse.getY();
+//        KeyStroke ctrl = KeyStroke.getKeyStroke(KeyEvent.CTRL_DOWN_MASK,0);
+//        ctrl.
+//        if(mouse.getShiftKey())
+        if(mouse.getModifiers()==17) // no se porque 17 debería ser MouseEvent.SHIFT_MASK
+        {
+            initPointX = mouse.getX();
+            initPointY = mouse.getY();
+        }
     }
     public void mouseReleased(MouseEvent mouse){
 //        System.out.println("released");
-        endPointX = mouse.getX();
-        endPointY = mouse.getY();
 
-        double distance = endPointX-initPointX;
-        grados += -distance;
-        canvas.repaint();
-        canvas.display();
-        
-        System.out.println("Distancia: " + distance);
+        if(mouse.getModifiers()==17)// no se porque 17 debería ser MouseEvent.SHIFT_MASK pero eso da 1
+        {
+            endPointX = mouse.getX();
+            endPointY = mouse.getY();
+
+            double distance = endPointX-initPointX;
+            grados += -distance;
+            canvas.repaint();
+            canvas.display();
+
+            System.out.println("Distancia: " + distance);
+        }
         //this.DrawGLInit(image,"",true,grados);
     }
 

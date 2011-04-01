@@ -69,7 +69,10 @@ public class SourcePipeObject extends PipeObject {
         System.out.println("Internal update SourcePipeObject ->Name: Generic");
         return true;
     }
-
+    public boolean ReadMessage(PipeMessage msg){
+        System.out.println("Generic Sources Message: " + msg.message);
+        return true;
+    }
     protected void setDataOutPackage(){
 
     }

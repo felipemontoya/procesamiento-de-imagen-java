@@ -61,7 +61,7 @@ public class SinkPipeObject extends PipeObject {
         return true;
     }
     public boolean ReadMessage(PipeMessage msg){
-        System.out.println("Generic Sink Message: " + msg.message);
+//        System.out.println("Generic Sink Message: " + msg.message);
         return true;
     }
      public void setDataIn(DataPackage dataIn){

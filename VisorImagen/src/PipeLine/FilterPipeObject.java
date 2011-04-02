@@ -60,7 +60,7 @@ public class FilterPipeObject extends PipeObject {
         return true;
     }
     public boolean ReadMessage(PipeMessage msg){
-        System.out.println("Generic Filter Message: " + msg.message);
+//        System.out.println("Generic Filter Message: " + msg.message);
         return true;
     }
 

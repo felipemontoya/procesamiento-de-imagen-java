@@ -37,6 +37,8 @@ public class PipeMessage {
     public int iValue2;
     public int iValue3;
     public int iValue4;
+    public boolean bValue1;
+    public boolean bValue2;
     public double dValue1;
 
 

@@ -115,7 +115,7 @@ public class Painter extends SinkPipeObject {
                 break;
         }
 
-        System.out.println("Internal update Painter ->Name: " + name);
+//        System.out.println("Internal update Painter ->Name: " + name);
         return true;
     }
 

@@ -163,13 +163,13 @@ public class FileReader extends SourcePipeObject {
         switch(this.tipo){
             case BMP:
                 this.dataOut.setImageData(lectorBMP.UpdateImage());
-                System.out.println("Internal update FileReader llamado en BMP");
+//                System.out.println("Internal update FileReader llamado en BMP");
                 break;
             case JPEG:
                 System.out.println("Aún no se puede actualizar un JPEG");
                 break;
             case TIFF:
-                System.out.println("Internal update FileReader llamado en TIFF");
+//                System.out.println("Internal update FileReader llamado en TIFF");
                 break;
             default:
                 System.out.println("El archivo del que trató de actualizar contiene errores o no se ha programado su actualización");

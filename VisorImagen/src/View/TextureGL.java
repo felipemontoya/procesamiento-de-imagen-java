@@ -40,7 +40,7 @@
 /***************************************************************************************************************/
 
 package View;
-
+import java.awt.Insets;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -91,9 +91,10 @@ public class TextureGL  extends JInternalFrame
      double[] dist;
 
     public void mouseClicked(MouseEvent mouse){ 
-        System.out.println("Rotation");
-        System.out.println("Modifiers " + mouse.getModifiers());
-        painter.Update();
+        System.out.println("Mouse");
+//        System.out.println("Modifiers " + mouse.getModifiers());
+//        System.out.println("raton " + mouse.getX() + " " + mouse.getY());
+//        painter.Update();
     }
     public void mouseEntered(MouseEvent mouse){ /*System.out.println("entered");*/ }
     public void mouseExited(MouseEvent mouse){ /*System.out.println("exited");*/}
@@ -101,6 +102,17 @@ public class TextureGL  extends JInternalFrame
 
         initPointX = mouse.getX();
         initPointY = mouse.getY();
+//        System.out.println("y" + initPointY);
+
+        if (mouse.getButton() == MouseEvent.BUTTON3 && mouse.isControlDown())
+        {
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Cropping");
+            msg.bValue1 = false;
+            msg.bValue2 = false;
+            painter.PassMessage(msg);
+            painter.Update();
+        }
+
 
     }
     public void mouseReleased(MouseEvent mouse){
@@ -108,19 +120,28 @@ public class TextureGL  extends JInternalFrame
         endPointX = mouse.getX();
         endPointY = mouse.getY();
 
-        if(mouse.getModifiers()==17)
+        if(mouse.isShiftDown())
         {
             double distance = endPointX-initPointX;
 
             System.out.println("Distancia: " + distance);
         }
-        if(mouse.getModifiers()==18)
+        if(mouse.isControlDown())
         {
-            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Cropping");
-            msg.iValue1 = Math.min(initPointX, endPointX);
-            msg.iValue2 = Math.min(initPointY, endPointY);
-            msg.iValue3 = Math.abs(initPointX - endPointX);
-            msg.iValue4 = Math.abs(initPointY - endPointY);
+            Insets insets = this.getInsets();
+            int insetwidth = insets.left + insets.right;
+//            int insetheight = insets.top + insets.bottom;
+            double yRate = ((double)this.getSize().height - insetwidth)/(double)canvas.getSize().height;
+            double xRate = ((double)this.getSize().width)/(double)canvas.getSize().width;
+
+
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Marking");
+            msg.iValue1 = (int) (xRate*Math.min(initPointX, endPointX));
+            msg.iValue2 = (int) (yRate*Math.min(initPointY, endPointY));
+            msg.iValue3 = (int) (xRate*Math.abs(initPointX - endPointX));
+            msg.iValue4 = (int) (yRate*Math.abs(initPointY - endPointY));
+            msg.bValue1 = true;
+            msg.bValue2 = true;
 
             painter.PassMessage(msg);
             painter.Update();
@@ -149,7 +170,7 @@ public class TextureGL  extends JInternalFrame
     checkImageBuf =   BufferUtil.newByteBuffer(checkImageHeight * checkImageWidth * color);
     this.setSize(checkImageWidth,checkImageHeight + 20);
     
-    this.setResizable(true);
+    this.setResizable(false);
     this.setClosable(true);
     	this.setVisible(true);
         canvas.repaint();

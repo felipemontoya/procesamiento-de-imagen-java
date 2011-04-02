@@ -70,7 +70,7 @@ public class SourcePipeObject extends PipeObject {
         return true;
     }
     public boolean ReadMessage(PipeMessage msg){
-        System.out.println("Generic Sources Message: " + msg.message);
+//        System.out.println("Generic Sources Message: " + msg.message);
         return true;
     }
     protected void setDataOutPackage(){

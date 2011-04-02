@@ -939,7 +939,7 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        System.out.println("Para seleccionar una región utilize la tecla Ctrl y arraste el puntero");
+        System.out.println("Para seleccionar una región utilize la tecla Ctrl y arraste el puntero. Cuando termine oprima Ctrl + el boton derecho");
         CropFilter crop = new CropFilter("Filtro seleccionar región");
         crop.setLastElement(read);
         painterTexture.setLastElement(crop);

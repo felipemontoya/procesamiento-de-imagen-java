@@ -187,15 +187,16 @@ public class ViewMain extends javax.swing.JFrame{
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         Grados = new javax.swing.JLabel();
-        HistogramaRojo = new javax.swing.JFrame();
-        Rojo = new javax.swing.JPanel();
+        HistogramaColor = new javax.swing.JFrame();
+        Color = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        HistogramaVerde = new javax.swing.JFrame();
-        Verde = new javax.swing.JPanel();
+        Color5 = new javax.swing.JPanel();
+        Color6 = new javax.swing.JPanel();
+        HistogramaColor1 = new javax.swing.JFrame();
+        Color1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        HistogramaAzul = new javax.swing.JFrame();
-        Azul = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        Color3 = new javax.swing.JPanel();
+        Color4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -283,135 +284,161 @@ public class ViewMain extends javax.swing.JFrame{
                 .addContainerGap())
         );
 
-        HistogramaRojo.setTitle("Histograma Rojo");
-        HistogramaRojo.setMinimumSize(new java.awt.Dimension(276, 340));
-        HistogramaRojo.setResizable(false);
+        HistogramaColor.setTitle("Histograma Colores");
+        HistogramaColor.setMinimumSize(new java.awt.Dimension(900, 340));
+        HistogramaColor.setResizable(false);
 
-        Rojo.setBackground(new java.awt.Color(255, 255, 255));
-        Rojo.setPreferredSize(new java.awt.Dimension(257, 257));
+        Color.setBackground(new java.awt.Color(255, 255, 255));
+        Color.setPreferredSize(new java.awt.Dimension(257, 257));
 
-        javax.swing.GroupLayout RojoLayout = new javax.swing.GroupLayout(Rojo);
-        Rojo.setLayout(RojoLayout);
-        RojoLayout.setHorizontalGroup(
-            RojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout ColorLayout = new javax.swing.GroupLayout(Color);
+        Color.setLayout(ColorLayout);
+        ColorLayout.setHorizontalGroup(
+            ColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 257, Short.MAX_VALUE)
         );
-        RojoLayout.setVerticalGroup(
-            RojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        ColorLayout.setVerticalGroup(
+            ColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 257, Short.MAX_VALUE)
         );
 
-        jLabel2.setText("Histograma Rojo");
+        jLabel2.setText("Histograma Colores");
 
-        javax.swing.GroupLayout HistogramaRojoLayout = new javax.swing.GroupLayout(HistogramaRojo.getContentPane());
-        HistogramaRojo.getContentPane().setLayout(HistogramaRojoLayout);
-        HistogramaRojoLayout.setHorizontalGroup(
-            HistogramaRojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaRojoLayout.createSequentialGroup()
-                .addGroup(HistogramaRojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HistogramaRojoLayout.createSequentialGroup()
+        Color5.setBackground(new java.awt.Color(255, 255, 255));
+        Color5.setPreferredSize(new java.awt.Dimension(257, 257));
+
+        javax.swing.GroupLayout Color5Layout = new javax.swing.GroupLayout(Color5);
+        Color5.setLayout(Color5Layout);
+        Color5Layout.setHorizontalGroup(
+            Color5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+        Color5Layout.setVerticalGroup(
+            Color5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+
+        Color6.setBackground(new java.awt.Color(255, 255, 255));
+        Color6.setPreferredSize(new java.awt.Dimension(257, 257));
+
+        javax.swing.GroupLayout Color6Layout = new javax.swing.GroupLayout(Color6);
+        Color6.setLayout(Color6Layout);
+        Color6Layout.setHorizontalGroup(
+            Color6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+        Color6Layout.setVerticalGroup(
+            Color6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout HistogramaColorLayout = new javax.swing.GroupLayout(HistogramaColor.getContentPane());
+        HistogramaColor.getContentPane().setLayout(HistogramaColorLayout);
+        HistogramaColorLayout.setHorizontalGroup(
+            HistogramaColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaColorLayout.createSequentialGroup()
+                .addGroup(HistogramaColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HistogramaColorLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HistogramaRojoLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
+                        .addComponent(Color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Color5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Color6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(HistogramaColorLayout.createSequentialGroup()
+                        .addGap(343, 343, 343)
                         .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        HistogramaRojoLayout.setVerticalGroup(
-            HistogramaRojoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaRojoLayout.createSequentialGroup()
+        HistogramaColorLayout.setVerticalGroup(
+            HistogramaColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaColorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Rojo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(HistogramaColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Color6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Color5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        HistogramaVerde.setTitle("Histograma Verde");
-        HistogramaVerde.setMinimumSize(new java.awt.Dimension(276, 340));
-        HistogramaVerde.setResizable(false);
+        HistogramaColor1.setTitle("Histograma Colores");
+        HistogramaColor1.setMinimumSize(new java.awt.Dimension(911, 340));
+        HistogramaColor1.setResizable(false);
 
-        Verde.setBackground(new java.awt.Color(255, 255, 255));
-        Verde.setPreferredSize(new java.awt.Dimension(257, 257));
+        Color1.setBackground(new java.awt.Color(255, 255, 255));
+        Color1.setPreferredSize(new java.awt.Dimension(257, 257));
 
-        javax.swing.GroupLayout VerdeLayout = new javax.swing.GroupLayout(Verde);
-        Verde.setLayout(VerdeLayout);
-        VerdeLayout.setHorizontalGroup(
-            VerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout Color1Layout = new javax.swing.GroupLayout(Color1);
+        Color1.setLayout(Color1Layout);
+        Color1Layout.setHorizontalGroup(
+            Color1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 257, Short.MAX_VALUE)
         );
-        VerdeLayout.setVerticalGroup(
-            VerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        Color1Layout.setVerticalGroup(
+            Color1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 257, Short.MAX_VALUE)
         );
 
-        jLabel3.setText("Histograma Verde");
+        jLabel3.setText("Histograma Colores Ecualizado");
 
-        javax.swing.GroupLayout HistogramaVerdeLayout = new javax.swing.GroupLayout(HistogramaVerde.getContentPane());
-        HistogramaVerde.getContentPane().setLayout(HistogramaVerdeLayout);
-        HistogramaVerdeLayout.setHorizontalGroup(
-            HistogramaVerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaVerdeLayout.createSequentialGroup()
-                .addGroup(HistogramaVerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HistogramaVerdeLayout.createSequentialGroup()
+        Color3.setBackground(new java.awt.Color(255, 255, 255));
+        Color3.setPreferredSize(new java.awt.Dimension(257, 257));
+
+        javax.swing.GroupLayout Color3Layout = new javax.swing.GroupLayout(Color3);
+        Color3.setLayout(Color3Layout);
+        Color3Layout.setHorizontalGroup(
+            Color3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+        Color3Layout.setVerticalGroup(
+            Color3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+
+        Color4.setBackground(new java.awt.Color(255, 255, 255));
+        Color4.setPreferredSize(new java.awt.Dimension(257, 257));
+
+        javax.swing.GroupLayout Color4Layout = new javax.swing.GroupLayout(Color4);
+        Color4.setLayout(Color4Layout);
+        Color4Layout.setHorizontalGroup(
+            Color4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+        Color4Layout.setVerticalGroup(
+            Color4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout HistogramaColor1Layout = new javax.swing.GroupLayout(HistogramaColor1.getContentPane());
+        HistogramaColor1.getContentPane().setLayout(HistogramaColor1Layout);
+        HistogramaColor1Layout.setHorizontalGroup(
+            HistogramaColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaColor1Layout.createSequentialGroup()
+                .addGroup(HistogramaColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HistogramaColor1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HistogramaVerdeLayout.createSequentialGroup()
-                        .addGap(91, 91, 91)
+                        .addComponent(Color1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Color3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Color4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(HistogramaColor1Layout.createSequentialGroup()
+                        .addGap(329, 329, 329)
                         .addComponent(jLabel3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        HistogramaVerdeLayout.setVerticalGroup(
-            HistogramaVerdeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaVerdeLayout.createSequentialGroup()
+        HistogramaColor1Layout.setVerticalGroup(
+            HistogramaColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(HistogramaColor1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Verde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(HistogramaColor1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Color4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Color3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Color1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        HistogramaAzul.setTitle("Histograma Azul");
-        HistogramaAzul.setMinimumSize(new java.awt.Dimension(276, 340));
-        HistogramaAzul.setResizable(false);
-
-        Azul.setBackground(new java.awt.Color(255, 255, 255));
-        Azul.setPreferredSize(new java.awt.Dimension(256, 256));
-
-        javax.swing.GroupLayout AzulLayout = new javax.swing.GroupLayout(Azul);
-        Azul.setLayout(AzulLayout);
-        AzulLayout.setHorizontalGroup(
-            AzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
-        );
-        AzulLayout.setVerticalGroup(
-            AzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
-        );
-
-        jLabel4.setText("Histograma Azul");
-
-        javax.swing.GroupLayout HistogramaAzulLayout = new javax.swing.GroupLayout(HistogramaAzul.getContentPane());
-        HistogramaAzul.getContentPane().setLayout(HistogramaAzulLayout);
-        HistogramaAzulLayout.setHorizontalGroup(
-            HistogramaAzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaAzulLayout.createSequentialGroup()
-                .addGroup(HistogramaAzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(HistogramaAzulLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HistogramaAzulLayout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(jLabel4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        HistogramaAzulLayout.setVerticalGroup(
-            HistogramaAzulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(HistogramaAzulLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Azul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -899,43 +926,68 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    Rojo.removeAll();
-    Verde.removeAll();
-    Azul.removeAll();
+    Color.removeAll();
+    Color1.removeAll();
+    Color3.removeAll();
+    Color4.removeAll();
+    Color5.removeAll();
+    Color6.removeAll();
+    int[] vacio = new int[256];
+        for(int i=0;i<256;i++)
+            vacio[i]=0;
+
     Lienzo rojo = new Lienzo();
     Lienzo verde = new Lienzo();
     Lienzo azul = new Lienzo();
-    String mensaje="";
-    Histograma h = new Histograma(read.readImage(),0);
-    rojo.color(0);
-    mensaje+=("1 "+h.mayor());
-    rojo.setMayor(h.mayor());
-    rojo.getDatos(h.getHist());
-    Rojo.add(rojo);
-    rojo.repaint();
-    HistogramaRojo.setVisible(true);
-    
-    Histograma h1 = new Histograma(read.readImage(),1);
-    verde.color(1);
-    verde.setMayor(h1.mayor());
-    mensaje+=("  2 "+h1.mayor());
-    verde.getDatos(h1.getHist());
-    
-    Verde.add(verde);
-    verde.repaint();
-    HistogramaVerde.setVisible(true);
-    System.out.println();
-    Histograma h2 = new Histograma(read.readImage(),2);
-    azul.color(2);
-    azul.setMayor(h2.mayor());
-    mensaje+=("   3 "+h2.mayor());
-    azul.getDatos(h2.getHist());
-    
-    Azul.add(azul);
+    Lienzo acumulado;
+    Lienzo equalR;
+    Lienzo equalG;
+    Lienzo equalB;
 
+    Histograma h = new Histograma(read.readImage(),0);
+    Histograma h1 = new Histograma(read.readImage(),1);
+    Histograma h2 = new Histograma(read.readImage(),2);
+
+    rojo.color(0);
+    rojo.setMayor(25);
+    rojo.getDatos(h.getHist());
+    Color.add(rojo);
+    rojo.repaint();
+
+    verde.color(1);
+    verde.setMayor(25);
+    verde.getDatos(h1.getHist());
+    Color5.add(verde);
+    verde.repaint();
+
+    azul.color(2);
+    azul.setMayor(25);
+    azul.getDatos(h2.getHist());
+    Color6.add(azul);
     azul.repaint();
-    HistogramaAzul.setVisible(true);
-    System.out.println(mensaje);
+
+    HistogramaColor.setVisible(true);
+    EqualizationFilter filter2 = new  EqualizationFilter("filtro canal",h,h1,h2);
+    Painter painterTexture1 = new Painter(currentFile.getName(), Painter.Type.Texture);
+    filter2.setLastElement(read);
+    this.add(painterTexture1.getInternalFrame());
+    painterTexture1.setLastElement(filter2);
+    painterTexture1.Update();
+
+    
+    equalR=filter2.getEqualR();
+    Color1.add(equalR);
+    equalR.repaint();
+
+    equalG=filter2.getEqualG();
+    Color3.add(equalG);
+    equalG.repaint();
+
+    equalB=filter2.getEqualB();
+    Color4.add(equalB);
+    equalB.repaint();
+
+    HistogramaColor1.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -965,16 +1017,20 @@ public class ViewMain extends javax.swing.JFrame{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Azul;
+    private javax.swing.JPanel Color;
+    private javax.swing.JPanel Color1;
+    private javax.swing.JPanel Color3;
+    private javax.swing.JPanel Color4;
+    private javax.swing.JPanel Color5;
+    private javax.swing.JPanel Color6;
     private javax.swing.JMenu Comparar;
     private javax.swing.JMenu Compresor;
     private javax.swing.ButtonGroup FiltorsModelos;
     private javax.swing.JMenu Filtros;
     private javax.swing.ButtonGroup FiltrosBase;
     private javax.swing.JLabel Grados;
-    private javax.swing.JFrame HistogramaAzul;
-    private javax.swing.JFrame HistogramaRojo;
-    private javax.swing.JFrame HistogramaVerde;
+    private javax.swing.JFrame HistogramaColor;
+    private javax.swing.JFrame HistogramaColor1;
     private javax.swing.JMenu ModelosColor;
     private javax.swing.JRadioButtonMenuItem RadioFilterB;
     private javax.swing.JRadioButtonMenuItem RadioFilterCMY;
@@ -989,15 +1045,12 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JRadioButtonMenuItem RadioFilterYIQ;
     private javax.swing.JRadioButtonMenuItem RadioFilterYUV;
     private javax.swing.JRadioButtonMenuItem RadioFlterYDbDr;
-    private javax.swing.JPanel Rojo;
     private javax.swing.JFrame RotarFrame;
     private javax.swing.JMenu Tranformadas;
-    private javax.swing.JPanel Verde;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

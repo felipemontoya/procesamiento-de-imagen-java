@@ -46,6 +46,13 @@ package PipeLine;
  */
 public abstract class PipeObject {
 
+    /**
+     * @return the type
+     */
+    public Type getType() {
+        return type;
+    }
+
 
 public enum Type {sink, filter, source};
 

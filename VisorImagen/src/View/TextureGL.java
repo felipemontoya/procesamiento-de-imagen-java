@@ -106,7 +106,7 @@ public class TextureGL  extends JInternalFrame
 
         if (mouse.getButton() == MouseEvent.BUTTON3 && mouse.isControlDown())
         {
-            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Cropping");
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Actual Cropping");
             msg.bValue1 = false;
             msg.bValue2 = false;
             painter.PassMessage(msg);
@@ -120,13 +120,13 @@ public class TextureGL  extends JInternalFrame
         endPointX = mouse.getX();
         endPointY = mouse.getY();
 
+        double distance = endPointX-initPointX;
+
         if(mouse.isShiftDown())
         {
-            double distance = endPointX-initPointX;
-
             System.out.println("Distancia: " + distance);
         }
-        if(mouse.isControlDown())
+        else if(mouse.isControlDown())
         {
             Insets insets = this.getInsets();
             int insetwidth = insets.left + insets.right;
@@ -142,6 +142,14 @@ public class TextureGL  extends JInternalFrame
             msg.iValue4 = (int) (yRate*Math.abs(initPointY - endPointY));
             msg.bValue1 = true;
             msg.bValue2 = true;
+
+            painter.PassMessage(msg);
+            painter.Update();
+        }
+        else
+        {
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Gamma,"Gamma");
+            msg.dValue1 = distance/200;
 
             painter.PassMessage(msg);
             painter.Update();

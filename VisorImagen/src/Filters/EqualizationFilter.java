@@ -70,7 +70,7 @@ public class EqualizationFilter extends FilterPipeObject{
              hist_G_acumulado[i]=hist_G_acumulado[i-1]+histG[i];
              hist_B_acumulado[i]=hist_B_acumulado[i-1]+histB[i];
         }
-        
+
 
 
 

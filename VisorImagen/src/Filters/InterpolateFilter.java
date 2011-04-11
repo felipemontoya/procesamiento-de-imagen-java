@@ -69,12 +69,20 @@ public class InterpolateFilter extends FilterPipeObject{
         ImageData data = new ImageData(this.dataIn.getImageData(),dimX,dimY);
         int ii;
         int jj;
-       for(int i = 0;i<data.getHeight();i++){
-            for(int j = 0;j<data.getWidth();j++){
-            ii = i *Math.round((float) dimY / dataIn.getImageData().getHeight());
-            jj = j *Math.round((float) dimX / dataIn.getImageData().getWidth());
-
+        byte r,g,b;
+        System.out.print("Nuevo Array: "+data.bytesImage.length);
+       for(int i = 0;i<dataIn.getImageData().getHeight();i++){
+            for(int j = 0;j<dataIn.getImageData().getWidth();j++){
+            ii = Math.round((float)i * (float) (dimY-1) / (float) dataIn.getImageData().getHeight());
+            jj = Math.round((float)j * (float) (dimX-1) / (float) dataIn.getImageData().getWidthStep());
+            r =dataIn.getImageData().bytesImage[(i * dataIn.getImageData().getWidth() + j ) * dataIn.getImageData().getnCanales() + 0];
+            data.bytesImage[(ii * data.getWidthStep() + jj ) * data.getnCanales() + 0] = r;
+            g =dataIn.getImageData().bytesImage[(i * dataIn.getImageData().getWidth() + j ) * dataIn.getImageData().getnCanales() + 1];
+            data.bytesImage[(ii * data.getWidthStep() + jj ) * data.getnCanales() + 1] = g;
+            b =dataIn.getImageData().bytesImage[(i * dataIn.getImageData().getWidth() + j ) * dataIn.getImageData().getnCanales() + 2];
+            data.bytesImage[(ii * data.getWidthStep() + jj ) * data.getnCanales() + 2] = b;
             }
+            
        }
 
 

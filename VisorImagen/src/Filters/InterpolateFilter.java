@@ -40,60 +40,49 @@
 /***************************************************************************************************************/
 
 package Filters;
-
 import Data.ImageData;
 import PipeLine.*;
 
 /**
  *
- * @author Arzobispo
+ * @author Jhon
  */
-public class GammaFilter extends FilterPipeObject {
+public class InterpolateFilter extends FilterPipeObject{
 
     private String name;
-    private double gamma;
-    public GammaFilter(String name) { 
-        super("Gamma Filter " + name);
+    int dimX;
+    int dimY;
+
+    public InterpolateFilter(String name, int x,int y) {
+        super("InterpolateFilter " + name);
+        dimX = x;
+        dimY = y;
         this.name = name;
         this.dataIn = new DataPackage(DataPackage.Type.ImageData);
         this.dataOut = new DataPackage(DataPackage.Type.ImageData);
-        gamma = 1;
     }
-
-
-    @Override
-    public boolean ReadMessage(PipeMessage msg)
-    {
-        if(msg.destination.equals(PipeMessage.Receiver.Gamma))
-        {
-            gamma = Math.abs(msg.dValue1);
-        }
-        return true;
-    }
-
 
     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
     @Override
      public boolean InternalUpdate(){
         this.setDataIn(this.getLastElement().getDataOut());
-
-
-      ImageData data = new ImageData(this.dataIn.getImageData());
-      for(int i = 0;i<data.getHeight();i++){
+        ImageData data = new ImageData(this.dataIn.getImageData(),dimX,dimY);
+        int ii;
+        int jj;
+       for(int i = 0;i<data.getHeight();i++){
             for(int j = 0;j<data.getWidth();j++){
-                for(int k = 0 ;k<data.getnCanales();k++){
-                    data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + k] = generateByte((int)(Math.pow((float)BytesToInt(dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + k])/(float)255,1/gamma)*255));
-                }
-          }
-        }
+            ii = i *Math.round((float) dimY / dataIn.getImageData().getHeight());
+            jj = j *Math.round((float) dimX / dataIn.getImageData().getWidth());
+
+            }
+       }
 
 
 
-        
 
         this.dataOut.setImageData(data);
 
-        System.out.println("Gamma: " + 1/gamma);
+        System.out.println("Internal update BlankFilter : " + name);
         return  true;
     }
 
@@ -101,6 +90,7 @@ public class GammaFilter extends FilterPipeObject {
              return (int)valor & 0xFF;
 
     }
+
 
     private byte generateByte(int integer) {
         byte[] byteStr = new byte[4];
@@ -110,6 +100,4 @@ public class GammaFilter extends FilterPipeObject {
         byteStr[3]=(byte)((integer & 0x000000ff));
         return byteStr[3];
         }
-
-
 }

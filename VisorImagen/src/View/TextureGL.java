@@ -125,6 +125,10 @@ public class TextureGL  extends JInternalFrame
         if(mouse.isShiftDown())
         {
             System.out.println("Distancia: " + distance);
+            PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Rotate,"Rotation");
+            msg.dValue1 = distance*(Math.PI/180);
+            painter.PassMessage(msg);
+            painter.Update();
         }
         else if(mouse.isControlDown())
         {

@@ -16,12 +16,23 @@ public class RotateFilter extends FilterPipeObject{
 
     private String name;
     private double grados;
-    public RotateFilter(String name,double grados) {
+    public RotateFilter(String name) {
         super("RotateFilter " + name);
-        this.grados=grados;
+//        this.grados=grados;
         this.name = name;
         this.dataIn = new DataPackage(DataPackage.Type.ImageData);
         this.dataOut = new DataPackage(DataPackage.Type.ImageData);
+        this.grados = 0;
+    }
+
+    @Override
+    public boolean ReadMessage(PipeMessage msg)
+    {
+        if(msg.destination.equals(PipeMessage.Receiver.Rotate))
+        {
+            grados += msg.dValue1;
+        }
+        return true;
     }
 
     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
@@ -29,69 +40,77 @@ public class RotateFilter extends FilterPipeObject{
      public boolean InternalUpdate(){
         this.setDataIn(this.getLastElement().getDataOut());
         int ancho =(int) Math.sqrt((dataIn.getImageData().getWidth()*dataIn.getImageData().getWidth()) + (dataIn.getImageData().getHeight()*dataIn.getImageData().getHeight()));
-        ImageData data = new ImageData(this.dataIn.getImageData());//,ancho,ancho);
+        ImageData data = new ImageData(this.dataIn.getImageData(),ancho,ancho);
+        java.util.Arrays.fill(data.bytesImage, (byte)128);
 
-//        float[] a_channel = new float[data.getnCanales()];
-//        for(int k = 0 ;k<data.getnCanales();k++){
-//           a_channel[k]=0;
-//        }
         System.out.println("Filtro de rotación");
-        boolean RGB=true;;
-        switch(data.getEspacioColor()){
-        case ImageData.RGB:
-            RGB=true;
-            break;
-        case ImageData.BGR:
-            RGB=false;
-            break;
-      }
+//        boolean RGB=true;;
+//        switch(data.getEspacioColor()){
+//        case ImageData.RGB:
+//            RGB=true;
+//            break;
+//        case ImageData.BGR:
+//            RGB=false;
+//            break;
+//      }
 
 //        data.informacion();
 
         int channels = data.getnCanales();
-        grados*=(Math.PI/180);
+
         double y2,x2;
+        int x1,y1;
 
-
-        java.util.Arrays.fill(data.bytesImage, (byte)128);
+        System.out.println("grados " + grados );
+        
 
         int inWidth = dataIn.getImageData().getWidth();
         int inHeight = dataIn.getImageData().getHeight();
         int outWidth = data.getWidth();
         int outHeight = data.getHeight();
 
-        int x0 = 0;//inWidth/2;
-        int y0 = 0;//inHeight/2;
+        int x0 = outWidth/2;
+        int y0 = outHeight/2;
+        byte pixel = 0;
+        double cosG = Math.cos(grados);
+        double sinG = Math.sin(grados);
 
-        for(int j = 0;j < inHeight;j++){
-            for(int i = 0;i < inWidth;i++){
-   
-                x2 = Math.cos(grados)*(i-x0)-Math.sin(grados)*(j-y0)+x0;
-                y2 = Math.sin(grados)*(i-x0)+Math.cos(grados)*(j-y0)+y0;
+        for(int j = 0;j < outHeight;j++){
+            for(int i = 0;i < outWidth;i++){
 
-//                a+=dataIn.getImageData().getWidth()/2;
-//                b+=dataIn.getImageData().getHeight()/2;
-               if(x2<0 || y2<0 || x2>outWidth || y2>outHeight)
-                   continue;
+                boolean isIn = false;
+
+                int traI = i - x0;
+                int traJ = j - y0;
+
+                double rotI = traI*cosG - traJ*sinG;
+                double rotJ = traI*sinG + traJ*cosG;
+
+                double traI2 = rotI + x0;
+                double traJ2 = rotJ + y0;
+
+                x2 = traI2-x0;
+                y2 = traJ2-y0;
+
+               if(Math.abs(x2) < inWidth/2 && Math.abs(y2) < inHeight/2)
+                   isIn = true;
 
 
-//          data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 0]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]
-     try{   data.bytesImage[(int)(y2 * outWidth + x2 ) * channels  + 0] = (byte)255;//dataIn.getImageData().bytesImage[(j * inWidth + i ) * channels  + 0];
+//              interpolación por vecino más cercano
+                x1 = (int) x2 + inWidth/2;
+                y1 = (int) y2 + inHeight/2;
+      
+                try{
+                if (isIn)
+                    for (int k = 0; k <channels; k++)
+                    {
+                        pixel = dataIn.getImageData().bytesImage[(y1 * inWidth + x1 ) * channels  + k];
+                        data.bytesImage[(j * outWidth + i) * channels  + k] = pixel;//dataIn.getImageData().bytesImage[(j * inWidth + i ) * channels  + 0];
+                    }
                 }
-     catch(Exception e){
-//         System.out.println("ij: " + i + " " + j + " ab: " + a + " " + b);
-     }
-//                System.out.println("llegue al filtro");
-//                if(RGB){
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 0]=dataIn.getImageData().bytesImage[(j * data.getWidthStep() + i ) * channels + 0];
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 1]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1];
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 2]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2];
-//                }else{
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 0]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2];
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 1]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1];
-//                  data.bytesImage[((int)a * data.getWidthStep() + (int)b ) * data.getnCanales() + 2]=dataIn.getImageData().bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0];
-//                }
-//
+                 catch(Exception e){
+                     System.out.println("El filtro rotate salio en alguna iteración de los límites");
+                 }
           }
         }
 
@@ -99,7 +118,7 @@ public class RotateFilter extends FilterPipeObject{
 
         this.dataOut.setImageData(data);
 
-        System.out.println("Internal update BlankFilter : " + name);
+//        System.out.println("Internal update Rotation filter : " + name);
         return  true;
     }
 

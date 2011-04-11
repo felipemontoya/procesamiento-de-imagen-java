@@ -983,21 +983,18 @@ public class ViewMain extends javax.swing.JFrame{
 
     private void jRadioButtonMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItem2ActionPerformed
 // rotation
-        painterTexture.getInternalFrame().setVisible(false);
-        if(draw!=null)
-            this.remove(draw.pointPainter);
-        draw = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
-        draw.pointPainter.DrawGLInit(painterTexture.getLastElement().getDataOut().getImageData(),"",true,0);
-        this.add(draw.pointPainter);
-        draw.pointPainter.setVisible(true);
+//        painterTexture.getInternalFrame().setVisible(false);
+//        if(draw!=null)
+//            this.remove(draw.pointPainter);
+//        draw = new Painter(currentFile.getName(), Painter.Type.PointToPoint);
+//        draw.pointPainter.DrawGLInit(painterTexture.getLastElement().getDataOut().getImageData(),"",true,0);
+//        this.add(draw.pointPainter);
+//        draw.pointPainter.setVisible(true);
 //        System.out.println("Rotando");
-//        RotateFilter rotate = new RotateFilter("Rotation with texture",90);
-//        rotate.setLastElement(read);
-////        RGBtoLMSFilter filter2 = new RGBtoLMSFilter("filtro canal");
-////        filter2.setLastElement(read);
-//        painterTexture.setLastElement(rotate);
-//        System.out.println("antesd del update");
-//        painterTexture.Update();
+        RotateFilter rotate = new RotateFilter("Rotation with texture");
+        rotate.setLastElement(painterTexture.getLastElement());
+        painterTexture.setLastElement(rotate);
+        painterTexture.Update();
     }//GEN-LAST:event_jRadioButtonMenuItem2ActionPerformed
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged

@@ -4,15 +4,15 @@
  */
 
 package Filters;
-import Data.ImageData;
-import PipeLine.*;
 
 /**
  *
- * @author Jhon
+ * @author nelson
  */
-public class RGBtoYIQFilter extends FilterPipeObject{
+import Data.ImageData;
+import PipeLine.*;
 
+public class RGBtoYIQFilter extends FilterPipeObject{
     private String name;
 
     public RGBtoYIQFilter(String name) {
@@ -74,17 +74,12 @@ public class RGBtoYIQFilter extends FilterPipeObject{
     }
 
 
-
-
-
-
-
     private byte spaceY(byte R,byte G, byte B){
         float y;
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.209 * RR) + ( 0.587 * GG) + (0.114 * BB));
+        y = (float)((0.299 * RR) + (0.587 * GG) + (0.114 * BB) + 16);
         return generateByte(Math.round(y));
     }
 
@@ -93,7 +88,7 @@ public class RGBtoYIQFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.595716 * RR) + (-0.274453 * GG) + (-0.321263 * BB));
+        y = (float)((0.595716 * RR) - (0.274453 * GG) - (0.321263 * BB) + 128);
         return generateByte(Math.round(y));
     }
 
@@ -102,7 +97,7 @@ public class RGBtoYIQFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.211456 * RR) + (-0.522591 * GG) + (  0.311135 * BB));
+        y = (float)((0.211456 * RR) - (0.522591 * GG) + (0.311135 * BB) + 128);
         return generateByte(Math.round(y));
     }
 

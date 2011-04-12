@@ -121,8 +121,10 @@ public class InterpolateFilter extends FilterPipeObject{
             }
 
         }
-
-        /*while(!v){
+        
+        while(!v){
+            if(i==data.getHeight()-2)
+                break;
             i++;
             for(int k = j-1;k>0;k--){
             if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
@@ -134,7 +136,7 @@ public class InterpolateFilter extends FilterPipeObject{
             }
 
         }
-        }*/
+        }
         return s;
 
     }
@@ -153,7 +155,9 @@ public class InterpolateFilter extends FilterPipeObject{
 
         }
 
-        /*while(!v){
+       while(!v){
+            if(i==1)
+                break;
             i--;
             for(int k = j-1;k>0;k--){
             if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
@@ -165,7 +169,7 @@ public class InterpolateFilter extends FilterPipeObject{
             }
 
         }
-        }*/
+        }
 
         return s;
 
@@ -187,7 +191,9 @@ public class InterpolateFilter extends FilterPipeObject{
 
         }
 
-        /*while(!v){
+        while(!v){
+            if(i==data.getHeight()-2)
+                break;
             i++;
             for(int k = j+1;k<data.getWidth();k++){
             if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
@@ -199,7 +205,7 @@ public class InterpolateFilter extends FilterPipeObject{
             }
 
         }
-        }*/
+        }
         return s;
 
     }
@@ -218,7 +224,9 @@ public class InterpolateFilter extends FilterPipeObject{
 
         }
 
-        /*while(!v){
+        while(!v){
+            if(i==1)
+                break;
             i--;
             for(int k = j+1;k<data.getWidth();k++){
             if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
@@ -230,7 +238,7 @@ public class InterpolateFilter extends FilterPipeObject{
             }
 
         }
-        }*/
+        }
         return s;
 
     }

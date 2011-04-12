@@ -70,7 +70,7 @@ package View;
 import Filters.RGBtoXYZFilter;
 import Filters.RGBtoHSLFilter;
 import Filters.RGBtoYUVFilter;
-import Filters.RGBtoHSVFilter;
+//import Filters.RGBtoHSVFilter;
 import Filters.RGBtoYDbDrFilter;
 import Filters.RGBtoCMYFilter;
 import Filters.GrayScaleFilter;
@@ -97,11 +97,13 @@ import PipeLine.PipeObject;
 /**
  *
  * @author Jhon & Felipe
- */import Test_Compressor.LZW;
+ */
+import Test_Compressor.LZW;
 import java.util.ArrayList;
 
 
 import javax.media.opengl.*;
+
 /*   Clase:ViewMain
  *   clase que inicia el programa, tiene main propio.
  *   configura y pinta la interfaz grafica del usuario.
@@ -149,6 +151,8 @@ public class ViewMain extends javax.swing.JFrame{
         } catch (Exception ex) {
            System.out.println("No se puede configurar el estilo nativo del sistema operativo: " + ex);
         }
+//       jMenu1.setDefaultLightWeightPopupEnabled(false);
+       
     }
 
     /** Creates new form VisorMain */
@@ -156,6 +160,7 @@ public class ViewMain extends javax.swing.JFrame{
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(Exception e) {}
+        System.setProperty("sun.awt.noerasebackground", "true");
         initComponents();
         this.ConfigTextArea();
         this.ConfigNativeStyle();
@@ -207,6 +212,9 @@ public class ViewMain extends javax.swing.JFrame{
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        menuBar1 = new java.awt.MenuBar();
+        menu1 = new java.awt.Menu();
+        menu2 = new java.awt.Menu();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
@@ -215,6 +223,7 @@ public class ViewMain extends javax.swing.JFrame{
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -515,6 +524,12 @@ public class ViewMain extends javax.swing.JFrame{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        menu1.setLabel("File");
+        menuBar1.add(menu1);
+
+        menu2.setLabel("Edit");
+        menuBar1.add(menu2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTextArea1.setRows(5);
@@ -551,6 +566,8 @@ public class ViewMain extends javax.swing.JFrame{
                 jTextField4ActionPerformed(evt);
             }
         });
+
+        jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jMenu1.setText("Archivo");
 
@@ -802,23 +819,28 @@ public class ViewMain extends javax.swing.JFrame{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(325, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -842,7 +864,7 @@ public class ViewMain extends javax.swing.JFrame{
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         //variable que indica que desea abrir un archivo
         boolean a_isSafe = false;
-        
+        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         if(isFileOpen){
             JOptionPane optionPane = new JOptionPane(
                 "Dialogo\n",
@@ -882,8 +904,9 @@ public class ViewMain extends javax.swing.JFrame{
                     // Anade la ventana al frame principal
 //                    currentPipe.add(read);
 //                    currentPipe.add(painterTexture);
-                    this.add(painterTexture.getInternalFrame());
+                    this.jDesktopPane1.add(painterTexture.getInternalFrame(),-1);
                     painterTexture.Update();
+                    
                  }
                  else{
                     System.out.println("Error abriendo el archivo");
@@ -947,10 +970,10 @@ public class ViewMain extends javax.swing.JFrame{
     }//GEN-LAST:event_ModelosColorActionPerformed
 
     private void RadioFilterHSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioFilterHSVActionPerformed
-        RGBtoHSVFilter filter2 = new RGBtoHSVFilter("filtro canal");
-        filter2.setLastElement(painterTexture.getLastElement());
-        painterTexture.setLastElement(filter2);
-        painterTexture.Update();
+//        RGBtoHSVFilter filter2 = new RGBtoHSVFilter("filtro canal");
+//        filter2.setLastElement(painterTexture.getLastElement());
+//        painterTexture.setLastElement(filter2);
+//        painterTexture.Update();
     }//GEN-LAST:event_RadioFilterHSVActionPerformed
 
     private void TranformadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranformadasActionPerformed
@@ -1030,7 +1053,7 @@ public class ViewMain extends javax.swing.JFrame{
                 if(psnr.isDimentionEquals()){
                     p= new Painter(currentFile.getName(), Painter.Type.Texture);
                     p.setLastElement(reader);
-                    this.add(p.getInternalFrame());
+                    this.jDesktopPane1.add(p.getInternalFrame());
                     p.Update();
                     System.out.println("****************************");
                     System.out.println("PSNR: "+psnr.result());
@@ -1123,7 +1146,7 @@ public class ViewMain extends javax.swing.JFrame{
     EqualizationFilter filter2 = new  EqualizationFilter("filtro canal",h,h1,h2);
     Painter painterTexture1 = new Painter(currentFile.getName(), Painter.Type.Texture);
     filter2.setLastElement(painterTexture.getLastElement());
-    this.add(painterTexture1.getInternalFrame());
+    this.jDesktopPane1.add(painterTexture1.getInternalFrame());
     painterTexture1.setLastElement(filter2);
     painterTexture1.Update();
 
@@ -1223,6 +1246,7 @@ public class ViewMain extends javax.swing.JFrame{
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                JPopupMenu.setDefaultLightWeightPopupEnabled(false);
                 new ViewMain().setVisible(true);
 
              }
@@ -1273,6 +1297,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1299,6 +1324,9 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private java.awt.Menu menu1;
+    private java.awt.Menu menu2;
+    private java.awt.MenuBar menuBar1;
     // End of variables declaration//GEN-END:variables
 
    

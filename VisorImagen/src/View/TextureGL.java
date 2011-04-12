@@ -163,6 +163,7 @@ public class TextureGL  extends JInternalFrame
   public void TextureGLInit(ImageData i,String name)
   {
     this.setTitle(name);
+//    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     image = i;
     caps = new GLCapabilities();
     // caps.setSampleBuffers(true );

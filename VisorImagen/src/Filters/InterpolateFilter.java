@@ -85,13 +85,154 @@ public class InterpolateFilter extends FilterPipeObject{
             
        }
 
-
-
+        int[] v1,v2,v3,v4;
+        int[] p = new int[3];
+        for(int i = 1;i<data.getHeight()-1;i++){
+            for(int j = 1;j<data.getWidth()-1;j++){
+             v1= buscarArribaIzquierda(data,i,j);
+             v2= buscarAbajoIzquierda(data,i,j);
+             v3= buscarArribaDerecha(data,i,j);
+             v4= buscarAbajoDerecha(data,i,j);
+             p[0] = (v1[0]+v2[0]+v3[0]+v4[0])/4;
+             p[1] = (v1[1]+v2[1]+v3[1]+v4[1])/4;
+             p[2] = (v1[2]+v2[2]+v3[2]+v4[2])/4;
+             data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 0]=generateByte(p[0]);
+             data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 1]=generateByte(p[1]);
+             data.bytesImage[(i * data.getWidthStep() + j ) * data.getnCanales() + 2]=generateByte(p[2]);
+            }
+        }
 
         this.dataOut.setImageData(data);
 
         System.out.println("Internal update BlankFilter : " + name);
         return  true;
+    }
+
+    public int[] buscarArribaIzquierda(ImageData data,int i,int j){
+        boolean v = false;
+        int[] s = new int[3];
+        for(int k = j-1;k>0;k--){
+            if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+
+        /*while(!v){
+            i++;
+            for(int k = j-1;k>0;k--){
+            if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+        }*/
+        return s;
+
+    }
+
+    public int[] buscarAbajoIzquierda(ImageData data,int i,int j){
+        boolean v = false;
+        int[] s = new int[3];
+        for(int k = j-1;k>0;k--){
+            if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+
+        /*while(!v){
+            i--;
+            for(int k = j-1;k>0;k--){
+            if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+        }*/
+
+        return s;
+
+    }
+
+
+
+    public int[] buscarArribaDerecha(ImageData data,int i,int j){
+        boolean v = false;
+        int[] s = new int[3];
+        for(int k = j+1;k<data.getWidth();k++){
+            if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+
+        /*while(!v){
+            i++;
+            for(int k = j+1;k<data.getWidth();k++){
+            if(BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i+1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+        }*/
+        return s;
+
+    }
+
+    public int[] buscarAbajoDerecha(ImageData data,int i,int j){
+        boolean v = false;
+        int[] s = new int[3];
+        for(int k = j+1;k<data.getWidth();k++){
+            if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+
+        /*while(!v){
+            i--;
+            for(int k = j+1;k<data.getWidth();k++){
+            if(BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1])!=1 && BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2])!=1 ){
+                s[0]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 0]);
+                s[1]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 1]);
+                s[2]=BytesToInt(data.bytesImage[((i-1) * data.getWidthStep() + (k) ) * data.getnCanales() + 2]);
+                v=true;
+                break;
+            }
+
+        }
+        }*/
+        return s;
+
     }
 
     public int BytesToInt(byte valor){

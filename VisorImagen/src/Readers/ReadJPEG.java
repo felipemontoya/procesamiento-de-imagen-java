@@ -69,10 +69,13 @@ public class ReadJPEG {
     //los bytes del archivo leido
     private byte[] bytesFile;
 
+    int width, height;
+    int numberOfComponents;
+    int rawDataIndex;
+
     public ReadJPEG(File fichero){
 
         System.out.println("Leyendo archivo JPEG");
-        // hacer aquí y en otros métodos de la clase todo el procesamiento que se necesite para convertir un archivo en el formato estandar de MegaImagen
         
         //FileInputStream flujoEntrada;
         BufferedInputStream flujoEntrada = null;
@@ -115,7 +118,7 @@ public class ReadJPEG {
             searchTags();
 
             //Por motivos de manejo de printSelf
-            this.readImage = new ImageData(99, 99, ImageData.ARRIBA_IZQ, 4, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.YCBCR);
+            this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 4, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.RGB);
 
 
     }
@@ -128,13 +131,123 @@ public class ReadJPEG {
             if (bytesFile[i] == (byte)0xFF){
                 tags.add(bytesFile[i+1]);
                 posTags.add(i);
-                
             }
-//tags.
+        }
+//      Ahora se deben revisar los tags que estén en la lista
+        System.out.println("Cantidad de tags(Antes de corrección): " + tags.size());
+
+        for(int i = 0; i < tags.size(); i++){
+            System.out.println("Tag: " + tags.elementAt(i));
+
+            switch(tags.elementAt(i))
+            {
+                case (byte)0xD8:
+                    System.out.println("Start of Image");
+                    break;
+                case (byte)0xD9:
+                    System.out.println("End of Image");
+                    break;
+                case (byte)0xDB:
+                    System.out.println("Quantization Table");
+                    break;
+                case (byte)0xC4:
+                    System.out.println("Huffman Table");
+                    break;
+                case (byte)0xDA:
+                    System.out.println("Start of Scan");
+                    break;
+                case (byte)0xE0:
+                    System.out.println("JFIF application segment");
+                    readAPP0(posTags.elementAt(i));
+                    break;
+                case (byte)0xE1:
+                    System.out.println("APP1");
+                    break;
+                case (byte)0xC0:
+                    System.out.println("SOF0");
+                    readSOF0(posTags.elementAt(i));
+                    break;
+
+
+
+            }
+
         }
 
-        System.out.println("Número de tags: " + tags.size() );
         return true;
+    }
+    
+
+
+    private void readSOF0(int baseIndex)
+    {
+        byte[] a_dataFile;
+        int aux_index;
+        int aux_tag;
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 2, 2);
+        aux_tag = this.BytesToInt(a_dataFile,false);
+        System.out.println("SOF0 lenght :" + aux_tag);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 4, 1);
+        aux_tag = this.BytesToInt(a_dataFile,false);
+        System.out.println("Data precision :" + aux_tag);
+        if (aux_tag != 8)
+            System.out.println("Error: la precisión es diferente de 8");
+
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 5, 2);
+        aux_tag = this.BytesToInt(a_dataFile,true);
+        System.out.println("Image Height :" + aux_tag);
+        height = aux_tag;
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 7, 2);
+        aux_tag = this.BytesToInt(a_dataFile,true);
+        System.out.println("Image Width :" + aux_tag);
+        width = aux_tag;
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 9, 1);
+        aux_tag = this.BytesToInt(a_dataFile,true);
+        System.out.println("Number of components :" + aux_tag);
+        numberOfComponents = aux_tag;
+
+        rawDataIndex = baseIndex + 10;
+
+
+    }
+
+    private void readAPP0(int baseIndex)
+    {
+        byte[] a_dataFile;
+        int aux_index;
+        int aux_tag;
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 2, 2);
+        aux_tag = this.BytesToInt(a_dataFile,false);
+        System.out.println("APP0 lenght :" + aux_tag);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 4, 5);
+        System.out.println("Identifier :" + (char)a_dataFile[0] + (char)a_dataFile[1] +(char)a_dataFile[2] +(char)a_dataFile[3]);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 9, 2);
+//        aux_tag = this.BytesToInt(a_dataFile,false);
+        System.out.println("Versioning :" + (int)a_dataFile[0] + ":" + (int)a_dataFile[1]);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 11, 1);
+//        aux_tag = this.BytesToInt(a_dataFile,false);
+        System.out.println("Units :" + (int)a_dataFile[0]);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 12, 2);
+        aux_tag = this.BytesToInt(a_dataFile,true);
+        System.out.println("Xdensity :" + aux_tag);
+
+        a_dataFile = this.CutBytes(bytesFile, baseIndex + 14, 2);
+        aux_tag = this.BytesToInt(a_dataFile,true);
+        System.out.println("Ydensity :" + aux_tag);
+
+//        a_dataFile = this.CutBytes(bytesFile, baseIndex + 16, 1);
+//        aux_tag = this.BytesToInt(a_dataFile,false);
+//        System.out.println("thumbnail x :" + aux_tag);
     }
 
     private boolean searchBegintoEnd(){
@@ -156,5 +269,62 @@ public class ReadJPEG {
         return this.readImage;
     }
 
+    public int BytesToInt(byte[] valor, boolean endian){
+
+
+	     int a, b, c, d;
+             if (valor.length == 1)
+                 return (int)valor[0];
+             if (valor.length == 2)
+             {
+	     if(endian){
+	          c = (valor[0] & 0xFF) << 8;
+	          d =  valor[1] & 0xFF;
+	     } else{
+	          c = (valor[1] & 0xFF) << 8;
+	          d =  valor[0] & 0xFF;
+	     }
+	     return  c | d;
+             }
+             else
+             {
+                 if(valor.length < 4){
+                      throw new ArrayIndexOutOfBoundsException(valor. length);
+                 }
+                 if(endian){
+                      a = (valor[0] & 0xFF) << 24;
+                      b = (valor[1] & 0xFF) << 16;
+                      c = (valor[2] & 0xFF) << 8;
+                      d =  valor[3] & 0xFF;
+                 } else{
+                      a = (valor[3] & 0xFF) << 24;
+                      b = (valor[2] & 0xFF) << 16;
+                      c = (valor[1] & 0xFF) << 8;
+                      d =  valor[0] & 0xFF;
+                 }
+            }
+
+	     return  a | b | c | d;
+	}
+
+    public byte[] CutBytes(byte[] b,int i,int j){
+         byte[] a;
+//        if (j > 4)
+            a = new byte[j];
+//        else
+//            a = new byte[4];
+
+        for(byte bb : a){
+            bb = 0;
+        }
+        int k=0;
+
+        for(int ii = i;ii< i + j;ii++){
+            a[k]=b[ii];
+            k++;
+        }
+
+        return a;
+    }
 
 }

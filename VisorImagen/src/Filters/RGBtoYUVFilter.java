@@ -79,7 +79,7 @@ public class RGBtoYUVFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.257 * RR) + (0.504 * GG) + (0.098 * BB) + 16);
+        y = (float)((0.299 * RR) + (0.587 * GG) + (0.114 * BB));
         return generateByte(Math.round(y));
     }
 
@@ -88,7 +88,7 @@ public class RGBtoYUVFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((-0.148 * RR) - (0.291 * GG) + (0.439 * BB) + 128);
+        y = (float)((-0.1687 * RR) - (0.3313* GG) + (0.5 * BB) + 128);
         return generateByte(Math.round(y));
     }
 
@@ -97,7 +97,7 @@ public class RGBtoYUVFilter extends FilterPipeObject{
         int RR=BytesToInt(R);
         int BB=BytesToInt(G);
         int GG=BytesToInt(B);
-        y = (float)((0.439 * RR) - (0.368 * GG) - (0.071 * BB) + 128);
+        y = (float)((0.5 * RR) - (0.4187 * GG) - (0.0813 * BB) + 128);
         return generateByte(Math.round(y));
     }
 

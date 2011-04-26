@@ -12,13 +12,13 @@ import PipeLine.*;
  *
  * @author Jhon
  */
-public class DCTFilter8x8 extends FilterPipeObject{
+public class IDCTFilter8x8 extends FilterPipeObject{
 
     private String name;
     private int channel;
 
-    public DCTFilter8x8(String name, int channel) {
-        super("Discrete cosine transform 8x8 " + name);
+    public IDCTFilter8x8(String name) {
+        super("Inverse Discrete cosine transform 8x8 " + name);
         this.name = name;
         this.dataIn = new DataPackage(DataPackage.Type.ImageData);
         this.dataOut = new DataPackage(DataPackage.Type.ImageData);
@@ -41,7 +41,7 @@ public class DCTFilter8x8 extends FilterPipeObject{
         int[][] valuesY = new int[N][M];
         int[][] valuesI = new int[N][M];
         int[][] valuesQ = new int[N][M];
-        double[][] q =  {{16,11,10,16,24,40,51,61},
+        int[][] q =  {{16,11,10,16,24,40,51,61},
                         {12,12,14,19,26,58,60,55},
                         {14,13,16,24,40,57,69,56},
                         {14,17,22,29,51,87,80,62},
@@ -55,9 +55,9 @@ for (int offsetY = 0; offsetY < data.getHeight(); offsetY+=8){
 
     for (int i = 0; i < N; i++){// sumatorias
           for (int j = 0; j < M; j++){
-            valuesY[i][j]=BytesToInt(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 0])-128;
-            valuesI[i][j]=BytesToInt(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 1])-128;
-            valuesQ[i][j]=BytesToInt(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 2])-128;
+            valuesY[i][j]=(int)(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 0])*q[i][j];
+            valuesI[i][j]=(int)(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 1])*q[i][j];
+            valuesQ[i][j]=(int)(data.bytesImage[((j + offsetY) * data.getWidthStep() + i +offsetX ) * nChannels + 2])*q[i][j];
         }
     }
 
@@ -85,12 +85,11 @@ for (int offsetY = 0; offsetY < data.getHeight(); offsetY+=8){
                 }
 
                
-               //cuantizacion
-               sumY/=q[u][v];
-               sumI/=q[u][v];
-               sumQ/=q[u][v];
+               sumY+=128;
+               sumI+=128;
+               sumQ+=128;
 
-               
+
 
 
                data.bytesImage[((v + offsetY) * data.getWidthStep() + u +offsetX ) * nChannels + 0] = generateByte((int)(sumY));

@@ -245,10 +245,13 @@ public class ViewMain extends javax.swing.JFrame{
         RadioFilterXYZ = new javax.swing.JRadioButtonMenuItem();
         RadioFilterLMS = new javax.swing.JRadioButtonMenuItem();
         RadioFlterYDbDr = new javax.swing.JRadioButtonMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
         Compresor = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         Tranformadas = new javax.swing.JMenu();
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -727,6 +730,18 @@ public class ViewMain extends javax.swing.JFrame{
 
         ModelosColor.add(jMenu2);
 
+        jMenu4.setText("YUV to");
+
+        jMenuItem10.setText("RGB");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem10);
+
+        ModelosColor.add(jMenu4);
+
         jMenuBar1.add(ModelosColor);
 
         Compresor.setText("Compresores");
@@ -756,6 +771,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Tranformadas.add(jRadioButtonMenuItem1);
+
+        jMenuItem9.setText("IDCT");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jMenuItem9);
 
         FiltorsModelos.add(jRadioButtonMenuItem2);
         jRadioButtonMenuItem2.setSelected(true);
@@ -1240,6 +1263,22 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.Update();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+      IDCTFilter8x8 idct = new IDCTFilter8x8("Filtro IDCT");
+        idct.setLastElement(painterTexture.getLastElement());
+        YUVtoRGBFilter y = new YUVtoRGBFilter("Filtro YIQ");
+        y.setLastElement(idct);
+        painterTexture.setLastElement(y);
+        painterTexture.Update();
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+         YUVtoRGBFilter y = new YUVtoRGBFilter("Filtro YIQ");
+        y.setLastElement(painterTexture.getLastElement());
+        painterTexture.setLastElement(y);
+        painterTexture.Update();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1306,8 +1345,10 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -1315,6 +1356,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;

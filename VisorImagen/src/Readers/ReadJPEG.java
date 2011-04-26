@@ -128,7 +128,7 @@ public class ReadJPEG {
         Vector<Integer> posTags = new Vector<Integer>();
         
         for (int i = 0; i < bytesFile.length; i++){
-            if (bytesFile[i] == (byte)0xFF){
+            if (bytesFile[i] == (byte)0xFF && bytesFile[i+1] != 0x0){
                 tags.add(bytesFile[i+1]);
                 posTags.add(i);
             }

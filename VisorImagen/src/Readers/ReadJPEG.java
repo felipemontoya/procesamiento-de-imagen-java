@@ -49,6 +49,9 @@
 package Readers;
 
 import Data.ImageData;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.PixelGrabber;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +59,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -117,9 +122,42 @@ public class ReadJPEG {
             searchBegintoEnd();
             searchTags();
 
-            //Por motivos de manejo de printSelf
-            this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 4, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.RGB);
+            this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 3, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.RGB);
 
+
+            Image image = Toolkit.getDefaultToolkit().getImage(fichero.getAbsolutePath());
+
+            int[] values = new int[width*height];
+            PixelGrabber grabber = new PixelGrabber(image, 0, 0, width, height, values, 0, width);
+
+
+        try {
+            boolean grabed = grabber.grabPixels();
+            if (grabed)
+                System.out.println("Pixels were grabbed by awt");
+//            int r, g, b;
+            int y, x;
+            int index = 0;
+            for (y = 0; y < height; ++y)
+            {
+              for (x = 0; x < width; ++x)
+              {
+//                r = ((values[index] >> 16) & 0xff);
+//                g = ((values[index] >> 8) & 0xff);
+//                b = (values[index] & 0xff);
+
+                readImage.bytesImage[(y * width + x)*3 + 0] = (byte)((values[index] >> 16) & 0xff);
+                readImage.bytesImage[(y * width + x)*3 + 1] = (byte)((values[index] >> 8) & 0xff);
+                readImage.bytesImage[(y * width + x)*3 + 2] = (byte)((values[index] ) & 0xff);
+                index++;
+                }
+            }
+
+
+        } catch (InterruptedException ex) {
+            System.out.println("");
+            Logger.getLogger(ReadJPEG.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

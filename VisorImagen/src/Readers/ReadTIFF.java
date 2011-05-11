@@ -266,12 +266,14 @@ public class ReadTIFF {
     // entre [offset - width*3,offset), estas se copian en orden descendente en readImage.bytesImage (El indice para esta operacion
     // es j.
         int size;
-        int j=0;
+        int j = (width-1)*height*3;
         if(compresion==1){
+
         for(int i = offset - 3 * width  ; i >= 8; i = i - 3 * width){
             System.arraycopy(bytesFile, i, readImage.bytesImage,j, 3 * width);
-            j += 3 * width;
+            j -= 3 * width;
         }
+
         }else if(compresion==5){
             
             

@@ -79,6 +79,7 @@ public class ReadJPEG {
     int rawDataIndex;
 
     public ReadJPEG(File fichero){
+        
 
         System.out.println("Leyendo archivo JPEG");
         
@@ -124,7 +125,7 @@ public class ReadJPEG {
 
             this.readImage = new ImageData(width, height, ImageData.ARRIBA_IZQ, 3, ImageData.PROF_U8, ImageData.ALINEADO_4, ImageData.RGB);
 
-
+            
             Image image = Toolkit.getDefaultToolkit().getImage(fichero.getAbsolutePath());
 
             int[] values = new int[width*height];
@@ -153,7 +154,7 @@ public class ReadJPEG {
                 }
             }
 
-
+            
         } catch (InterruptedException ex) {
             System.out.println("");
             Logger.getLogger(ReadJPEG.class.getName()).log(Level.SEVERE, null, ex);
@@ -306,6 +307,15 @@ public class ReadJPEG {
     public ImageData getImagenData(){
         return this.readImage;
     }
+
+    private byte generateByte(int integer) {
+        byte[] byteStr = new byte[4];
+        byteStr[0]=(byte)((integer & 0xff000000)>>>24);
+        byteStr[1]=(byte)((integer & 0x00ff0000)>>>16);
+        byteStr[2]=(byte)((integer & 0x0000ff00)>>>8);
+        byteStr[3]=(byte)((integer & 0x000000ff));
+        return byteStr[3];
+        }
 
     public int BytesToInt(byte[] valor, boolean endian){
 

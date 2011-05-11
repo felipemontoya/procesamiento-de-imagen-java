@@ -50,6 +50,7 @@
 
 package View;
 
+import Data.ImageData;
 import PipeLine.SinkPipeObject;
 import java.awt.event.MouseListener;
 import javax.swing.JInternalFrame;
@@ -117,6 +118,10 @@ public class Painter extends SinkPipeObject {
 
 //        System.out.println("Internal update Painter ->Name: " + name);
         return true;
+    }
+
+    public ImageData getImageData(){
+        return this.dataIn.getImageData();
     }
 
 

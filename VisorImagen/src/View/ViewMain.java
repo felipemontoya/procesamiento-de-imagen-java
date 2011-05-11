@@ -97,7 +97,8 @@ import PipeLine.PipeObject;
 /**
  *
  * @author Jhon & Felipe
- */
+ */import Readers.Jpeg;
+
 import Test_Compressor.LZW;
 import java.util.ArrayList;
 
@@ -227,6 +228,7 @@ public class ViewMain extends javax.swing.JFrame{
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         Filtros = new javax.swing.JMenu();
@@ -582,6 +584,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem11.setText("Guardar");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem11);
 
         jMenuBar1.add(jMenu1);
 
@@ -1007,7 +1017,7 @@ public class ViewMain extends javax.swing.JFrame{
         RGBtoYUVFilter yuv = new RGBtoYUVFilter("filtro canal");
         yuv.setLastElement(painterTexture.getLastElement());
         DCTFilter8x8 dct = new DCTFilter8x8("filtro canal",1);
-        dct.setLastElement(yuv);
+        dct.setLastElement(painterTexture.getLastElement());
         painterTexture.setLastElement(dct);
         painterTexture.Update();
     }//GEN-LAST:event_jRadioButtonMenuItem1ActionPerformed
@@ -1268,7 +1278,7 @@ public class ViewMain extends javax.swing.JFrame{
         idct.setLastElement(painterTexture.getLastElement());
         YUVtoRGBFilter y = new YUVtoRGBFilter("Filtro YIQ");
         y.setLastElement(idct);
-        painterTexture.setLastElement(y);
+        painterTexture.setLastElement(idct);
         painterTexture.Update();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
@@ -1278,6 +1288,17 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.setLastElement(y);
         painterTexture.Update();
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+    JFileChooser chooser = new JFileChooser();
+    chooser.showSaveDialog(null);
+    File f = chooser.getSelectedFile();
+    String p = f.getAbsolutePath()+".jpg";
+    System.out.println("Guardando archivo jpg en: "+p);
+    Jpeg j = new Jpeg();
+    j.createJPG(painterTexture.getImageData(), p);
+    
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -1349,6 +1370,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

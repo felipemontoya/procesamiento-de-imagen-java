@@ -1,3 +1,4 @@
+
 /***************************************************************************************************************/
 /*    Especificaciones de la Programación
  *    Patrón
@@ -244,13 +245,13 @@ public class TextureGL  extends JInternalFrame
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     gl.glBegin(GL.GL_QUADS);
     gl.glTexCoord2f(0.0f, 0.0f);
-    gl.glVertex3f(-1.0f, -1.0f, 0.0f);
-    gl.glTexCoord2f(0.0f, 1.0f);
     gl.glVertex3f(-1.0f, 1.0f, 0.0f);
+    gl.glTexCoord2f(0.0f, 1.0f);
+    gl.glVertex3f(-1.0f, -1.0f, 0.0f);
     gl.glTexCoord2f(1.0f, 1.0f);
-    gl.glVertex3f(1.0f, 1.0f, 0.0f);
-    gl.glTexCoord2f(1.0f, 0.0f);
     gl.glVertex3f(1.0f, -1.0f, 0.0f);
+    gl.glTexCoord2f(1.0f, 0.0f);
+    gl.glVertex3f(1.0f, 1.0f, 0.0f);
 
     gl.glEnd();
 

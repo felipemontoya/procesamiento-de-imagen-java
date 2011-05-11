@@ -199,7 +199,13 @@ public class ReadBMP {
 // Se encarga de cada tipo de imagen en un bloque diferente  (@Jhon: hay que poder dibujar la imagen, para probar que esto funcione, mientras tanto lo dejo comentado)
 //       if (nChanels == 4 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
 //        {
-             System.arraycopy(bytesFile, offset, readImage.bytesImage, 0, bytesFile.length-offset);
+
+        int j = 0;
+        for(int i = (bytesFile.length) - (3 * width); i >= offset; i -= (3 * width)){
+            System.arraycopy(bytesFile, i, readImage.bytesImage,j, 3 * width);
+            j += 3 * width;
+        }
+             
 //        }
 //        if (nChanels == 3 /*&& revisar otras cosas como comprseionbmp y alineación */) //En este caso los datos se copian sin hacer modificaciones
 //        {

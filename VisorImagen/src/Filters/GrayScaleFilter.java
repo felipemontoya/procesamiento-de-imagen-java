@@ -45,7 +45,7 @@ public class GrayScaleFilter extends FilterPipeObject{
             a_channel[2]=0.2989f;
             break;
       }
-        a_channel[0]=1;
+       // a_channel[0]=1;
         float colorg;
         byte a_byte;
        for(int i = 0;i<data.getHeight();i++){
@@ -75,7 +75,7 @@ public class GrayScaleFilter extends FilterPipeObject{
 
         this.dataOut.setImageData(data);
 
-        System.out.println("Internal update BlankFilter : " + name);
+        System.out.println("Internal update GrayScale : " + name);
         return  true;
     }
 

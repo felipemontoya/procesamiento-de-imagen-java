@@ -141,10 +141,10 @@ public class TextureGL  extends JInternalFrame
 
 
             PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Crop,"Marking");
-            msg.iValue1 = (int) (xRate*Math.min(initPointX, endPointX));
-            msg.iValue2 = (int) (yRate*Math.min(initPointY, endPointY));
-            msg.iValue3 = (int) (xRate*Math.abs(initPointX - endPointX));
-            msg.iValue4 = (int) (yRate*Math.abs(initPointY - endPointY));
+            msg.iValue1 = (Math.min(initPointX, endPointX)) + 10;
+            msg.iValue2 = (Math.min(this.getSize().height-initPointY, this.getSize().height-endPointY)) - 25;
+            msg.iValue3 = (Math.abs(initPointX - endPointX));
+            msg.iValue4 = (Math.abs(initPointY - endPointY));
             msg.bValue1 = true;
             msg.bValue2 = true;
 

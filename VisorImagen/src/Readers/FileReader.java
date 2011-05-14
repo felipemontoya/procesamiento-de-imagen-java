@@ -166,7 +166,7 @@ public class FileReader extends SourcePipeObject {
 //                System.out.println("Internal update FileReader llamado en BMP");
                 break;
             case JPEG:
-                System.out.println("Aún no se puede actualizar un JPEG");
+                //System.out.println("Aún no se puede actualizar un JPEG");
                 break;
             case TIFF:
 //                System.out.println("Internal update FileReader llamado en TIFF");

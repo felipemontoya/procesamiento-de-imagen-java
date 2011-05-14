@@ -38,7 +38,6 @@
  *   léase y cúmplase
  */
 /***************************************************************************************************************/
-
 package Filters;
 import Data.ImageData;
 import PipeLine.*;
@@ -48,101 +47,93 @@ import PipeLine.*;
  *
  * @author Jhon
  */
-public class CropFilter extends FilterPipeObject{
+public class SobelFilter extends FilterPipeObject{
 
     private String name;
-    public CropFilter(String name) {
-        super("CropFilter " + name);
+    public SobelFilter(String name) {
+        super("Sobel filter " + name);
         this.name = name;
         this.dataIn = new DataPackage(DataPackage.Type.ImageData);
         this.dataOut = new DataPackage(DataPackage.Type.ImageData);
     }
 
-    private boolean isThereMessage = false;
-    private boolean markOnly = true;
-    private int x0,y0,width,height;
 
-    @Override
-    public boolean ReadMessage(PipeMessage msg)
-    {
-        if(msg.destination.equals(PipeMessage.Receiver.Crop))
-        {
-            isThereMessage = true;
-            try{
-                if(msg.bValue2)
-                {
-                    x0 = msg.iValue1;
-                    if (x0 < 0)
-                        x0 = 0;
-                    y0 = msg.iValue2;
-                    if (y0 < 0)
-                        y0 = 0;
-                    width = msg.iValue3;
-                    if (width > (dataIn.getImageData().getWidth()-x0))
-                        width = dataIn.getImageData().getWidth()-x0;
-                    height = msg.iValue4;
-                    if (height > (dataIn.getImageData().getHeight()-y0))
-                        height = dataIn.getImageData().getHeight()-y0;
-                }
-                if(msg.bValue1)
-                    markOnly = true;
-                else
-                    markOnly = markOnly^true;
-            }
-            catch(NumberFormatException e) {}
-            
-        }
-        return true;
-    }
     //Metodo propio del pipeline, no se debe llamar por fuera de esta!
     @Override
      public boolean InternalUpdate(){
         this.setDataIn(this.getLastElement().getDataOut());
-        ImageData data;
-        if(!isThereMessage || markOnly)
+        ImageData data = new ImageData(this.dataIn.getImageData());
+
+        int maskSize = 3;
+        int maskOffset = (maskSize - 1) / 2;
+
+        System.out.println("Width and height from input image: " + data.getWidth() + " - " + data.getHeight());
+        //Some definitions
+        double hMask[][] = new double[maskSize][maskSize];
+        double vMask[][] = new double[maskSize][maskSize];
+
+        if (maskSize == 3)
         {
-            data = new ImageData(this.dataIn.getImageData());
-            System.arraycopy(dataIn.getImageData().bytesImage, 0, data.bytesImage, 0, dataIn.getImageData().bytesImage.length);
-        }
-        else
-            data = new ImageData(this.dataIn.getImageData(),width,height);
+            vMask[0][0]=-1;vMask[0][1]=-2;vMask[0][2]=-1;
+            vMask[1][0]=0; vMask[1][1]=0; vMask[1][2]=0;
+            vMask[2][0]=+1;vMask[2][1]=+2;vMask[2][2]=+1;
 
-//        System.out.println("Filtro de crop por dentro " + x0 + " "+ y0);
-
-        int inWidth = dataIn.getImageData().getWidth();
-        int inHeight = dataIn.getImageData().getHeight();
-        //Sigo trabajando 01/04/2011 . Felipe
-        int nChannels = dataIn.getImageData().getnCanales();
-
-        
-
-        if(isThereMessage)
-        if (markOnly)
-        {
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                    data.bytesImage[ ((i + (inHeight - y0 - height))*data.getWidthStep() + j + x0)*nChannels ] = (byte)255;
-            }
+            hMask[0][0]=-1;hMask[0][1]=0;hMask[0][2]=+1;
+            hMask[1][0]=-2;hMask[1][1]=0;hMask[1][2]=+2;
+            hMask[2][0]=-1;hMask[2][1]=0;hMask[2][2]=+1;     
         }
         else
         {
-            for (int i = 0; i < height; i++)
-            {
-                System.arraycopy(   dataIn.getImageData().bytesImage,
-                                    ((inHeight -y0 - i)*dataIn.getImageData().getWidthStep() + x0)*nChannels,
-                                    data.bytesImage,
-                                    (height - i -1) * data.getWidthStep() * nChannels,
-                                    width*nChannels) ;
-//                data.bytesImage[ ((i + (inHeight - y0 - height))*data.getWidthStep() + j + x0)*nChannels ] = (byte)255;
-            }
+            System.out.println("Only 3x3 mask supported to this point");
+            return false;
         }
-//            System.arraycopy(dataIn.getImageData().bytesImage,
-//                                (( i +  y0) * dataIn.getImageData().getWidthStep() + x0) * nChannels,
-//                                data.bytesImage,
-//                                (i) * data.getWidthStep() * nChannels,
-//                                width*nChannels);
 
+        double src[] = new double[(data.getWidth() + maskOffset*2)*(data.getHeight() + maskOffset*2)];
+        double dst[] = new double[data.getWidth()*data.getHeight()];
+        java.util.Arrays.fill(src,0);
+//        java.util.Arrays.fill(src,src[0]);
+
+        java.util.Arrays.fill(dst,128);
+//        java.util.Arrays.fill(dst,dst[0]);
+
+        // Copy input data into filter src
+        for (int i = 0; i < data.getWidth(); i++)
+            for (int j = 0; j < data.getHeight(); j++)
+            {
+                src[(i+maskOffset)+(j+maskOffset)*(data.getWidth()+maskOffset)] = (double)data.bytesImage[(i + (j*data.getWidth()))*3];
+            }
+
+        double t_h,t_v;
+        int a_i,a_j;
+        //Operate
+        for (int i = 0; i < data.getWidth(); i++)
+            for (int j = 0; j < data.getHeight(); j++)
+            {
+                //vertical & horizontal operator
+                a_i = i+maskOffset;
+                a_j = j+maskOffset;
+                t_h = 0;
+                t_v = 0;
+                for (int x = -maskOffset; x <= maskOffset; x++)
+                    for (int y = -maskOffset; y <= maskOffset; y++)
+                    {
+                        t_v +=  (vMask[y+maskOffset][x+maskOffset])*src[(a_i+x)+(a_j+y)*(maskOffset+data.getWidth())];
+
+                        t_h +=  (hMask[y+maskOffset][x+maskOffset])*src[(a_i+x)+(a_j+y)*(maskOffset+data.getWidth())];
+                    }
+
+                dst[i+j*data.getWidth()] = Math.sqrt(t_v*t_v + t_h*t_h);
+            }
+
+
+        // Copy input data into filter src
+        for (int i = 0; i < data.getWidth(); i++)
+            for (int j = 0; j < data.getHeight(); j++)
+            {
+                data.bytesImage[(i + (j*data.getWidth()))*3] = (byte)dst[i + j* data.getWidth()];
+                data.bytesImage[(i + (j*data.getWidth()))*3+1] = (byte)dst[i + j* data.getWidth()];
+                data.bytesImage[(i + (j*data.getWidth()))*3+2] = (byte)dst[i + j* data.getWidth()];
+            }
         this.dataOut.setImageData(data);
 
 //        System.out.println("Internal update Crop : " + name);

@@ -120,9 +120,11 @@ public class ViewMain extends javax.swing.JFrame{
      private boolean isFileOpen = false;
      private File currentFile;
      Painter painterTexture;
+
 //     ArrayList<PipeObject> currentPipe = new ArrayList<PipeObject>();
      //pintor
      Painter draw;
+     LienzoBW bw;
 //     TextureGL texture;
     // Se encarga de escribir los out.println en el programa
     OutputStream out = new OutputStream(){
@@ -216,6 +218,11 @@ public class ViewMain extends javax.swing.JFrame{
         menuBar1 = new java.awt.MenuBar();
         menu1 = new java.awt.Menu();
         menu2 = new java.awt.Menu();
+        Binary = new javax.swing.JFrame();
+        WhiteBlack = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        Level = new javax.swing.JLabel();
+        jSlider2 = new javax.swing.JSlider();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
@@ -238,6 +245,7 @@ public class ViewMain extends javax.swing.JFrame{
         RadioFilterB = new javax.swing.JRadioButtonMenuItem();
         RadioFilterGray = new javax.swing.JRadioButtonMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         ModelosColor = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         RadioFilterYUV = new javax.swing.JRadioButtonMenuItem();
@@ -531,10 +539,73 @@ public class ViewMain extends javax.swing.JFrame{
         );
 
         menu1.setLabel("File");
+        menu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu1ActionPerformed(evt);
+            }
+        });
         menuBar1.add(menu1);
 
         menu2.setLabel("Edit");
         menuBar1.add(menu2);
+
+        Binary.setMinimumSize(new java.awt.Dimension(320, 380));
+
+        WhiteBlack.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout WhiteBlackLayout = new javax.swing.GroupLayout(WhiteBlack);
+        WhiteBlack.setLayout(WhiteBlackLayout);
+        WhiteBlackLayout.setHorizontalGroup(
+            WhiteBlackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 278, Short.MAX_VALUE)
+        );
+        WhiteBlackLayout.setVerticalGroup(
+            WhiteBlackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 261, Short.MAX_VALUE)
+        );
+
+        jLabel6.setText("Nivel:");
+
+        Level.setText("128");
+
+        jSlider2.setMaximum(255);
+        jSlider2.setValue(128);
+        jSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider2StateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout BinaryLayout = new javax.swing.GroupLayout(Binary.getContentPane());
+        Binary.getContentPane().setLayout(BinaryLayout);
+        BinaryLayout.setHorizontalGroup(
+            BinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BinaryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(BinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(WhiteBlack, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BinaryLayout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(Level, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(90, 90, 90)))
+                    .addComponent(jSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        BinaryLayout.setVerticalGroup(
+            BinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BinaryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(WhiteBlack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(BinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(Level, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -663,6 +734,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Filtros.add(jMenuItem12);
+
+        jMenuItem13.setText("Binary Threshold");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        Filtros.add(jMenuItem13);
 
         jMenuBar1.add(Filtros);
 
@@ -1320,6 +1399,37 @@ public class ViewMain extends javax.swing.JFrame{
 
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
+    private void menu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu1ActionPerformed
+
+    private void jSlider2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider2StateChanged
+       Level.setText(String.valueOf(jSlider2.getValue()));
+        PipeMessage msg = new PipeMessage(PipeMessage.Receiver.Binary,"Gamma");
+            msg.iValue1 = jSlider2.getValue();
+            bw.setpos(jSlider2.getValue());
+            bw.repaint();
+            painterTexture.PassMessage(msg);
+            painterTexture.Update();
+    }//GEN-LAST:event_jSlider2StateChanged
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        WhiteBlack.removeAll();
+        GrayScaleFilter gray = new GrayScaleFilter("Gray antes de sobel");
+        BinaryThresholdFilter binary = new BinaryThresholdFilter("Binary Filter", 128);
+        gray.setLastElement(painterTexture.getLastElement());
+        binary.setLastElement(gray);
+        painterTexture.setLastElement(binary);
+        painterTexture.Update();
+        bw = new LienzoBW(128);
+         Histograma h = new Histograma(painterTexture.getLastElement().getLastElement().getDataOut().getImageData(),0);
+        bw.getDatos(h.getHist());
+        WhiteBlack.add(bw);
+        
+        Binary.setVisible(true);
+        bw.repaint();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1340,6 +1450,7 @@ public class ViewMain extends javax.swing.JFrame{
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFrame Binary;
     private javax.swing.JPanel Color;
     private javax.swing.JPanel Color1;
     private javax.swing.JPanel Color3;
@@ -1357,6 +1468,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JFrame HistogramaColor;
     private javax.swing.JFrame HistogramaColor1;
     private javax.swing.JFrame Interpolar;
+    private javax.swing.JLabel Level;
     private javax.swing.JMenu ModelosColor;
     private javax.swing.JRadioButtonMenuItem RadioFilterB;
     private javax.swing.JRadioButtonMenuItem RadioFilterCMY;
@@ -1373,6 +1485,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JRadioButtonMenuItem RadioFlterYDbDr;
     private javax.swing.JFrame RotarFrame;
     private javax.swing.JMenu Tranformadas;
+    private javax.swing.JPanel WhiteBlack;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1383,6 +1496,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1392,6 +1506,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -1404,6 +1519,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JSlider jSlider2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

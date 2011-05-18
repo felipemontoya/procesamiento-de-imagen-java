@@ -100,7 +100,7 @@ public class SobelFilter extends FilterPipeObject{
         for (int i = 0; i < data.getWidth(); i++)
             for (int j = 0; j < data.getHeight(); j++)
             {
-                src[(i+maskOffset)+(j+maskOffset)*(data.getWidth()+maskOffset)] = (double)data.bytesImage[(i + (j*data.getWidth()))*3];
+                src[(i+maskOffset)+(j+maskOffset)*(data.getWidth()+maskOffset)] = BytesToDouble(data.bytesImage[(i + (j*data.getWidth()))*3]);
             }
 
         double t_h,t_v;
@@ -130,9 +130,9 @@ public class SobelFilter extends FilterPipeObject{
         for (int i = 0; i < data.getWidth(); i++)
             for (int j = 0; j < data.getHeight(); j++)
             {
-                data.bytesImage[(i + (j*data.getWidth()))*3] = (byte)dst[i + j* data.getWidth()];
-                data.bytesImage[(i + (j*data.getWidth()))*3+1] = (byte)dst[i + j* data.getWidth()];
-                data.bytesImage[(i + (j*data.getWidth()))*3+2] = (byte)dst[i + j* data.getWidth()];
+                data.bytesImage[(i + (j*data.getWidth()))*3] = DoubleToByte(dst[i + j* data.getWidth()]);
+                data.bytesImage[(i + (j*data.getWidth()))*3+1] = DoubleToByte(dst[i + j* data.getWidth()]);
+                data.bytesImage[(i + (j*data.getWidth()))*3+2] = DoubleToByte(dst[i + j* data.getWidth()]);
             }
         this.dataOut.setImageData(data);
 
@@ -144,7 +144,13 @@ public class SobelFilter extends FilterPipeObject{
              return (int)valor & 0xFF;
 
     }
+    public double BytesToDouble(byte valor){
+             return (double) (valor & 0xFF);
 
+    }
+    public byte DoubleToByte(double valor){
+            return (byte)(((int)valor) & 0xFF);
 
+    }
 
 }

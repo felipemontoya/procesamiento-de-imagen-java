@@ -246,6 +246,7 @@ public class ViewMain extends javax.swing.JFrame{
         RadioFilterGray = new javax.swing.JRadioButtonMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
         ModelosColor = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         RadioFilterYUV = new javax.swing.JRadioButtonMenuItem();
@@ -619,7 +620,7 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Crop", "Rotate", "Gamma", "Channel" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Crop", "Rotate", "Gamma", "Channel", "Marr" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -742,6 +743,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Filtros.add(jMenuItem13);
+
+        jMenuItem14.setText("Marr-Hildreth");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        Filtros.add(jMenuItem14);
 
         jMenuBar1.add(Filtros);
 
@@ -1334,6 +1343,12 @@ public class ViewMain extends javax.swing.JFrame{
                 painterTexture.PassMessage(msg);
                 painterTexture.Update();
                 break;
+            case 4:
+                PipeMessage msg2 = new PipeMessage(PipeMessage.Receiver.Marr,"Written message");
+                msg2.dValue1 = value;
+                painterTexture.PassMessage(msg2);
+                painterTexture.Update();
+                break;
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -1430,6 +1445,16 @@ public class ViewMain extends javax.swing.JFrame{
         bw.repaint();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        // MArr-Hildreth
+        GrayScaleFilter gray = new GrayScaleFilter("Gray antes de Marr-Hildreth");
+        MarrHildrethFilter marr = new MarrHildrethFilter("filtro Marr-Hildreth 1");
+        gray.setLastElement(painterTexture.getLastElement());
+        marr.setLastElement(gray);
+        painterTexture.setLastElement(marr);
+        painterTexture.Update();
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1507,6 +1532,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

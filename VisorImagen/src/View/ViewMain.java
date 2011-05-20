@@ -269,6 +269,7 @@ public class ViewMain extends javax.swing.JFrame{
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         Comparar = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -693,7 +694,7 @@ public class ViewMain extends javax.swing.JFrame{
         Filtros.add(RadioFilterNone);
 
         FiltrosBase.add(RadioFilterG);
-        RadioFilterG.setText("Verde");
+        RadioFilterG.setText("Canal 1");
         RadioFilterG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RadioFilterGActionPerformed(evt);
@@ -702,7 +703,7 @@ public class ViewMain extends javax.swing.JFrame{
         Filtros.add(RadioFilterG);
 
         FiltrosBase.add(RadioFilterR);
-        RadioFilterR.setText("Rojo");
+        RadioFilterR.setText("Canal 2");
         RadioFilterR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RadioFilterRActionPerformed(evt);
@@ -711,7 +712,7 @@ public class ViewMain extends javax.swing.JFrame{
         Filtros.add(RadioFilterR);
 
         FiltrosBase.add(RadioFilterB);
-        RadioFilterB.setText("Azul");
+        RadioFilterB.setText("Canal 3");
         RadioFilterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RadioFilterBActionPerformed(evt);
@@ -928,6 +929,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Tranformadas.add(jMenuItem7);
+
+        jMenuItem15.setText("PCA");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jMenuItem15);
 
         jMenuBar1.add(Tranformadas);
 
@@ -1455,6 +1464,14 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.Update();
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        // PCA Transform:
+        PCAFilter pca = new PCAFilter("PCA");
+        pca.setLastElement(painterTexture.getLastElement());
+        painterTexture.setLastElement(pca);
+        painterTexture.Update();
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1533,6 +1550,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

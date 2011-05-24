@@ -29,7 +29,7 @@ public class PipeMessage {
 
 
 
-    public enum Receiver{Rotate,Crop,Channel,Gamma,Binary,Marr};
+    public enum Receiver{Rotate,Crop,Channel,Gamma,Binary,Marr,FFT};
 
     public Receiver destination;
     public String message;

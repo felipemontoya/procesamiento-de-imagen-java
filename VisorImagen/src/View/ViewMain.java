@@ -223,6 +223,14 @@ public class ViewMain extends javax.swing.JFrame{
         jLabel6 = new javax.swing.JLabel();
         Level = new javax.swing.JLabel();
         jSlider2 = new javax.swing.JSlider();
+        Fourier = new javax.swing.JFrame();
+        jSlider3 = new javax.swing.JSlider();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jFrame1 = new javax.swing.JFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
@@ -270,6 +278,7 @@ public class ViewMain extends javax.swing.JFrame{
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
         Comparar = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -609,6 +618,81 @@ public class ViewMain extends javax.swing.JFrame{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        Fourier.setMinimumSize(new java.awt.Dimension(250, 120));
+
+        jSlider3.setMinimum(5);
+        jSlider3.setValue(100);
+        jSlider3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jSlider3.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider3StateChanged(evt);
+            }
+        });
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Frecuencias Altas");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setSelected(true);
+        jRadioButton2.setText("Frecuancias Bajas");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("100");
+
+        jLabel8.setText("%");
+
+        javax.swing.GroupLayout FourierLayout = new javax.swing.GroupLayout(Fourier.getContentPane());
+        Fourier.getContentPane().setLayout(FourierLayout);
+        FourierLayout.setHorizontalGroup(
+            FourierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FourierLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(FourierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FourierLayout.createSequentialGroup()
+                        .addComponent(jRadioButton2)
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8))
+                    .addComponent(jSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton1))
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+        FourierLayout.setVerticalGroup(
+            FourierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FourierLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jRadioButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(FourierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSlider3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTextArea1.setRows(5);
@@ -937,6 +1021,14 @@ public class ViewMain extends javax.swing.JFrame{
             }
         });
         Tranformadas.add(jMenuItem15);
+
+        jMenuItem16.setText("FFT");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        Tranformadas.add(jMenuItem16);
 
         jMenuBar1.add(Tranformadas);
 
@@ -1472,6 +1564,43 @@ public class ViewMain extends javax.swing.JFrame{
         painterTexture.Update();
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+         // PCA Transform:
+        GrayScaleFilter gray = new GrayScaleFilter("Gray antes de FFT");
+        gray.setLastElement(painterTexture.getLastElement());
+
+        FFTFilter fft = new FFTFilter("FFT",100,true);
+        fft.setLastElement(gray);
+        painterTexture.setLastElement(fft);
+        painterTexture.Update();
+        Fourier.setVisible(true);
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        PipeMessage msg = new PipeMessage(PipeMessage.Receiver.FFT,"FFT");
+        msg.iValue1 = jSlider3.getValue();
+        msg.bValue1 = jRadioButton2.isSelected();
+        painterTexture.PassMessage(msg);
+            painterTexture.Update();
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+       PipeMessage msg = new PipeMessage(PipeMessage.Receiver.FFT,"FFT");
+        msg.iValue1 = jSlider3.getValue();
+        msg.bValue1 = jRadioButton2.isSelected();
+        painterTexture.PassMessage(msg);
+            painterTexture.Update();
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jSlider3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider3StateChanged
+   PipeMessage msg = new PipeMessage(PipeMessage.Receiver.FFT,"FFT");
+        msg.iValue1 = jSlider3.getValue();
+        msg.bValue1 = jRadioButton2.isSelected();
+        painterTexture.PassMessage(msg);
+            painterTexture.Update();
+           jLabel7.setText(String.valueOf(jSlider3.getValue()));
+    }//GEN-LAST:event_jSlider3StateChanged
+
     /**
     * @param args the command line arguments
     */
@@ -1506,6 +1635,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.ButtonGroup FiltorsModelos;
     private javax.swing.JMenu Filtros;
     private javax.swing.ButtonGroup FiltrosBase;
+    private javax.swing.JFrame Fourier;
     private javax.swing.JLabel Grados;
     private javax.swing.JFrame HistogramaColor;
     private javax.swing.JFrame HistogramaColor1;
@@ -1528,17 +1658,21 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JFrame RotarFrame;
     private javax.swing.JMenu Tranformadas;
     private javax.swing.JPanel WhiteBlack;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1551,6 +1685,7 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -1559,11 +1694,14 @@ public class ViewMain extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JSlider jSlider2;
+    private javax.swing.JSlider jSlider3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
